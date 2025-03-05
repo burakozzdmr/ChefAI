@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		081C0A952D78EF000045BE3E /* SnapKit in Frameworks */ = {isa = PBXBuildFile; productRef = 081C0A942D78EF000045BE3E /* SnapKit */; };
+		081C0AA32D7904F30045BE3E /* BYCustomTextField in Frameworks */ = {isa = PBXBuildFile; productRef = 081C0AA22D7904F30045BE3E /* BYCustomTextField */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -40,6 +41,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				081C0AA32D7904F30045BE3E /* BYCustomTextField in Frameworks */,
 				081C0A952D78EF000045BE3E /* SnapKit in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -84,6 +86,7 @@
 			name = ChefAI;
 			packageProductDependencies = (
 				081C0A942D78EF000045BE3E /* SnapKit */,
+				081C0AA22D7904F30045BE3E /* BYCustomTextField */,
 			);
 			productName = ChefAI;
 			productReference = 082FBB7E2D787CF2008776FF /* ChefAI.app */;
@@ -115,6 +118,7 @@
 			minimizedProjectReferenceProxies = 1;
 			packageReferences = (
 				081C0A932D78EF000045BE3E /* XCRemoteSwiftPackageReference "SnapKit" */,
+				081C0AA12D7904F30045BE3E /* XCRemoteSwiftPackageReference "BYCustomTextField" */,
 			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = 082FBB7F2D787CF2008776FF /* Products */;
@@ -368,6 +372,14 @@
 				minimumVersion = 5.7.1;
 			};
 		};
+		081C0AA12D7904F30045BE3E /* XCRemoteSwiftPackageReference "BYCustomTextField" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/bayramyelec/BYCustomTextField";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 1.2.4;
+			};
+		};
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
@@ -375,6 +387,11 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 081C0A932D78EF000045BE3E /* XCRemoteSwiftPackageReference "SnapKit" */;
 			productName = SnapKit;
+		};
+		081C0AA22D7904F30045BE3E /* BYCustomTextField */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 081C0AA12D7904F30045BE3E /* XCRemoteSwiftPackageReference "BYCustomTextField" */;
+			productName = BYCustomTextField;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};
