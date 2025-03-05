@@ -12,4 +12,5 @@ extension UIColor {
     static let customButtonColor = "customButtonColor"
     static let customBackgroundColor = "customBackgroundColor"
     static let customTextColor = "customTextColor"
+    static let customBackground2 = "customBackgroundColor2"
 }
