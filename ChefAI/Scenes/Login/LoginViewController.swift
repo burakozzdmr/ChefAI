@@ -87,12 +87,25 @@ class LoginViewController: UIViewController {
         return label
     }()
     
+    private let viewModel: LoginViewModel
+    
     // MARK: - Life Cycles
     
     override func viewDidLoad() {
         super.viewDidLoad()
 
         configureUI()
+    }
+    
+    // MARK: - Inits
+    
+    init(viewModel: LoginViewModel = .init()) {
+        self.viewModel = viewModel
+        super.init(nibName: nil, bundle: nil)
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
     }
 }
 
@@ -155,11 +168,22 @@ private extension LoginViewController {
 
 private extension LoginViewController {
     @objc func loginTapped() {
-        
+        viewModel.signIn(with: emailTextField.text ?? "", and: passwordTextField.text ?? "") { authError in
+            if authError != nil {
+                let alertController = UIAlertController(title: "HATA", message: "Kullanıcı adı veya şifre hatalı", preferredStyle: .alert)
+                alertController.addAction(
+                    UIAlertAction(title: "Tamam", style: .default)
+                )
+                self.present(alertController, animated: true)
+                return
+            } else {
+                self.navigationController?.pushViewController(TabBarController(), animated: true)
+            }
+        }
     }
     
     @objc func registerNowTapped() {
-        navigationController?.pushViewController(RegisterViewController(), animated: true)
+        navigationController?.pushViewController(RegisterViewController(viewModel: RegisterViewModel()), animated: true)
     }
     
     @objc func dismissKeyboard() {
@@ -174,8 +198,4 @@ extension LoginViewController: UITextFieldDelegate {
         textField.resignFirstResponder()
         return true
     }
-}
-
-#Preview {
-    LoginViewController()
 }
