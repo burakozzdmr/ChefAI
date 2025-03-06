@@ -17,8 +17,15 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         
         let window = UIWindow(windowScene: windowScene)
         window.rootViewController = SplashViewController()
+        let authNavController = UINavigationController(rootViewController: LoginViewController())
         self.window = window
         window.makeKeyAndVisible()
+        
+        DispatchQueue.main.asyncAfter(deadline: .now() + 2.5) {
+            UIView.transition(with: window, duration: 0.75, options: .transitionCrossDissolve) {
+                window.rootViewController = authNavController
+            }
+        }
     }
 
     func sceneDidDisconnect(_ scene: UIScene) {
