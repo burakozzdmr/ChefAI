@@ -6,6 +6,14 @@
 	objectVersion = 77;
 	objects = {
 
+/* Begin PBXBuildFile section */
+		081C0A952D78EF000045BE3E /* SnapKit in Frameworks */ = {isa = PBXBuildFile; productRef = 081C0A942D78EF000045BE3E /* SnapKit */; };
+		081C0AA32D7904F30045BE3E /* BYCustomTextField in Frameworks */ = {isa = PBXBuildFile; productRef = 081C0AA22D7904F30045BE3E /* BYCustomTextField */; };
+		083EBC992D7A4AB4008FDD41 /* FirebaseAuth in Frameworks */ = {isa = PBXBuildFile; productRef = 083EBC982D7A4AB4008FDD41 /* FirebaseAuth */; };
+		083EBC9B2D7A4AB4008FDD41 /* FirebaseFirestore in Frameworks */ = {isa = PBXBuildFile; productRef = 083EBC9A2D7A4AB4008FDD41 /* FirebaseFirestore */; };
+		083EBC9D2D7A4AB4008FDD41 /* FirebaseStorage in Frameworks */ = {isa = PBXBuildFile; productRef = 083EBC9C2D7A4AB4008FDD41 /* FirebaseStorage */; };
+/* End PBXBuildFile section */
+
 /* Begin PBXFileReference section */
 		082FBB7E2D787CF2008776FF /* ChefAI.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ChefAI.app; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
@@ -14,7 +22,7 @@
 		082FBB902D787CF3008776FF /* Exceptions for "ChefAI" folder in "ChefAI" target */ = {
 			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
 			membershipExceptions = (
-				Info.plist,
+				Resources/Info.plist,
 			);
 			target = 082FBB7D2D787CF2008776FF /* ChefAI */;
 		};
@@ -36,6 +44,11 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				081C0AA32D7904F30045BE3E /* BYCustomTextField in Frameworks */,
+				083EBC9B2D7A4AB4008FDD41 /* FirebaseFirestore in Frameworks */,
+				083EBC992D7A4AB4008FDD41 /* FirebaseAuth in Frameworks */,
+				083EBC9D2D7A4AB4008FDD41 /* FirebaseStorage in Frameworks */,
+				081C0A952D78EF000045BE3E /* SnapKit in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -78,6 +91,11 @@
 			);
 			name = ChefAI;
 			packageProductDependencies = (
+				081C0A942D78EF000045BE3E /* SnapKit */,
+				081C0AA22D7904F30045BE3E /* BYCustomTextField */,
+				083EBC982D7A4AB4008FDD41 /* FirebaseAuth */,
+				083EBC9A2D7A4AB4008FDD41 /* FirebaseFirestore */,
+				083EBC9C2D7A4AB4008FDD41 /* FirebaseStorage */,
 			);
 			productName = ChefAI;
 			productReference = 082FBB7E2D787CF2008776FF /* ChefAI.app */;
@@ -107,6 +125,11 @@
 			);
 			mainGroup = 082FBB752D787CF2008776FF;
 			minimizedProjectReferenceProxies = 1;
+			packageReferences = (
+				081C0A932D78EF000045BE3E /* XCRemoteSwiftPackageReference "SnapKit" */,
+				081C0AA12D7904F30045BE3E /* XCRemoteSwiftPackageReference "BYCustomTextField" */,
+				083EBC972D7A4AB4008FDD41 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */,
+			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = 082FBB7F2D787CF2008776FF /* Products */;
 			projectDirPath = "";
@@ -147,22 +170,29 @@
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = 63M84ZY82B;
 				GENERATE_INFOPLIST_FILE = YES;
-				INFOPLIST_FILE = ChefAI/Info.plist;
+				INFOPLIST_FILE = ChefAI/Resources/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = ChefAI;
+				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.food-and-drink";
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
-				INFOPLIST_KEY_UIMainStoryboardFile = Main;
-				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
-				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				INFOPLIST_KEY_UIMainStoryboardFile = "";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown";
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.0;
+				MARKETING_VERSION = 0.1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.burakozdemir.ChefAI;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SUPPORTS_MACCATALYST = NO;
+				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
+				SUPPORTS_XR_DESIGNED_FOR_IPHONE_IPAD = NO;
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
+				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = Debug;
 		};
@@ -175,22 +205,29 @@
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = 63M84ZY82B;
 				GENERATE_INFOPLIST_FILE = YES;
-				INFOPLIST_FILE = ChefAI/Info.plist;
+				INFOPLIST_FILE = ChefAI/Resources/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = ChefAI;
+				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.food-and-drink";
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
-				INFOPLIST_KEY_UIMainStoryboardFile = Main;
-				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
-				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				INFOPLIST_KEY_UIMainStoryboardFile = "";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown";
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.0;
+				MARKETING_VERSION = 0.1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.burakozdemir.ChefAI;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SUPPORTS_MACCATALYST = NO;
+				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
+				SUPPORTS_XR_DESIGNED_FOR_IPHONE_IPAD = NO;
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
+				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = Release;
 		};
@@ -335,6 +372,61 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		081C0A932D78EF000045BE3E /* XCRemoteSwiftPackageReference "SnapKit" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/SnapKit/SnapKit.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 5.7.1;
+			};
+		};
+		081C0AA12D7904F30045BE3E /* XCRemoteSwiftPackageReference "BYCustomTextField" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/bayramyelec/BYCustomTextField";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 1.2.4;
+			};
+		};
+		083EBC972D7A4AB4008FDD41 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/firebase/firebase-ios-sdk";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 11.9.0;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		081C0A942D78EF000045BE3E /* SnapKit */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 081C0A932D78EF000045BE3E /* XCRemoteSwiftPackageReference "SnapKit" */;
+			productName = SnapKit;
+		};
+		081C0AA22D7904F30045BE3E /* BYCustomTextField */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 081C0AA12D7904F30045BE3E /* XCRemoteSwiftPackageReference "BYCustomTextField" */;
+			productName = BYCustomTextField;
+		};
+		083EBC982D7A4AB4008FDD41 /* FirebaseAuth */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 083EBC972D7A4AB4008FDD41 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
+			productName = FirebaseAuth;
+		};
+		083EBC9A2D7A4AB4008FDD41 /* FirebaseFirestore */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 083EBC972D7A4AB4008FDD41 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
+			productName = FirebaseFirestore;
+		};
+		083EBC9C2D7A4AB4008FDD41 /* FirebaseStorage */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 083EBC972D7A4AB4008FDD41 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
+			productName = FirebaseStorage;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = 082FBB762D787CF2008776FF /* Project object */;
 }
