@@ -95,7 +95,3 @@ private extension RegisterResultViewController {
         navigationController?.popToRootViewController(animated: true)
     }
 }
-
-#Preview {
-    RegisterResultViewController()
-}

@@ -54,6 +54,9 @@ private extension TabBarController {
         let navController = UINavigationController(rootViewController: controller)
         navController.tabBarItem.title = title
         navController.tabBarItem.image = image
+        
+        navigationItem.hidesBackButton = true
+        
         return navController
     }
 }
