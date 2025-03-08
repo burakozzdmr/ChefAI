@@ -8,19 +8,14 @@
 import Foundation
 
 struct MealModel: Codable {
-    let mealID: String
-    let mealName: String
-    let mealCategory: String
-    let mealArea: String
-    let mealInstructions: String
-    let mealImageURL: String
-    let mealYoutubeURL: String
-    var ingredients: [Ingredient]
-    
-    struct Ingredient: Codable {
-        let name: String
-        let measure: String
-    }
+    let mealID: String?
+    let mealName: String?
+    let mealCategory: String?
+    let mealArea: String?
+    let mealInstructions: String?
+    let mealImageURL: String?
+    let mealYoutubeURL: String?
+    var ingredients: [Ingredient]?
     
     enum CodingKeys: String, CodingKey {
         case mealID = "idMeal"
@@ -44,7 +39,7 @@ struct MealModel: Codable {
         mealImageURL = try container.decode(String.self, forKey: .mealImageURL)
         mealYoutubeURL = try container.decode(String.self, forKey: .mealYoutubeURL)
         
-        // Decode ingredients and measures
+        // Decode ingredients and measures dynamically
         var ingredients: [Ingredient] = []
         let container2 = try decoder.container(keyedBy: DynamicCodingKeys.self)
         
@@ -75,4 +70,9 @@ private struct DynamicCodingKeys: CodingKey {
     init?(intValue: Int) {
         return nil
     }
+}
+
+struct Ingredient: Codable {
+    let name: String
+    let measure: String
 }

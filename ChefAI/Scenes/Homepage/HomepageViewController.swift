@@ -22,20 +22,6 @@ class HomepageViewController: UIViewController {
         return searchController
     }()
     
-    private lazy var sectionsCollectionView: UICollectionView = {
-        let flowLayout = UICollectionViewFlowLayout()
-        flowLayout.scrollDirection = .vertical
-        flowLayout.minimumLineSpacing = 16
-        flowLayout.minimumInteritemSpacing = 16
-        flowLayout.itemSize = CGSize(width: UIScreen.main.bounds.width, height: 250)
-        
-        let collectionView = UICollectionView()
-        collectionView.dataSource = self
-        collectionView.collectionViewLayout = flowLayout
-        collectionView.backgroundColor = .customBackgroundColor2
-        collectionView.register(MealsCell.self, forCellWithReuseIdentifier: MealsCell.identifier)
-        return collectionView
-    }()
     
     private lazy var askToChefButton: UIButton = {
         let button = UIButton()
@@ -44,7 +30,7 @@ class HomepageViewController: UIViewController {
         button.tintColor = .white
         button.backgroundColor = .customButton
         button.clipsToBounds = true
-        button.layer.cornerRadius = 12
+        button.layer.cornerRadius = 24
         button.addTarget(self, action: #selector(askChefTapped), for: .touchUpInside)
         return button
     }()
@@ -75,17 +61,11 @@ class HomepageViewController: UIViewController {
 
 private extension HomepageViewController {
     func addViews() {
-        view.addSubview(sectionsCollectionView)
         view.addSubview(askToChefButton)
         navigationItem.searchController = searchController
     }
     
     func configureConstraints() {
-        sectionsCollectionView.snp.makeConstraints { make in
-            make.top.equalTo(view.safeAreaLayoutGuide)
-            make.leading.trailing.equalToSuperview()
-            make.bottom.equalTo(view.safeAreaLayoutGuide)
-        }
         
         askToChefButton.snp.makeConstraints { make in
             make.bottom.equalTo(view.safeAreaLayoutGuide).inset(16)
@@ -99,7 +79,7 @@ private extension HomepageViewController {
         addViews()
         configureConstraints()
         
-        view.backgroundColor = .customBackgroundColor2
+        view.backgroundColor = .white
     }
 }
 
@@ -124,13 +104,3 @@ extension HomepageViewController: UISearchBarDelegate {
 }
 
 // MARK: - UICollectionViewDataSource
-
-extension HomepageViewController: UICollectionViewDataSource {
-    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return 0
-    }
-    
-    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        return UICollectionViewCell()
-    }
-}

@@ -17,4 +17,5 @@ class NetworkConstants {
     static let latestPath = "latest.php"
     static let listPath = "list.php"
     static let filterPath = "filter.php"
+    static let apiKey = "65232507"
 }

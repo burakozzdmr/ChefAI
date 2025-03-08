@@ -8,11 +8,11 @@
 import Foundation
 
 struct FilteredMealModel: Codable {
-    let mealName: String
-    let mealImageURL: String
-    let mealID: String
+    let mealName: String?
+    let mealImageURL: String?
+    let mealID: String?
     
-    enum CodinKeys: String, CodingKey {
+    enum CodingKeys: String, CodingKey {
         case mealName = "strMeal"
         case mealImageURL = "strMealThumb"
         case mealID = "idMeal"

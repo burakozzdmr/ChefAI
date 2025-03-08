@@ -8,10 +8,10 @@
 import Foundation
 
 struct CategoryModel: Codable {
-    let categoryID: String
-    let categoryName: String
-    let categoryImageURL: String
-    let categoryDescription: String
+    let categoryID: String?
+    let categoryName: String?
+    let categoryImageURL: String?
+    let categoryDescription: String?
     
     enum CodingKeys: String, CodingKey {
         case categoryID = "idCategory"

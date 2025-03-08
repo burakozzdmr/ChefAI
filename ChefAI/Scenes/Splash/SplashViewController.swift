@@ -60,8 +60,24 @@ private extension SplashViewController {
     }
     
     func configureUI() {
+        view.backgroundColor = .customBackgroundColor2
         addViews()
         configureConstraints()
-        view.backgroundColor = .customBackgroundColor2
+        splashToTabBar()
+    }
+    
+    func splashToTabBar() {
+        DispatchQueue.main.asyncAfter(deadline: .now() + 3.0) {
+            guard let sceneDelegate = UIApplication.shared.connectedScenes.first?.delegate as? SceneDelegate else {
+                return
+            }
+            let authNavController = UINavigationController(rootViewController: LoginViewController())
+            if sceneDelegate.window?.rootViewController is TabBarController {
+                return
+            }
+            UIView.transition(with: sceneDelegate.window!, duration: 0.5, options: .transitionCrossDissolve) {
+                sceneDelegate.window?.rootViewController = authNavController
+            }
+        }
     }
 }

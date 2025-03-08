@@ -7,24 +7,31 @@
 
 import Foundation
 
+// MARK: - Protocols
+
 protocol EndpointProtocol {
     var baseURL: String { get }
     var path: String { get }
+    var queryItems: [URLQueryItem]? { get }
     var method: HTTPMethod { get }
     var headers: [String: String]? { get }
     var parameters: [String: Any]? { get }
 }
 
+// MARK: - Enums
+
 enum Endpoint {
-    case search
-    case lookup
+    case search(String)
+    case lookup(String)
     case random
     case randomSelection
     case categories
     case latest
-    case list
-    case filter
+    case list(Character)
+    case filter(Character, String)
 }
+
+// MARK: - EndpointProtocol
 
 extension Endpoint: EndpointProtocol {
     var baseURL: String {
@@ -49,6 +56,35 @@ extension Endpoint: EndpointProtocol {
             return NetworkConstants.listPath
         case .filter:
             return NetworkConstants.filterPath
+        }
+    }
+    
+    var queryItems: [URLQueryItem]? {
+        switch self {
+        case .search(let searchQuery):
+            return [
+                URLQueryItem(name: "s", value: searchQuery)
+            ]
+        case .lookup(let lookupQuery):
+            return [
+                URLQueryItem(name: "i", value: lookupQuery)
+            ]
+        case .random:
+            return nil
+        case .randomSelection:
+            return nil
+        case .categories:
+            return nil
+        case .latest:
+            return nil
+        case .list(let listType):
+            return [
+                URLQueryItem(name: "\(listType)", value: "list")
+            ]
+        case .filter(let ListType, let listQuery):
+            return [
+                URLQueryItem(name: "\(ListType)", value: "\(listQuery)")
+            ]
         }
     }
     
