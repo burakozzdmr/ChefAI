@@ -7,7 +7,7 @@
 
 import Foundation
 
-struct CategoryModel: Codable {
+struct Category: Codable {
     let categoryID: String?
     let categoryName: String?
     let categoryImageURL: String?
@@ -19,4 +19,8 @@ struct CategoryModel: Codable {
         case categoryImageURL = "strCategoryThumb"
         case categoryDescription = "strCategoryDescription"
     }
+}
+
+struct CategoryModel: Codable {
+    let categories: [Category]
 }

@@ -30,10 +30,6 @@ private extension NetworkManager {
                 return
             }
             
-            if let httpResponse = response as? HTTPURLResponse {
-                completion(.failure(.statusCodeError(httpResponse.statusCode)))
-            }
-            
             guard let data = data else {
                 completion(.failure(.emptyDataError))
                 return

@@ -8,6 +8,10 @@
 import Foundation
 
 struct MealModel: Codable {
+    let meals: [Meal]
+}
+
+struct Meal: Codable {
     let mealID: String?
     let mealName: String?
     let mealCategory: String?

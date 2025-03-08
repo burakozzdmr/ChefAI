@@ -11,10 +11,10 @@ import Foundation
 
 protocol MealServiceProtocol {
     func prepareRequestURL(_ endpoint: Endpoint) -> Result<URLRequest, NetworkError>
-    func searchMealList(_ endpoint: Endpoint, searchText: String, completion: @escaping (Result<MealModel, NetworkError>) -> Void)
-    func fetchDailyMeal(_ endpoint: Endpoint, completion: @escaping (Result<MealModel, NetworkError>) -> Void)
-    func fetchMealCategories(_ endpoint: Endpoint, completion: @escaping (Result<CategoryModel, NetworkError>) -> Void)
-    func fetchMealList(_ endpoint: Endpoint, completion: @escaping (Result<MealModel, NetworkError>) -> Void)
+    func searchMealList(searchText: String, completion: @escaping (Result<MealModel, NetworkError>) -> Void)
+    func fetchDailyMeal(completion: @escaping (Result<MealModel, NetworkError>) -> Void)
+    func fetchMealCategories(completion: @escaping (Result<CategoryModel, NetworkError>) -> Void)
+    func fetchMealList(completion: @escaping (Result<MealModel, NetworkError>) -> Void)
 }
 
 class MealService {}
@@ -23,7 +23,7 @@ class MealService {}
 
 extension MealService: MealServiceProtocol {
     func prepareRequestURL(_ endpoint: Endpoint) -> Result<URLRequest, NetworkError> {
-        guard var urlComponents = URLComponents(string: endpoint.baseURL + endpoint.path) else {
+        guard var urlComponents = URLComponents(string: endpoint.baseURL + NetworkConstants.apiKey + "/" + endpoint.path) else {
             print(NetworkError.invalidURL.errorMessage)
             return .failure(.invalidURL)
         }
@@ -36,11 +36,12 @@ extension MealService: MealServiceProtocol {
         }
         
         var request = URLRequest(url: requestURL)
+        print(requestURL)
         request.httpMethod = endpoint.method.rawValue
         return .success(request)
     }
     
-    func searchMealList(_ endpoint: Endpoint, searchText: String, completion: @escaping (Result<MealModel, NetworkError>) -> Void) {
+    func searchMealList(searchText: String, completion: @escaping (Result<MealModel, NetworkError>) -> Void) {
         let request = prepareRequestURL(Endpoint.search(searchText))
         
         switch request {
@@ -51,7 +52,7 @@ extension MealService: MealServiceProtocol {
         }
     }
     
-    func fetchDailyMeal(_ endpoint: Endpoint, completion: @escaping (Result<MealModel, NetworkError>) -> Void) {
+    func fetchDailyMeal(completion: @escaping (Result<MealModel, NetworkError>) -> Void) {
         let request = prepareRequestURL(Endpoint.random)
         
         switch request {
@@ -62,7 +63,7 @@ extension MealService: MealServiceProtocol {
         }
     }
     
-    func fetchMealCategories(_ endpoint: Endpoint, completion: @escaping (Result<CategoryModel, NetworkError>) -> Void) {
+    func fetchMealCategories(completion: @escaping (Result<CategoryModel, NetworkError>) -> Void) {
         let request = prepareRequestURL(Endpoint.categories)
         
         switch request {
@@ -73,7 +74,7 @@ extension MealService: MealServiceProtocol {
         }
     }
     
-    func fetchMealList(_ endpoint: Endpoint, completion: @escaping (Result<MealModel, NetworkError>) -> Void) {
+    func fetchMealList(completion: @escaping (Result<MealModel, NetworkError>) -> Void) {
         let request = prepareRequestURL(Endpoint.randomSelection)
         
         switch request {
