@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import Kingfisher
 
 class CategoryCell: UICollectionViewCell {
     static let identifier = "categoryCell"
@@ -55,7 +56,12 @@ class CategoryCell: UICollectionViewCell {
     // MARK: - Methods
     
     func configure(with cellContent: Category) {
+        categoryTitleLabel.text = cellContent.categoryName
         
+        guard let urlString = cellContent.categoryImageURL else { return }
+        guard let imageURL = URL(string: urlString) else { return }
+        
+        categoryImageView.kf.setImage(with: imageURL)
     }
 }
 

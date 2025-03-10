@@ -54,8 +54,8 @@ class HomepageViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-
         configureUI()
+        viewModel.delegate = self
     }
     
     // MARK: - Inits
@@ -105,45 +105,56 @@ private extension HomepageViewController {
         switch cellSectionIndex {
         case .large:
             let itemSize = NSCollectionLayoutSize(
-                widthDimension: .fractionalWidth(0.75),
-                heightDimension: .fractionalHeight(1.0)
-            )
-            let item = NSCollectionLayoutItem(layoutSize: itemSize)
-            
-            let groupSize = NSCollectionLayoutSize(
                 widthDimension: .fractionalWidth(1.0),
                 heightDimension: .fractionalHeight(1.0)
             )
+            let item = NSCollectionLayoutItem(layoutSize: itemSize)
+            item.contentInsets = NSDirectionalEdgeInsets(top: 8, leading: 8, bottom: 8, trailing: 8)
+            
+            let groupSize = NSCollectionLayoutSize(
+                widthDimension: .fractionalWidth(1.0),
+                heightDimension: .absolute(200)
+            )
             let group = NSCollectionLayoutGroup.horizontal(layoutSize: groupSize, subitems: [item])
-            return NSCollectionLayoutSection(group: group)
+            
+            let section = NSCollectionLayoutSection(group: group)
+            section.orthogonalScrollingBehavior = .groupPaging
+            return section
             
         case .medium:
             let itemSize = NSCollectionLayoutSize(
-                widthDimension: .fractionalWidth(0.25),
-                heightDimension: .fractionalHeight(1.0)
-            )
-            let item = NSCollectionLayoutItem(layoutSize: itemSize)
-            
-            let groupSize = NSCollectionLayoutSize(
                 widthDimension: .fractionalWidth(1.0),
                 heightDimension: .fractionalHeight(1.0)
             )
+            let item = NSCollectionLayoutItem(layoutSize: itemSize)
+            item.contentInsets = NSDirectionalEdgeInsets(top: 8, leading: 8, bottom: 8, trailing: 8)
+            
+            let groupSize = NSCollectionLayoutSize(
+                widthDimension: .fractionalWidth(0.4),
+                heightDimension: .absolute(120)
+            )
             let group = NSCollectionLayoutGroup.horizontal(layoutSize: groupSize, subitems: [item])
-            return NSCollectionLayoutSection(group: group)
+            
+            let section = NSCollectionLayoutSection(group: group)
+            section.orthogonalScrollingBehavior = .continuous
+            return section
             
         case .vertical:
             let itemSize = NSCollectionLayoutSize(
-                widthDimension: .fractionalWidth(0.75),
-                heightDimension: .fractionalHeight(0.25)
-            )
-            let item = NSCollectionLayoutItem(layoutSize: itemSize)
-            
-            let groupSize = NSCollectionLayoutSize(
                 widthDimension: .fractionalWidth(1.0),
                 heightDimension: .fractionalHeight(1.0)
             )
+            let item = NSCollectionLayoutItem(layoutSize: itemSize)
+            item.contentInsets = NSDirectionalEdgeInsets(top: 8, leading: 8, bottom: 8, trailing: 8)
+            
+            let groupSize = NSCollectionLayoutSize(
+                widthDimension: .fractionalWidth(1.0),
+                heightDimension: .absolute(160)
+            )
             let group = NSCollectionLayoutGroup.vertical(layoutSize: groupSize, subitems: [item])
-            return NSCollectionLayoutSection(group: group)
+            
+            let section = NSCollectionLayoutSection(group: group)
+            return section
         }
     }
 }
@@ -188,7 +199,23 @@ extension HomepageViewController: UICollectionViewDataSource {
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        
+        let contentType: SectionContentType = .init(for: indexPath.section)
+        switch contentType {
+        case .dailyMeal:
+            let cell = collectionView.dequeueReusableCell(withReuseIdentifier: MealCell.identifier, for: indexPath) as! MealCell
+            cell.configure(with: viewModel.dailyMealList[indexPath.row])
+            return cell
+            
+        case .categoryList:
+            let cell = collectionView.dequeueReusableCell(withReuseIdentifier: CategoryCell.identifier, for: indexPath) as! CategoryCell
+            cell.configure(with: viewModel.categoryList[indexPath.row])
+            return cell
+            
+        case .mealList:
+            let cell = collectionView.dequeueReusableCell(withReuseIdentifier: MealCell.identifier, for: indexPath) as! MealCell
+            cell.configure(with: viewModel.mealList[indexPath.row])
+            return cell
+        }
     }
 }
 
@@ -197,5 +224,13 @@ extension HomepageViewController: UICollectionViewDataSource {
 extension HomepageViewController: UICollectionViewDelegate {
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         
+    }
+}
+
+// MARK: - HomepageViewModelDelegate
+
+extension HomepageViewController: HomepageViewModelDelegate {
+    func didUpdateData() {
+        mealsCollectionView.reloadData()
     }
 } 

@@ -7,10 +7,16 @@
 
 import Foundation
 
+protocol HomepageViewModelDelegate: AnyObject {
+    func didUpdateData()
+}
+
 // MARK: - HomepageViewModel
 
 class HomepageViewModel {
     private let service: MealServiceProtocol
+    weak var delegate: HomepageViewModelDelegate?
+    
     var dailyMealList: [Meal] = []
     var categoryList: [Category] = []
     var mealList: [Meal] = []
@@ -30,6 +36,9 @@ class HomepageViewModel {
             switch dailyMealData {
             case .success(let dailyMeal):
                 self.dailyMealList = dailyMeal.meals
+                DispatchQueue.main.async {
+                    self.delegate?.didUpdateData()
+                }
             case .failure:
                 print(NetworkError.emptyDataError.errorMessage)
             }
@@ -42,6 +51,9 @@ class HomepageViewModel {
             switch categoryList {
             case .success(let categoryList):
                 self.categoryList = categoryList.categories
+                DispatchQueue.main.async {
+                    self.delegate?.didUpdateData()
+                }
             case .failure:
                 print(NetworkError.emptyDataError.errorMessage)
             }
@@ -54,6 +66,9 @@ class HomepageViewModel {
             switch mealList {
             case .success(let mealList):
                 self.mealList = mealList.meals
+                DispatchQueue.main.async {
+                    self.delegate?.didUpdateData()
+                }
             case .failure:
                 print(NetworkError.emptyDataError.errorMessage)
             }

@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import Kingfisher
 
 class MealCell: UICollectionViewCell {
     static let identifier = "mealCell"
@@ -55,7 +56,12 @@ class MealCell: UICollectionViewCell {
     // MARK: - Publics
     
     func configure(with cellContent: Meal) {
+        mealNameLabel.text = cellContent.mealName
         
+        guard let urlString = cellContent.mealImageURL else { return }
+        guard let imageURL = URL(string: urlString) else { return }
+        
+        mealImageView.kf.setImage(with: imageURL)
     }
 }
 
