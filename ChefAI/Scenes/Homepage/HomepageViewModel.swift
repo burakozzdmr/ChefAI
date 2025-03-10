@@ -7,6 +7,8 @@
 
 import Foundation
 
+// MARK: - HomepageViewModel
+
 class HomepageViewModel {
     private let service: MealServiceProtocol
     var dailyMealList: [Meal] = []
@@ -55,6 +57,21 @@ class HomepageViewModel {
             case .failure:
                 print(NetworkError.emptyDataError.errorMessage)
             }
+        }
+    }
+    
+    func getNavigationTitle() -> String {
+        let period: DayPeriodType = .init()
+        
+        switch period {
+        case .morning:
+            return "Günaydın ☀️"
+        case .afternoon:
+            return "İyi Günler 👋🏻"
+        case .evening:
+            return "İyi Akşamlar 🌙"
+        case .night:
+            return "İyi Geceler 🌙"
         }
     }
 }

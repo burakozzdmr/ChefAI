@@ -1,5 +1,5 @@
 //
-//  CategoryCell.swift
+//  MealCell.swift
 //  ChefAI
 //
 //  Created by Burak Özdemir on 9.03.2025.
@@ -7,8 +7,8 @@
 
 import UIKit
 
-class CategoryCell: UICollectionViewCell {
-    static let identifier = "categoryCell"
+class MealCell: UICollectionViewCell {
+    static let identifier = "mealCell"
     
     // MARK: - Properties
     
@@ -22,7 +22,7 @@ class CategoryCell: UICollectionViewCell {
         return view
     }()
     
-    private let categoryImageView: UIImageView = {
+    private let mealImageView: UIImageView = {
         let imageView = UIImageView()
         imageView.image = .init()
         imageView.contentMode = .scaleAspectFit
@@ -31,11 +31,11 @@ class CategoryCell: UICollectionViewCell {
         return imageView
     }()
     
-    private let categoryTitleLabel: UILabel = {
+    private let mealNameLabel: UILabel = {
         let label = UILabel()
         label.text = ""
-        label.font = .systemFont(ofSize: 18, weight: .medium)
         label.textColor = .customBackground
+        label.font = .systemFont(ofSize: 18, weight: .medium)
         label.numberOfLines = 0
         return label
     }()
@@ -52,19 +52,19 @@ class CategoryCell: UICollectionViewCell {
         fatalError("init(coder:) has not been implemented")
     }
     
-    // MARK: - Methods
+    // MARK: - Publics
     
-    func configure(with cellContent: Category) {
+    func configure(with cellContent: Meal) {
         
     }
 }
 
 // MARK: - Privates
 
-private extension CategoryCell {
+private extension MealCell {
     func addViews() {
-        containerView.addSubview(categoryImageView)
-        containerView.addSubview(categoryTitleLabel)
+        containerView.addSubview(mealImageView)
+        containerView.addSubview(mealNameLabel)
         addSubview(containerView)
     }
     
@@ -73,14 +73,14 @@ private extension CategoryCell {
             make.edges.equalToSuperview()
         }
         
-        categoryImageView.snp.makeConstraints { make in
+        mealImageView.snp.makeConstraints { make in
             make.top.equalToSuperview().offset(16)
             make.centerX.equalToSuperview()
             make.width.height.equalTo(64)
         }
         
-        categoryTitleLabel.snp.makeConstraints { make in
-            make.top.equalTo(categoryImageView.snp.bottom).offset(8)
+        mealNameLabel.snp.makeConstraints { make in
+            make.top.equalTo(mealImageView.snp.bottom).offset(8)
             make.centerX.equalToSuperview()
         }
     }

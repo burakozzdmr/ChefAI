@@ -22,23 +22,16 @@ class HomepageViewController: UIViewController {
         return searchController
     }()
     
-    private lazy var sectionsCollectionView: UICollectionView = {
-        let itemSize = NSCollectionLayoutSize(
-            widthDimension: .fractionalWidth(1.0),
-            heightDimension: .fractionalHeight(0.25)
-        )
-        let item = NSCollectionLayoutItem(layoutSize: itemSize)
-        
-        let groupSize = NSCollectionLayoutSize(
-            widthDimension: .fractionalWidth(1.0),
-            heightDimension: .fractionalHeight(0.25)
-        )
-        let group = NSCollectionLayoutGroup.vertical(layoutSize: groupSize, subitems: [item])
-        let section = NSCollectionLayoutSection(group: group)
-        let layout = UICollectionViewCompositionalLayout(section: section)
+    private lazy var mealsCollectionView: UICollectionView = {
+        let layout = UICollectionViewCompositionalLayout { sectionIndex, environment in
+            self.createSectionLayout(cellSectionIndex: .init(for: sectionIndex))
+        }
         
         let collectionView = UICollectionView(frame: .zero, collectionViewLayout: layout)
+        collectionView.delegate = self
         collectionView.dataSource = self
+        collectionView.backgroundColor = .clear
+        collectionView.register(MealCell.self, forCellWithReuseIdentifier: MealCell.identifier)
         collectionView.register(CategoryCell.self, forCellWithReuseIdentifier: CategoryCell.identifier)
         return collectionView
     }()
@@ -81,11 +74,16 @@ class HomepageViewController: UIViewController {
 
 private extension HomepageViewController {
     func addViews() {
-        view.addSubview(askToChefButton)
         navigationItem.searchController = searchController
+        view.addSubview(mealsCollectionView)
+        view.addSubview(askToChefButton)
     }
     
     func configureConstraints() {
+        mealsCollectionView.snp.makeConstraints { make in
+            make.top.bottom.equalTo(view.safeAreaLayoutGuide)
+            make.leading.trailing.equalToSuperview()
+        }
         
         askToChefButton.snp.makeConstraints { make in
             make.bottom.equalTo(view.safeAreaLayoutGuide).inset(16)
@@ -100,6 +98,53 @@ private extension HomepageViewController {
         configureConstraints()
         
         view.backgroundColor = .white
+        navigationItem.title = viewModel.getNavigationTitle()
+    }
+    
+    func createSectionLayout(cellSectionIndex: CellSizeType) -> NSCollectionLayoutSection {
+        switch cellSectionIndex {
+        case .large:
+            let itemSize = NSCollectionLayoutSize(
+                widthDimension: .fractionalWidth(0.75),
+                heightDimension: .fractionalHeight(1.0)
+            )
+            let item = NSCollectionLayoutItem(layoutSize: itemSize)
+            
+            let groupSize = NSCollectionLayoutSize(
+                widthDimension: .fractionalWidth(1.0),
+                heightDimension: .fractionalHeight(1.0)
+            )
+            let group = NSCollectionLayoutGroup.horizontal(layoutSize: groupSize, subitems: [item])
+            return NSCollectionLayoutSection(group: group)
+            
+        case .medium:
+            let itemSize = NSCollectionLayoutSize(
+                widthDimension: .fractionalWidth(0.25),
+                heightDimension: .fractionalHeight(1.0)
+            )
+            let item = NSCollectionLayoutItem(layoutSize: itemSize)
+            
+            let groupSize = NSCollectionLayoutSize(
+                widthDimension: .fractionalWidth(1.0),
+                heightDimension: .fractionalHeight(1.0)
+            )
+            let group = NSCollectionLayoutGroup.horizontal(layoutSize: groupSize, subitems: [item])
+            return NSCollectionLayoutSection(group: group)
+            
+        case .vertical:
+            let itemSize = NSCollectionLayoutSize(
+                widthDimension: .fractionalWidth(0.75),
+                heightDimension: .fractionalHeight(0.25)
+            )
+            let item = NSCollectionLayoutItem(layoutSize: itemSize)
+            
+            let groupSize = NSCollectionLayoutSize(
+                widthDimension: .fractionalWidth(1.0),
+                heightDimension: .fractionalHeight(1.0)
+            )
+            let group = NSCollectionLayoutGroup.vertical(layoutSize: groupSize, subitems: [item])
+            return NSCollectionLayoutSection(group: group)
+        }
     }
 }
 
@@ -126,13 +171,31 @@ extension HomepageViewController: UISearchBarDelegate {
 // MARK: - UICollectionViewDataSource
 
 extension HomepageViewController: UICollectionViewDataSource {
-    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+    func numberOfSections(in collectionView: UICollectionView) -> Int {
         return viewModel.sectionList.count
     }
     
+    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+        let contentType: SectionContentType = .init(for: section)
+        switch contentType {
+        case .dailyMeal:
+            return viewModel.dailyMealList.count
+        case .categoryList:
+            return viewModel.categoryList.count
+        case .mealList:
+            return viewModel.mealList.count
+        }
+    }
+    
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: CategoryCell.identifier, for: indexPath) as! CategoryCell
-        cell.configure(with: viewModel.sectionList[indexPath.row])
-        return cell
+        
     }
 }
+
+// MARK: - UICollectionViewDelegate
+
+extension HomepageViewController: UICollectionViewDelegate {
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        
+    }
+} 
