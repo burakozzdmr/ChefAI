@@ -42,7 +42,7 @@ enum CellSizeType {
         switch sectionIndex {
         case 0:
             self = .large
-        case 1, 2:
+        case 1, 2, 3:
             self = .medium
         default:
             self = .vertical

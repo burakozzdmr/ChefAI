@@ -71,7 +71,7 @@ private extension IngredientCell {
         
         ingredientNameLabel.snp.makeConstraints { make in
             make.top.equalTo(ingredientImageView.snp.bottom).offset(8)
-            make.centerX.equalToSuperview()
+            make.leading.trailing.equalToSuperview().inset(16)
         }
     }
     
@@ -79,9 +79,17 @@ private extension IngredientCell {
         addViews()
         configureConstraints()
         
-        self.clipsToBounds = true
-        self.layer.cornerRadius = 16
-        self.layer.borderColor = UIColor.lightGray.cgColor
-        self.layer.borderWidth = 2
+        clipsToBounds = false
+        layer.cornerRadius = 16
+        layer.borderColor = UIColor.lightGray.withAlphaComponent(0.2).cgColor
+        layer.borderWidth = 1
+        
+        layer.shadowColor = UIColor.black.cgColor
+        layer.shadowOffset = CGSize(width: 0, height: 4)
+        layer.shadowRadius = 10
+        layer.shadowOpacity = 0.15
+        layer.masksToBounds = false
+        
+        layer.shadowPath = UIBezierPath(roundedRect: bounds, cornerRadius: layer.cornerRadius).cgPath
     }
 }

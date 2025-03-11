@@ -68,7 +68,7 @@ private extension DailyMealCell {
         }
         
         mealNameLabel.snp.makeConstraints { make in
-            make.centerX.equalToSuperview()
+            make.leading.trailing.equalToSuperview().inset(16)
             make.bottom.equalToSuperview().inset(16)
         }
     }
