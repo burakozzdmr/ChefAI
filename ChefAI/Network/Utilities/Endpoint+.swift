@@ -27,7 +27,7 @@ enum Endpoint {
     case randomSelection
     case categories
     case latest
-    case list(Character)
+    case list(String)
     case filter(Character, String)
 }
 

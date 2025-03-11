@@ -15,6 +15,7 @@ protocol MealServiceProtocol {
     func fetchDailyMeal(completion: @escaping (Result<MealModel, NetworkError>) -> Void)
     func fetchMealCategories(completion: @escaping (Result<CategoryModel, NetworkError>) -> Void)
     func fetchMealList(completion: @escaping (Result<MealModel, NetworkError>) -> Void)
+    func fetchIngredientList(completion: @escaping (Result<IngredientModel, NetworkError>) -> Void)
 }
 
 class MealService {}
@@ -80,6 +81,17 @@ extension MealService: MealServiceProtocol {
         switch request {
         case .success(let request):
             NetworkManager.shared.executeMealList(request: request, completion: completion)
+        case .failure:
+            print("Error Message: \(NetworkError.requestFailedError.errorMessage)")
+        }
+    }
+    
+    func fetchIngredientList(completion: @escaping (Result<IngredientModel, NetworkError>) -> Void) {
+        let request = prepareRequestURL(Endpoint.list("i"))
+        
+        switch request {
+        case .success(let request):
+            NetworkManager.shared.executeIngredientList(request: request, completion: completion)
         case .failure:
             print("Error Message: \(NetworkError.requestFailedError.errorMessage)")
         }

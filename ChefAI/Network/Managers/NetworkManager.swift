@@ -80,4 +80,12 @@ extension NetworkManager {
             completion: completion
         )
     }
+    
+    func executeIngredientList(request: URLRequest, completion: @escaping (Result<IngredientModel, NetworkError>) -> Void) {
+        sendRequest(
+            request: request,
+            as: IngredientModel.self,
+            completion: completion
+        )
+    }
 }

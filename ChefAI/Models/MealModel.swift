@@ -19,7 +19,7 @@ struct Meal: Codable {
     let mealInstructions: String?
     let mealImageURL: String?
     let mealYoutubeURL: String?
-    var ingredients: [Ingredient]?
+    var ingredients: [MealIngredient]?
     
     enum CodingKeys: String, CodingKey {
         case mealID = "idMeal"
@@ -44,7 +44,7 @@ struct Meal: Codable {
         mealYoutubeURL = try container.decode(String.self, forKey: .mealYoutubeURL)
         
         // Decode ingredients and measures dynamically
-        var ingredients: [Ingredient] = []
+        var ingredients: [MealIngredient] = []
         let container2 = try decoder.container(keyedBy: DynamicCodingKeys.self)
         
         for i in 1...20 {
@@ -55,7 +55,7 @@ struct Meal: Codable {
                let measure = try container2.decodeIfPresent(String.self, forKey: measureKey),
                !ingredient.isEmpty,
                !measure.isEmpty {
-                ingredients.append(Ingredient(name: ingredient, measure: measure))
+                ingredients.append(MealIngredient(name: ingredient, measure: measure))
             }
         }
         self.ingredients = ingredients
@@ -76,7 +76,7 @@ private struct DynamicCodingKeys: CodingKey {
     }
 }
 
-struct Ingredient: Codable {
+struct MealIngredient: Codable {
     let name: String
     let measure: String
 }

@@ -34,6 +34,7 @@ class HomepageViewController: UIViewController {
         collectionView.register(MealCell.self, forCellWithReuseIdentifier: MealCell.identifier)
         collectionView.register(CategoryCell.self, forCellWithReuseIdentifier: CategoryCell.identifier)
         collectionView.register(DailyMealCell.self, forCellWithReuseIdentifier: DailyMealCell.identifier)
+        collectionView.register(IngredientCell.self, forCellWithReuseIdentifier: IngredientCell.identifier)
         return collectionView
     }()
     
@@ -192,8 +193,13 @@ extension HomepageViewController: UICollectionViewDataSource {
         switch contentType {
         case .dailyMeal:
             return viewModel.dailyMealList.count
+            
+        case .ingredientList:
+            return viewModel.ingredientList.count
+            
         case .categoryList:
             return viewModel.categoryList.count
+            
         case .mealList:
             return viewModel.mealList.count
         }
@@ -207,10 +213,17 @@ extension HomepageViewController: UICollectionViewDataSource {
             let cell = collectionView.dequeueReusableCell(withReuseIdentifier: DailyMealCell.identifier, for: indexPath) as! DailyMealCell
             cell.configure(with: viewModel.dailyMealList[indexPath.row])
             return cell
+            
+        case .ingredientList:
+            let cell = collectionView.dequeueReusableCell(withReuseIdentifier: IngredientCell.identifier, for: indexPath) as! IngredientCell
+            cell.configure(with: viewModel.ingredientList[indexPath.row])
+            return cell
+            
         case .categoryList:
             let cell = collectionView.dequeueReusableCell(withReuseIdentifier: CategoryCell.identifier, for: indexPath) as! CategoryCell
             cell.configure(with: viewModel.categoryList[indexPath.row])
             return cell
+            
         case .mealList:
             let cell = collectionView.dequeueReusableCell(withReuseIdentifier: MealCell.identifier, for: indexPath) as! MealCell
             cell.configure(with: viewModel.mealList[indexPath.row])

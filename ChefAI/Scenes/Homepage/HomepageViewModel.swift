@@ -20,16 +20,22 @@ class HomepageViewModel {
     var dailyMealList: [Meal] = []
     var categoryList: [Category] = []
     var mealList: [Meal] = []
-    var sectionList: [String] = ["Günün Yemeği", "Kategoriler", "Popüler Yemekler"]
+    var sectionList: [String] = ["Günün Yemeği", "Malzemeler", "Kategoriler", "Popüler Yemekler"]
+    var ingredientList: [Ingredient] = []
     
     init(service: MealService = .init()) {
         self.service = service
         
         fetchDailyMeal()
+        fetchIngredientList()
         fetchCategories()
         fetchMealList()
     }
-    
+}
+
+// MARK: - Publics
+
+extension HomepageViewModel {
     func fetchDailyMeal() {
         service.fetchDailyMeal { [weak self] dailyMealData in
             guard let self else { return }
@@ -66,6 +72,21 @@ class HomepageViewModel {
             switch mealList {
             case .success(let mealList):
                 self.mealList = mealList.meals
+                DispatchQueue.main.async {
+                    self.delegate?.didUpdateData()
+                }
+            case .failure:
+                print(NetworkError.emptyDataError.errorMessage)
+            }
+        }
+    }
+    
+    func fetchIngredientList() {
+        service.fetchIngredientList { [weak self] ingredientList in
+            guard let self else { return }
+            switch ingredientList {
+            case .success(let ingredients):
+                self.ingredientList = ingredients.ingredientList
                 DispatchQueue.main.async {
                     self.delegate?.didUpdateData()
                 }

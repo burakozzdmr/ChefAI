@@ -54,6 +54,7 @@ enum CellSizeType {
 
 enum SectionContentType {
     case dailyMeal
+    case ingredientList
     case categoryList
     case mealList
     
@@ -62,6 +63,8 @@ enum SectionContentType {
         case 0:
             self = .dailyMeal
         case 1:
+            self = .ingredientList
+        case 2:
             self = .categoryList
         default:
             self = .mealList
