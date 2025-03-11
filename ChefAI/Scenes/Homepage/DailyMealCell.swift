@@ -21,15 +21,6 @@ class DailyMealCell: UICollectionViewCell {
         return imageView
     }()
     
-    private let mealNameLabel: UILabel = {
-        let label = UILabel()
-        label.text = ""
-        label.textColor = .lightGray
-        label.font = .systemFont(ofSize: 24, weight: .black)
-        label.numberOfLines = 0
-        return label
-    }()
-    
     // MARK: - Inits
     
     override init(frame: CGRect) {
@@ -45,8 +36,6 @@ class DailyMealCell: UICollectionViewCell {
     // MARK: - Methods
     
     func configure(with cellContent: Meal) {
-        mealNameLabel.text = cellContent.mealName
-        
         guard let urlString = cellContent.mealImageURL else { return }
         guard let imageURL = URL(string: urlString) else { return }
 
@@ -59,17 +48,11 @@ class DailyMealCell: UICollectionViewCell {
 private extension DailyMealCell {
     func addViews() {
         addSubview(mealImageView)
-        addSubview(mealNameLabel)
     }
     
     func configureConstraints() {
         mealImageView.snp.makeConstraints { make in
             make.edges.equalToSuperview()
-        }
-        
-        mealNameLabel.snp.makeConstraints { make in
-            make.leading.trailing.equalToSuperview().inset(16)
-            make.bottom.equalToSuperview().inset(16)
         }
     }
     

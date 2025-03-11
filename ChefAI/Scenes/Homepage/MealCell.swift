@@ -28,7 +28,7 @@ class MealCell: UICollectionViewCell {
         label.text = ""
         label.textColor = .black
         label.font = .systemFont(ofSize: 16, weight: .heavy)
-        label.numberOfLines = 0
+        label.numberOfLines = 3
         return label
     }()
     

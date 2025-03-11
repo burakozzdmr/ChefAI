@@ -23,8 +23,8 @@ class HomepageViewController: UIViewController {
     }()
     
     private lazy var mealsCollectionView: UICollectionView = {
-        let layout = UICollectionViewCompositionalLayout { sectionIndex, environment in
-            self.createSectionLayout(cellSectionIndex: .init(for: sectionIndex))
+        let layout = UICollectionViewCompositionalLayout { [weak self] sectionIndex, environment in
+            self?.createSectionLayout(cellSectionIndex: .init(for: sectionIndex))
         }
         
         let collectionView = UICollectionView(frame: .zero, collectionViewLayout: layout)
@@ -35,6 +35,11 @@ class HomepageViewController: UIViewController {
         collectionView.register(CategoryCell.self, forCellWithReuseIdentifier: CategoryCell.identifier)
         collectionView.register(DailyMealCell.self, forCellWithReuseIdentifier: DailyMealCell.identifier)
         collectionView.register(IngredientCell.self, forCellWithReuseIdentifier: IngredientCell.identifier)
+        collectionView.register(
+                                SectionHeaderView.self,
+                                forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader,
+                                withReuseIdentifier: SectionHeaderView.identifier
+        )
         return collectionView
     }()
     
@@ -45,7 +50,7 @@ class HomepageViewController: UIViewController {
         button.tintColor = .white
         button.backgroundColor = .customButton
         button.clipsToBounds = true
-        button.layer.cornerRadius = 24
+        button.layer.cornerRadius = 16
         button.addTarget(self, action: #selector(askChefTapped), for: .touchUpInside)
         return button
     }()
@@ -90,8 +95,8 @@ private extension HomepageViewController {
         askToChefButton.snp.makeConstraints { make in
             make.bottom.equalTo(view.safeAreaLayoutGuide).inset(16)
             make.trailing.equalToSuperview().inset(16)
-            make.width.equalTo(160)
-            make.height.equalTo(48)
+            make.width.equalTo(128)
+            make.height.equalTo(32)
         }
     }
     
@@ -99,45 +104,79 @@ private extension HomepageViewController {
         addViews()
         configureConstraints()
         
-        view.backgroundColor = .white
+        view.backgroundColor = .customBackgroundColor2
         navigationItem.title = viewModel.getNavigationTitle()
+        navigationController?.navigationBar.prefersLargeTitles = true
     }
     
     func createSectionLayout(cellSectionIndex: CellSizeType) -> NSCollectionLayoutSection {
+        let headerSize = NSCollectionLayoutSize(
+            widthDimension: .fractionalWidth(1.0),
+            heightDimension: .absolute(50)
+        )
+        let header = NSCollectionLayoutBoundarySupplementaryItem(
+            layoutSize: headerSize,
+            elementKind: UICollectionView.elementKindSectionHeader,
+            alignment: .top
+        )
+        
         switch cellSectionIndex {
         case .large:
-            let section = configureSectionSize(itemWidth: 1.0, itemHeight: 1.0, groupWidth: 1.0, groupHeight: 0.4)
+            let itemSize = NSCollectionLayoutSize(
+                widthDimension: .fractionalWidth(1.0),
+                heightDimension: .fractionalHeight(1.0)
+            )
+            let item = NSCollectionLayoutItem(layoutSize: itemSize)
+            item.contentInsets = NSDirectionalEdgeInsets(top: 8, leading: 8, bottom: 8, trailing: 8)
+            
+            let groupSize = NSCollectionLayoutSize(
+                widthDimension: .fractionalWidth(1.0),
+                heightDimension: .fractionalHeight(0.4)
+            )
+            let group = NSCollectionLayoutGroup.horizontal(layoutSize: groupSize, subitems: [item])
+            
+            let section = NSCollectionLayoutSection(group: group)
+            section.orthogonalScrollingBehavior = .groupPaging
+            section.boundarySupplementaryItems = [header]
             return section
             
         case .medium:
-            let section = configureSectionSize(itemWidth: 1.0, itemHeight: 1.0, groupWidth: 0.4, groupHeight: 0.3)
+            let itemSize = NSCollectionLayoutSize(
+                widthDimension: .fractionalWidth(1.0),
+                heightDimension: .fractionalHeight(1.0)
+            )
+            let item = NSCollectionLayoutItem(layoutSize: itemSize)
+            item.contentInsets = NSDirectionalEdgeInsets(top: 8, leading: 8, bottom: 8, trailing: 8)
+            
+            let groupSize = NSCollectionLayoutSize(
+                widthDimension: .fractionalWidth(0.4),
+                heightDimension: .fractionalHeight(0.3)
+            )
+            let group = NSCollectionLayoutGroup.horizontal(layoutSize: groupSize, subitems: [item])
+            
+            let section = NSCollectionLayoutSection(group: group)
+            section.orthogonalScrollingBehavior = .continuous
+            section.boundarySupplementaryItems = [header]
             return section
             
         case .vertical:
-            let section = configureSectionSize(itemWidth: 1.0, itemHeight: 1.0, groupWidth: 1.0, groupHeight: 0.3)
+            let itemSize = NSCollectionLayoutSize(
+                widthDimension: .fractionalWidth(1.0),
+                heightDimension: .fractionalHeight(1.0)
+            )
+            let item = NSCollectionLayoutItem(layoutSize: itemSize)
+            item.contentInsets = NSDirectionalEdgeInsets(top: 8, leading: 8, bottom: 8, trailing: 8)
+            
+            let groupSize = NSCollectionLayoutSize(
+                widthDimension: .fractionalWidth(1.0),
+                heightDimension: .fractionalHeight(0.4)
+            )
+            let group = NSCollectionLayoutGroup.vertical(layoutSize: groupSize, subitems: [item])
+            
+            let section = NSCollectionLayoutSection(group: group)
+            section.boundarySupplementaryItems = [header]
             return section
         }
-    }
-    
-    func configureSectionSize(itemWidth: CGFloat, itemHeight: CGFloat, groupWidth: CGFloat, groupHeight: CGFloat) -> NSCollectionLayoutSection {
-        let sectionType: SectionContentType
-        
-        let itemSize = NSCollectionLayoutSize(
-            widthDimension: .fractionalWidth(itemWidth),
-            heightDimension: .fractionalHeight(itemHeight)
-        )
-        let item = NSCollectionLayoutItem(layoutSize: itemSize)
-        item.contentInsets = NSDirectionalEdgeInsets(top: 8, leading: 8, bottom: 8, trailing: 8)
-        
-        let groupSize = NSCollectionLayoutSize(
-            widthDimension: .fractionalWidth(groupWidth),
-            heightDimension: .fractionalHeight(groupHeight)
-        )
-        let group = NSCollectionLayoutGroup.horizontal(layoutSize: groupSize, subitems: [item])
-        
-        let section = NSCollectionLayoutSection(group: group)
-        section.orthogonalScrollingBehavior = .groupPaging
-        return section
     }
 }
 
@@ -209,6 +248,20 @@ extension HomepageViewController: UICollectionViewDataSource {
             cell.configure(with: viewModel.mealList[indexPath.row])
             return cell
         }
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, at indexPath: IndexPath) -> UICollectionReusableView {
+        if kind == UICollectionView.elementKindSectionHeader {
+            let header = collectionView.dequeueReusableSupplementaryView(
+                ofKind: kind,
+                withReuseIdentifier: SectionHeaderView.identifier,
+                for: indexPath
+            ) as! SectionHeaderView
+            
+            header.configure(with: viewModel.sectionList[indexPath.section])
+            return header
+        }
+        return UICollectionReusableView()
     }
 }
 
