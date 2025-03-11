@@ -7,36 +7,27 @@
 
 import UIKit
 import Kingfisher
+import SnapKit
 
 class CategoryCell: UICollectionViewCell {
     static let identifier = "categoryCell"
     
     // MARK: - Properties
     
-    private let containerView: UIView = {
-        let view = UIView()
-        view.backgroundColor = .customButton
-        view.clipsToBounds = true
-        view.layer.cornerRadius = 24
-        view.layer.borderColor = UIColor.lightGray.cgColor
-        view.layer.borderWidth = 1
-        return view
-    }()
-    
     private let categoryImageView: UIImageView = {
         let imageView = UIImageView()
         imageView.image = .init()
-        imageView.contentMode = .scaleAspectFit
+        imageView.contentMode = .scaleToFill
         imageView.clipsToBounds = true
-        imageView.layer.cornerRadius = 24
+        imageView.layer.cornerRadius = 8
         return imageView
     }()
     
-    private let categoryTitleLabel: UILabel = {
+    private let categoryNameLabel: UILabel = {
         let label = UILabel()
         label.text = ""
-        label.font = .systemFont(ofSize: 18, weight: .medium)
-        label.textColor = .customBackground
+        label.textColor = .black
+        label.font = .systemFont(ofSize: 16, weight: .heavy)
         label.numberOfLines = 0
         return label
     }()
@@ -56,7 +47,7 @@ class CategoryCell: UICollectionViewCell {
     // MARK: - Methods
     
     func configure(with cellContent: Category) {
-        categoryTitleLabel.text = cellContent.categoryName
+        categoryNameLabel.text = cellContent.categoryName
         
         guard let urlString = cellContent.categoryImageURL else { return }
         guard let imageURL = URL(string: urlString) else { return }
@@ -69,23 +60,18 @@ class CategoryCell: UICollectionViewCell {
 
 private extension CategoryCell {
     func addViews() {
-        containerView.addSubview(categoryImageView)
-        containerView.addSubview(categoryTitleLabel)
-        addSubview(containerView)
+        addSubview(categoryImageView)
+        addSubview(categoryNameLabel)
     }
     
     func configureConstraints() {
-        containerView.snp.makeConstraints { make in
-            make.edges.equalToSuperview()
-        }
-        
         categoryImageView.snp.makeConstraints { make in
             make.top.equalToSuperview().offset(16)
             make.centerX.equalToSuperview()
-            make.width.height.equalTo(64)
+            make.width.height.equalTo(96)
         }
         
-        categoryTitleLabel.snp.makeConstraints { make in
+        categoryNameLabel.snp.makeConstraints { make in
             make.top.equalTo(categoryImageView.snp.bottom).offset(8)
             make.centerX.equalToSuperview()
         }
@@ -94,5 +80,10 @@ private extension CategoryCell {
     func configureUI() {
         addViews()
         configureConstraints()
+        
+        self.clipsToBounds = true
+        self.layer.cornerRadius = 16
+        self.layer.borderColor = UIColor.lightGray.cgColor
+        self.layer.borderWidth = 2
     }
 }

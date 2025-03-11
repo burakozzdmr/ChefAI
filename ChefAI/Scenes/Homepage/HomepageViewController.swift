@@ -33,6 +33,7 @@ class HomepageViewController: UIViewController {
         collectionView.backgroundColor = .clear
         collectionView.register(MealCell.self, forCellWithReuseIdentifier: MealCell.identifier)
         collectionView.register(CategoryCell.self, forCellWithReuseIdentifier: CategoryCell.identifier)
+        collectionView.register(DailyMealCell.self, forCellWithReuseIdentifier: DailyMealCell.identifier)
         return collectionView
     }()
     
@@ -113,7 +114,7 @@ private extension HomepageViewController {
             
             let groupSize = NSCollectionLayoutSize(
                 widthDimension: .fractionalWidth(1.0),
-                heightDimension: .absolute(200)
+                heightDimension: .absolute(240)
             )
             let group = NSCollectionLayoutGroup.horizontal(layoutSize: groupSize, subitems: [item])
             
@@ -131,7 +132,7 @@ private extension HomepageViewController {
             
             let groupSize = NSCollectionLayoutSize(
                 widthDimension: .fractionalWidth(0.4),
-                heightDimension: .absolute(120)
+                heightDimension: .absolute(160)
             )
             let group = NSCollectionLayoutGroup.horizontal(layoutSize: groupSize, subitems: [item])
             
@@ -200,17 +201,16 @@ extension HomepageViewController: UICollectionViewDataSource {
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let contentType: SectionContentType = .init(for: indexPath.section)
+        
         switch contentType {
         case .dailyMeal:
-            let cell = collectionView.dequeueReusableCell(withReuseIdentifier: MealCell.identifier, for: indexPath) as! MealCell
+            let cell = collectionView.dequeueReusableCell(withReuseIdentifier: DailyMealCell.identifier, for: indexPath) as! DailyMealCell
             cell.configure(with: viewModel.dailyMealList[indexPath.row])
             return cell
-            
         case .categoryList:
             let cell = collectionView.dequeueReusableCell(withReuseIdentifier: CategoryCell.identifier, for: indexPath) as! CategoryCell
             cell.configure(with: viewModel.categoryList[indexPath.row])
             return cell
-            
         case .mealList:
             let cell = collectionView.dequeueReusableCell(withReuseIdentifier: MealCell.identifier, for: indexPath) as! MealCell
             cell.configure(with: viewModel.mealList[indexPath.row])

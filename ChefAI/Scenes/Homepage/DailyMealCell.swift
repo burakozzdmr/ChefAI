@@ -1,16 +1,16 @@
 //
-//  MealCell.swift
+//  DailyMealCell.swift
 //  ChefAI
 //
-//  Created by Burak Özdemir on 9.03.2025.
+//  Created by Burak Özdemir on 10.03.2025.
 //
 
 import UIKit
 import Kingfisher
 import SnapKit
 
-class MealCell: UICollectionViewCell {
-    static let identifier = "mealCell"
+class DailyMealCell: UICollectionViewCell {
+    static let identifier = "dailyMealCell"
     
     // MARK: - Properties
     
@@ -18,16 +18,14 @@ class MealCell: UICollectionViewCell {
         let imageView = UIImageView()
         imageView.image = .init()
         imageView.contentMode = .scaleAspectFill
-        imageView.clipsToBounds = true
-        imageView.layer.cornerRadius = 8
         return imageView
     }()
     
     private let mealNameLabel: UILabel = {
         let label = UILabel()
         label.text = ""
-        label.textColor = .black
-        label.font = .systemFont(ofSize: 16, weight: .heavy)
+        label.textColor = .lightGray
+        label.font = .systemFont(ofSize: 24, weight: .black)
         label.numberOfLines = 0
         return label
     }()
@@ -51,14 +49,14 @@ class MealCell: UICollectionViewCell {
         
         guard let urlString = cellContent.mealImageURL else { return }
         guard let imageURL = URL(string: urlString) else { return }
-        
+
         mealImageView.kf.setImage(with: imageURL)
     }
 }
 
 // MARK: - Privates
 
-private extension MealCell {
+private extension DailyMealCell {
     func addViews() {
         addSubview(mealImageView)
         addSubview(mealNameLabel)
@@ -66,14 +64,12 @@ private extension MealCell {
     
     func configureConstraints() {
         mealImageView.snp.makeConstraints { make in
-            make.top.equalToSuperview().offset(16)
-            make.centerX.equalToSuperview()
-            make.width.height.equalTo(96)
+            make.edges.equalToSuperview()
         }
         
         mealNameLabel.snp.makeConstraints { make in
-            make.top.equalTo(mealImageView.snp.bottom).offset(8)
             make.centerX.equalToSuperview()
+            make.bottom.equalToSuperview().inset(16)
         }
     }
     
@@ -82,8 +78,8 @@ private extension MealCell {
         configureConstraints()
         
         self.clipsToBounds = true
-        self.layer.cornerRadius = 16
+        self.layer.cornerRadius = 8
         self.layer.borderColor = UIColor.lightGray.cgColor
-        self.layer.borderWidth = 2
+        self.layer.borderWidth = 1
     }
 }
