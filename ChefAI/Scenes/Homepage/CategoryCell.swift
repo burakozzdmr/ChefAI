@@ -49,8 +49,7 @@ class CategoryCell: UICollectionViewCell {
     func configure(with cellContent: Category) {
         categoryNameLabel.text = cellContent.categoryName
         
-        guard let urlString = cellContent.categoryImageURL else { return }
-        guard let imageURL = URL(string: urlString) else { return }
+        guard let urlString = cellContent.categoryImageURL, let imageURL = URL(string: urlString) else { return }
         
         categoryImageView.kf.setImage(with: imageURL)
     }

@@ -1,16 +1,16 @@
 //
-//  MealCell.swift
+//  ListCell.swift
 //  ChefAI
 //
-//  Created by Burak Özdemir on 9.03.2025.
+//  Created by Burak Özdemir on 13.03.2025.
 //
 
 import UIKit
-import Kingfisher
 import SnapKit
+import Kingfisher
 
-class MealCell: UICollectionViewCell {
-    static let identifier = "mealCell"
+class ListCell: UICollectionViewCell {
+    static let identifier = "listCell"
     
     // MARK: - Properties
     
@@ -26,9 +26,9 @@ class MealCell: UICollectionViewCell {
     private let mealNameLabel: UILabel = {
         let label = UILabel()
         label.text = ""
-        label.textColor = .black
-        label.font = .systemFont(ofSize: 16, weight: .heavy)
-        label.numberOfLines = 3
+        label.textColor = .white
+        label.font = .systemFont(ofSize: 22, weight: .black)
+        label.numberOfLines = 0
         return label
     }()
     
@@ -40,7 +40,7 @@ class MealCell: UICollectionViewCell {
         configureUI()
     }
     
-    required init?(coder: NSCoder) {
+    required init ?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
     
@@ -50,28 +50,27 @@ class MealCell: UICollectionViewCell {
         mealNameLabel.text = cellContent.mealName
         
         guard let urlString = cellContent.mealImageURL, let imageURL = URL(string: urlString) else { return }
-        
         mealImageView.kf.setImage(with: imageURL)
     }
 }
 
 // MARK: - Privates
 
-private extension MealCell {
+private extension ListCell {
     func addViews() {
-        addSubview(mealImageView)
-        addSubview(mealNameLabel)
+        contentView.addSubview(mealImageView)
+        contentView.addSubview(mealNameLabel)
     }
     
     func configureConstraints() {
         mealImageView.snp.makeConstraints { make in
-            make.top.equalToSuperview().offset(16)
-            make.centerX.equalToSuperview()
-            make.width.height.equalTo(96)
+            make.centerY.equalToSuperview()
+            make.leading.equalToSuperview().offset(16)
+            make.width.height.equalTo(128)
         }
         
         mealNameLabel.snp.makeConstraints { make in
-            make.top.equalTo(mealImageView.snp.bottom).offset(8)
+            make.centerY.equalToSuperview()
             make.leading.trailing.equalToSuperview().inset(16)
         }
     }
@@ -79,18 +78,5 @@ private extension MealCell {
     func configureUI() {
         addViews()
         configureConstraints()
-        
-        clipsToBounds = false
-        layer.cornerRadius = 16
-        layer.borderColor = UIColor.lightGray.withAlphaComponent(0.2).cgColor
-        layer.borderWidth = 1
-        
-        layer.shadowColor = UIColor.black.cgColor
-        layer.shadowOffset = CGSize(width: 0, height: 4)
-        layer.shadowRadius = 10
-        layer.shadowOpacity = 0.15
-        layer.masksToBounds = false
-        
-        layer.shadowPath = UIBezierPath(roundedRect: bounds, cornerRadius: layer.cornerRadius).cgPath
     }
 }
