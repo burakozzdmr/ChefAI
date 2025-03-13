@@ -279,4 +279,4 @@ extension HomepageViewController: HomepageViewModelDelegate {
     func didUpdateData() {
         mealsCollectionView.reloadData()
     }
-} 
+}
