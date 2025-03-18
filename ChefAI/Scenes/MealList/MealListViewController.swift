@@ -17,12 +17,13 @@ class MealListViewController: UIViewController {
         flowLayout.scrollDirection = .vertical
         flowLayout.minimumLineSpacing = 16
         flowLayout.minimumInteritemSpacing = 16
-        flowLayout.itemSize = CGSize(width: (view.frame.width - 32 - 16) / 2, height: 200)
+        flowLayout.itemSize = CGSize(width: UIScreen.main.bounds.width - 32, height: 156)
         
         let collectionView = UICollectionView(frame: .zero, collectionViewLayout: flowLayout)
         collectionView.dataSource = self
         collectionView.delegate = self
         collectionView.register(ListCell.self, forCellWithReuseIdentifier: ListCell.identifier)
+        collectionView.backgroundColor = .customBackgroundColor2
         return collectionView
     }()
     
@@ -41,6 +42,8 @@ class MealListViewController: UIViewController {
     init(viewModel: MealListViewModel) {
         self.viewModel = viewModel
         super.init(nibName: nil, bundle: nil)
+        
+        viewModel.delegate = self
     }
     
     required init?(coder: NSCoder) {
@@ -65,6 +68,9 @@ private extension MealListViewController {
     func configureUI() {
         addViews()
         configureConstraints()
+        
+        view.backgroundColor = .customBackgroundColor2
+        navigationItem.title = viewModel.categoryTitle
     }
 }
 
@@ -87,5 +93,16 @@ extension MealListViewController: UICollectionViewDataSource {
 extension MealListViewController: UICollectionViewDelegate {
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         
+    }
+}
+
+// MARK: - MealListViewModelProtocol
+
+extension MealListViewController: MealListViewModelProtocol {
+    func didUpdateData() {
+        print("didUpdateData executed")
+        DispatchQueue.main.async {
+            self.mealsCollectionView.reloadData()
+        }
     }
 }

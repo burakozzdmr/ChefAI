@@ -14,8 +14,9 @@ protocol MealServiceProtocol {
     func searchMealList(searchText: String, completion: @escaping (Result<MealModel, NetworkError>) -> Void)
     func fetchDailyMeal(completion: @escaping (Result<MealModel, NetworkError>) -> Void)
     func fetchMealCategories(completion: @escaping (Result<CategoryModel, NetworkError>) -> Void)
-    func fetchMealList(completion: @escaping (Result<MealModel, NetworkError>) -> Void)
+    func fetchMealList(completion: @escaping (Result<MealListModel, NetworkError>) -> Void)
     func fetchIngredientList(completion: @escaping (Result<IngredientModel, NetworkError>) -> Void)
+    func fetchMealListByCategory(category: String, completion: @escaping (Result<MealListModel, NetworkError>) -> Void)
 }
 
 class MealService {}
@@ -37,7 +38,6 @@ extension MealService: MealServiceProtocol {
         }
         
         var request = URLRequest(url: requestURL)
-        print(requestURL)
         request.httpMethod = endpoint.method.rawValue
         return .success(request)
     }
@@ -75,7 +75,7 @@ extension MealService: MealServiceProtocol {
         }
     }
     
-    func fetchMealList(completion: @escaping (Result<MealModel, NetworkError>) -> Void) {
+    func fetchMealList(completion: @escaping (Result<MealListModel, NetworkError>) -> Void) {
         let request = prepareRequestURL(Endpoint.randomSelection)
         
         switch request {
@@ -92,6 +92,17 @@ extension MealService: MealServiceProtocol {
         switch request {
         case .success(let request):
             NetworkManager.shared.executeIngredientList(request: request, completion: completion)
+        case .failure:
+            print("Error Message: \(NetworkError.requestFailedError.errorMessage)")
+        }
+    }
+    
+    func fetchMealListByCategory(category: String, completion: @escaping (Result<MealListModel, NetworkError>) -> Void) {
+        let request = prepareRequestURL(Endpoint.filter("c", category))
+        
+        switch request {
+        case .success(let request):
+            NetworkManager.shared.executeMealListByCategory(request: request, completion: completion)
         case .failure:
             print("Error Message: \(NetworkError.requestFailedError.errorMessage)")
         }

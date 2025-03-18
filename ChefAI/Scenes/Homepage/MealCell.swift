@@ -46,7 +46,7 @@ class MealCell: UICollectionViewCell {
     
     // MARK: - Methods
     
-    func configure(with cellContent: Meal) {
+    func configure(with cellContent: MealList) {
         mealNameLabel.text = cellContent.mealName
         
         guard let urlString = cellContent.mealImageURL, let imageURL = URL(string: urlString) else { return }

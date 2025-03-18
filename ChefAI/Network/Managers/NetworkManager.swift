@@ -39,7 +39,7 @@ private extension NetworkManager {
                 let jsonResponse = try JSONDecoder().decode(T.self, from: data)
                 completion(.success(jsonResponse))
             } catch {
-                print("JSON DECODE ERROR: \(NetworkError.decodeError.errorMessage)")
+                print("JSON DECODE ERROR: \(error.localizedDescription)")
             }
         }
         .resume()
@@ -73,10 +73,10 @@ extension NetworkManager {
         )
     }
     
-    func executeMealList(request: URLRequest, completion: @escaping (Result<MealModel, NetworkError>) -> Void) {
+    func executeMealList(request: URLRequest, completion: @escaping (Result<MealListModel, NetworkError>) -> Void) {
         sendRequest(
             request: request,
-            as: MealModel.self,
+            as: MealListModel.self,
             completion: completion
         )
     }
@@ -85,6 +85,14 @@ extension NetworkManager {
         sendRequest(
             request: request,
             as: IngredientModel.self,
+            completion: completion
+        )
+    }
+    
+    func executeMealListByCategory(request: URLRequest, completion: @escaping (Result<MealListModel, NetworkError>) -> Void) {
+        sendRequest(
+            request: request,
+            as: MealListModel.self,
             completion: completion
         )
     }

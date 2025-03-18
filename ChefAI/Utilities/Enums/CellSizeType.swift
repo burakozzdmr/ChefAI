@@ -12,16 +12,13 @@ import Foundation
 enum CellSizeType {
     case medium
     case large
-    case vertical
     
     init(for sectionIndex: Int) {
         switch sectionIndex {
         case 0:
             self = .large
-        case 1, 2, 3:
-            self = .medium
         default:
-            self = .vertical
+            self = .medium
         }
     }
 }

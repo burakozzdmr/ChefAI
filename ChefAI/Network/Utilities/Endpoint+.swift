@@ -28,7 +28,7 @@ enum Endpoint {
     case categories
     case latest
     case list(String)
-    case filter(Character, String)
+    case filter(String, String)
 }
 
 // MARK: - EndpointProtocol

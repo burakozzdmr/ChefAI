@@ -14,14 +14,6 @@ class HomepageViewController: UIViewController {
 
     // MARK: - Properties
     
-    private lazy var searchController: UISearchController = {
-        let searchController = UISearchController(searchResultsController: nil)
-        searchController.obscuresBackgroundDuringPresentation = false
-        searchController.searchBar.delegate = self
-        searchController.searchBar.placeholder = "Ara..."
-        return searchController
-    }()
-    
     private lazy var mealsCollectionView: UICollectionView = {
         let layout = UICollectionViewCompositionalLayout { [weak self] sectionIndex, environment in
             self?.createSectionLayout(cellSectionIndex: .init(for: sectionIndex))
@@ -81,7 +73,6 @@ class HomepageViewController: UIViewController {
 
 private extension HomepageViewController {
     func addViews() {
-        navigationItem.searchController = searchController
         view.addSubview(mealsCollectionView)
         view.addSubview(askToChefButton)
     }
@@ -96,7 +87,7 @@ private extension HomepageViewController {
             make.bottom.equalTo(view.safeAreaLayoutGuide).inset(16)
             make.trailing.equalToSuperview().inset(16)
             make.width.equalTo(128)
-            make.height.equalTo(32)
+            make.height.equalTo(48)
         }
     }
     
@@ -105,8 +96,7 @@ private extension HomepageViewController {
         configureConstraints()
         
         view.backgroundColor = .customBackgroundColor2
-        navigationItem.title = viewModel.getNavigationTitle()
-        navigationController?.navigationBar.prefersLargeTitles = true
+        navigationController?.navigationBar.isHidden = true
     }
     
     func createSectionLayout(cellSectionIndex: CellSizeType) -> NSCollectionLayoutSection {
@@ -158,24 +148,6 @@ private extension HomepageViewController {
             section.orthogonalScrollingBehavior = .continuous
             section.boundarySupplementaryItems = [header]
             return section
-            
-        case .vertical:
-            let itemSize = NSCollectionLayoutSize(
-                widthDimension: .fractionalWidth(1.0),
-                heightDimension: .fractionalHeight(1.0)
-            )
-            let item = NSCollectionLayoutItem(layoutSize: itemSize)
-            item.contentInsets = NSDirectionalEdgeInsets(top: 8, leading: 8, bottom: 8, trailing: 8)
-            
-            let groupSize = NSCollectionLayoutSize(
-                widthDimension: .fractionalWidth(1.0),
-                heightDimension: .fractionalHeight(0.4)
-            )
-            let group = NSCollectionLayoutGroup.vertical(layoutSize: groupSize, subitems: [item])
-            
-            let section = NSCollectionLayoutSection(group: group)
-            section.boundarySupplementaryItems = [header]
-            return section
         }
     }
 }
@@ -184,18 +156,6 @@ private extension HomepageViewController {
 
 private extension HomepageViewController {
     @objc func askChefTapped() {
-        
-    }
-}
-
-// MARK: - UISearchBarDelegate
-
-extension HomepageViewController: UISearchBarDelegate {
-    func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
-        
-    }
-    
-    func searchBarCancelButtonClicked(_ searchBar: UISearchBar) {
         
     }
 }
@@ -221,6 +181,27 @@ extension HomepageViewController: UICollectionViewDataSource {
             
         case .mealList:
             return viewModel.mealList.count
+            
+        case .breakfast:
+            return viewModel.breakfastList.count
+            
+        case .starter:
+            return viewModel.starterList.count
+            
+        case .meat:
+            return viewModel.meatList.count
+            
+        case .seafood:
+            return viewModel.seafoodList.count
+            
+        case .vegetarian:
+            return viewModel.vegetarianList.count
+            
+        case .pasta:
+            return viewModel.pastaList.count
+            
+        case .dessert:
+            return viewModel.dessertList.count
         }
     }
     
@@ -247,6 +228,41 @@ extension HomepageViewController: UICollectionViewDataSource {
             let cell = collectionView.dequeueReusableCell(withReuseIdentifier: MealCell.identifier, for: indexPath) as! MealCell
             cell.configure(with: viewModel.mealList[indexPath.row])
             return cell
+            
+        case .breakfast:
+            let cell = collectionView.dequeueReusableCell(withReuseIdentifier: MealCell.identifier, for: indexPath) as! MealCell
+            cell.configure(with: viewModel.breakfastList[indexPath.row])
+            return cell
+            
+        case .starter:
+            let cell = collectionView.dequeueReusableCell(withReuseIdentifier: MealCell.identifier, for: indexPath) as! MealCell
+            cell.configure(with: viewModel.starterList[indexPath.row])
+            return cell
+            
+        case .meat:
+            let cell = collectionView.dequeueReusableCell(withReuseIdentifier: MealCell.identifier, for: indexPath) as! MealCell
+            cell.configure(with: viewModel.meatList[indexPath.row])
+            return cell
+            
+        case .seafood:
+            let cell = collectionView.dequeueReusableCell(withReuseIdentifier: MealCell.identifier, for: indexPath) as! MealCell
+            cell.configure(with: viewModel.seafoodList[indexPath.row])
+            return cell
+            
+        case .vegetarian:
+            let cell = collectionView.dequeueReusableCell(withReuseIdentifier: MealCell.identifier, for: indexPath) as! MealCell
+            cell.configure(with: viewModel.vegetarianList[indexPath.row])
+            return cell
+            
+        case .pasta:
+            let cell = collectionView.dequeueReusableCell(withReuseIdentifier: MealCell.identifier, for: indexPath) as! MealCell
+            cell.configure(with: viewModel.pastaList[indexPath.row])
+            return cell
+            
+        case .dessert:
+            let cell = collectionView.dequeueReusableCell(withReuseIdentifier: MealCell.identifier, for: indexPath) as! MealCell
+            cell.configure(with: viewModel.dessertList[indexPath.row])
+            return cell
         }
     }
     
@@ -269,7 +285,47 @@ extension HomepageViewController: UICollectionViewDataSource {
 
 extension HomepageViewController: UICollectionViewDelegate {
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        let sectionType: SectionContentType = .init(for: indexPath.section)
         
+        switch sectionType {
+        case .dailyMeal:
+            // ...
+            break
+        case .ingredientList:
+            // ...
+            break
+        case .categoryList:
+            self.navigationController?.pushViewController(
+                MealListViewController(
+                    viewModel: MealListViewModel(categoryTitle: viewModel.categoryList[indexPath.row].categoryName ?? "")
+                ),
+                animated: true
+            )
+        case .mealList:
+            // ...
+            break
+        case .breakfast:
+            // ...
+            break
+        case .starter:
+            // ...
+            break
+        case .meat:
+            // ...
+            break
+        case .seafood:
+            // ...
+            break
+        case .vegetarian:
+            // ...
+            break
+        case .pasta:
+            // ...
+            break
+        case .dessert:
+            // ...
+            break
+        }
     }
 }
 
@@ -277,6 +333,7 @@ extension HomepageViewController: UICollectionViewDelegate {
 
 extension HomepageViewController: HomepageViewModelDelegate {
     func didUpdateData() {
+        print("didUpdateData executed")
         mealsCollectionView.reloadData()
     }
 }
