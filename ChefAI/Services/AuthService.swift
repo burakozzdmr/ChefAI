@@ -8,13 +8,19 @@
 import Foundation
 import FirebaseAuth
 
+// MARK: - AuthService Protocol
+
 protocol AuthServiceProtocol {
     func signIn(with email: String, and password: String, completion: @escaping (Error?) -> Void)
     func signUp(with email: String, and password: String, completion: @escaping (Error?) -> Void)
     func signOut(completion: @escaping (Error?) -> Void)
 }
 
+// MARK: - AuthService
+
 class AuthService {}
+
+// MARK: - AuthServiceProtocol
 
 extension AuthService: AuthServiceProtocol {
     func signIn(with email: String, and password: String, completion: @escaping ((any Error)?) -> Void) {
