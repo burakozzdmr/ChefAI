@@ -296,8 +296,12 @@ extension HomepageViewController: UICollectionViewDelegate {
                 animated: true
             )
         case .ingredientList:
-            // ...
-            break
+            self.navigationController?.pushViewController(
+                IngredientViewController(
+                    viewModel: IngredientViewModel(ingredientData: viewModel.ingredientList[indexPath.row])
+                ),
+                animated: true
+            )
         case .categoryList:
             self.navigationController?.pushViewController(
                 MealListViewController(
