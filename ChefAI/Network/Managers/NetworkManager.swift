@@ -73,10 +73,10 @@ extension NetworkManager {
         )
     }
     
-    func executeMealList(request: URLRequest, completion: @escaping (Result<MealListModel, NetworkError>) -> Void) {
+    func executeMealList(request: URLRequest, completion: @escaping (Result<MealModel, NetworkError>) -> Void) {
         sendRequest(
             request: request,
-            as: MealListModel.self,
+            as: MealModel.self,
             completion: completion
         )
     }
@@ -89,10 +89,10 @@ extension NetworkManager {
         )
     }
     
-    func executeMealListByCategory(request: URLRequest, completion: @escaping (Result<MealListModel, NetworkError>) -> Void) {
+    func executeMealListByCategory(request: URLRequest, completion: @escaping (Result<MealModel, NetworkError>) -> Void) {
         sendRequest(
             request: request,
-            as: MealListModel.self,
+            as: MealModel.self,
             completion: completion
         )
     }

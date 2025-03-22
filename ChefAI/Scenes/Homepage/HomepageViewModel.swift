@@ -20,14 +20,14 @@ class HomepageViewModel {
     var dailyMealList: [Meal] = []
     var categoryList: [Category] = []
     var ingredientList: [Ingredient] = []
-    var mealList: [MealList] = []
-    var breakfastList: [MealList] = []
-    var starterList: [MealList] = []
-    var meatList: [MealList] = []
-    var seafoodList: [MealList] = []
-    var vegetarianList: [MealList] = []
-    var pastaList: [MealList] = []
-    var dessertList: [MealList] = []
+    var mealList: [Meal] = []
+    var breakfastList: [Meal] = []
+    var starterList: [Meal] = []
+    var meatList: [Meal] = []
+    var seafoodList: [Meal] = []
+    var vegetarianList: [Meal] = []
+    var pastaList: [Meal] = []
+    var dessertList: [Meal] = []
     
     var sectionList: [String] = [
         "Günün Yemeği",

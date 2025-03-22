@@ -289,8 +289,12 @@ extension HomepageViewController: UICollectionViewDelegate {
         
         switch sectionType {
         case .dailyMeal:
-            // ...
-            break
+            self.navigationController?.pushViewController(
+                MealDetailViewController(
+                    viewModel: MealDetailViewModel(mealDetailData: viewModel.dailyMealList[indexPath.row])
+                ),
+                animated: true
+            )
         case .ingredientList:
             // ...
             break
@@ -302,29 +306,61 @@ extension HomepageViewController: UICollectionViewDelegate {
                 animated: true
             )
         case .mealList:
-            // ...
-            break
+            self.navigationController?.pushViewController(
+                MealDetailViewController(
+                    viewModel: MealDetailViewModel(mealDetailData: viewModel.mealList[indexPath.row])
+                ),
+                animated: true
+            )
         case .breakfast:
-            // ...
-            break
+            self.navigationController?.pushViewController(
+                MealDetailViewController(
+                    viewModel: MealDetailViewModel(mealDetailData: viewModel.breakfastList[indexPath.row])
+                ),
+                animated: true
+            )
         case .starter:
-            // ...
-            break
+            self.navigationController?.pushViewController(
+                MealDetailViewController(
+                    viewModel: MealDetailViewModel(mealDetailData: viewModel.breakfastList[indexPath.row])
+                ),
+                animated: true
+            )
         case .meat:
-            // ...
-            break
+            self.navigationController?.pushViewController(
+                MealDetailViewController(
+                    viewModel: MealDetailViewModel(mealDetailData: viewModel.breakfastList[indexPath.row])
+                ),
+                animated: true
+            )
         case .seafood:
-            // ...
-            break
+            self.navigationController?.pushViewController(
+                MealDetailViewController(
+                    viewModel: MealDetailViewModel(mealDetailData: viewModel.breakfastList[indexPath.row])
+                ),
+                animated: true
+            )
         case .vegetarian:
-            // ...
-            break
+            self.navigationController?.pushViewController(
+                MealDetailViewController(
+                    viewModel: MealDetailViewModel(mealDetailData: viewModel.breakfastList[indexPath.row])
+                ),
+                animated: true
+            )
         case .pasta:
-            // ...
-            break
+            self.navigationController?.pushViewController(
+                MealDetailViewController(
+                    viewModel: MealDetailViewModel(mealDetailData: viewModel.breakfastList[indexPath.row])
+                ),
+                animated: true
+            )
         case .dessert:
-            // ...
-            break
+            self.navigationController?.pushViewController(
+                MealDetailViewController(
+                    viewModel: MealDetailViewModel(mealDetailData: viewModel.breakfastList[indexPath.row])
+                ),
+                animated: true
+            )
         }
     }
 }
