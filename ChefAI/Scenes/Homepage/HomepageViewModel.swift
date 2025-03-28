@@ -80,8 +80,8 @@ extension HomepageViewModel {
                 DispatchQueue.main.async {
                     self.delegate?.didUpdateData()
                 }
-            case .failure:
-                print(NetworkError.emptyDataError.errorMessage)
+            case .failure(let error):
+                print("Daily meal error: \(error)")
             }
         }
     }
@@ -95,8 +95,8 @@ extension HomepageViewModel {
                 DispatchQueue.main.async {
                     self.delegate?.didUpdateData()
                 }
-            case .failure:
-                print(NetworkError.emptyDataError.errorMessage)
+            case .failure(let error):
+                print("Ingredients error: \(error)")
             }
         }
     }
@@ -110,8 +110,8 @@ extension HomepageViewModel {
                 DispatchQueue.main.async {
                     self.delegate?.didUpdateData()
                 }
-            case .failure:
-                print(NetworkError.emptyDataError.errorMessage)
+            case .failure(let error):
+                print("Categories error: \(error)")
             }
         }
     }
@@ -125,8 +125,8 @@ extension HomepageViewModel {
                 DispatchQueue.main.async {
                     self.delegate?.didUpdateData()
                 }
-            case .failure:
-                print(NetworkError.emptyDataError.errorMessage)
+            case .failure(let error):
+                print("Meal list error: \(error)")
             }
         }
     }
@@ -141,30 +141,24 @@ extension HomepageViewModel {
                 switch categoryType {
                 case .breakfast:
                     self.breakfastList = categories.meals
-
                 case .starter:
                     self.starterList = categories.meals
-                    
                 case .chicken, .beef:
                     self.meatList.append(contentsOf: categories.meals)
-                    
                 case .seafood:
                     self.seafoodList = categories.meals
-                    
                 case .vegetarian:
                     self.vegetarianList = categories.meals
-                    
                 case .pasta:
                     self.pastaList = categories.meals
-                    
                 case .dessert:
                     self.dessertList = categories.meals
                 }
                 DispatchQueue.main.async {
                     self.delegate?.didUpdateData()
                 }
-            case .failure:
-                print(NetworkError.emptyDataError.errorMessage)
+            case .failure(let error):
+                print("\(categoryTitle) error: \(error)")
             }
         }
     }

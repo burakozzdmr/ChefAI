@@ -12,7 +12,7 @@ protocol MealListViewModelProtocol: AnyObject {
 }
 
 class MealListViewModel {
-    private(set) var mealListByCategory: [MealList] = []
+    private(set) var mealListByCategory: [Meal] = []
     private let service: MealServiceProtocol
     weak var delegate: MealListViewModelProtocol?
     let categoryTitle: String

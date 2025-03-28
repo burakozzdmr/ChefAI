@@ -54,7 +54,7 @@ class ListCell: UICollectionViewCell {
     
     // MARK: - Methods
     
-    func configure(with cellContent: MealList) {
+    func configure(with cellContent: Meal) {
         guard let urlString = cellContent.mealImageURL, let imageURL = URL(string: urlString) else { return }
         mealImageView.kf.setImage(with: imageURL)
         

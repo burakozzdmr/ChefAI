@@ -326,42 +326,42 @@ extension HomepageViewController: UICollectionViewDelegate {
         case .starter:
             self.navigationController?.pushViewController(
                 MealDetailViewController(
-                    viewModel: MealDetailViewModel(mealDetailData: viewModel.breakfastList[indexPath.row])
+                    viewModel: MealDetailViewModel(mealDetailData: viewModel.starterList[indexPath.row])
                 ),
                 animated: true
             )
         case .meat:
             self.navigationController?.pushViewController(
                 MealDetailViewController(
-                    viewModel: MealDetailViewModel(mealDetailData: viewModel.breakfastList[indexPath.row])
+                    viewModel: MealDetailViewModel(mealDetailData: viewModel.meatList[indexPath.row])
                 ),
                 animated: true
             )
         case .seafood:
             self.navigationController?.pushViewController(
                 MealDetailViewController(
-                    viewModel: MealDetailViewModel(mealDetailData: viewModel.breakfastList[indexPath.row])
+                    viewModel: MealDetailViewModel(mealDetailData: viewModel.seafoodList[indexPath.row])
                 ),
                 animated: true
             )
         case .vegetarian:
             self.navigationController?.pushViewController(
                 MealDetailViewController(
-                    viewModel: MealDetailViewModel(mealDetailData: viewModel.breakfastList[indexPath.row])
+                    viewModel: MealDetailViewModel(mealDetailData: viewModel.vegetarianList[indexPath.row])
                 ),
                 animated: true
             )
         case .pasta:
             self.navigationController?.pushViewController(
                 MealDetailViewController(
-                    viewModel: MealDetailViewModel(mealDetailData: viewModel.breakfastList[indexPath.row])
+                    viewModel: MealDetailViewModel(mealDetailData: viewModel.pastaList[indexPath.row])
                 ),
                 animated: true
             )
         case .dessert:
             self.navigationController?.pushViewController(
                 MealDetailViewController(
-                    viewModel: MealDetailViewModel(mealDetailData: viewModel.breakfastList[indexPath.row])
+                    viewModel: MealDetailViewModel(mealDetailData: viewModel.dessertList[indexPath.row])
                 ),
                 animated: true
             )
