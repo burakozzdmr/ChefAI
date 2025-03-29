@@ -48,6 +48,7 @@ class HomepageViewController: UIViewController {
     }()
     
     private let viewModel: HomepageViewModel
+    private let loadingView: LoadingView = .init()
     
     // MARK: - Life Cycles
     
@@ -75,6 +76,7 @@ private extension HomepageViewController {
     func addViews() {
         view.addSubview(mealsCollectionView)
         view.addSubview(askToChefButton)
+        view.addSubview(loadingView)
     }
     
     func configureConstraints() {
@@ -89,6 +91,10 @@ private extension HomepageViewController {
             make.width.equalTo(128)
             make.height.equalTo(48)
         }
+        
+        loadingView.snp.makeConstraints { make in
+            make.edges.equalToSuperview()
+        }
     }
     
     func configureUI() {
@@ -97,6 +103,11 @@ private extension HomepageViewController {
         
         view.backgroundColor = .customBackgroundColor2
         navigationController?.navigationBar.isHidden = true
+        
+        loadingView.isHidden = false
+        DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
+            self.loadingView.removeFromSuperview()
+        }
     }
     
     func createSectionLayout(cellSectionIndex: CellSizeType) -> NSCollectionLayoutSection {

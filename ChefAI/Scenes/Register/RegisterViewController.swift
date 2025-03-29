@@ -74,6 +74,7 @@ class RegisterViewController: UIViewController {
     }()
     
     private let viewModel: RegisterViewModel
+    private let loadingView: LoadingView = .init()
     
     // MARK: - Life Cycles
     
@@ -104,6 +105,7 @@ private extension RegisterViewController {
         view.addSubview(emailTextField)
         view.addSubview(passwordTextField)
         view.addSubview(registerButton)
+        view.addSubview(loadingView)
     }
     
     func configureConstraints() {
@@ -137,6 +139,10 @@ private extension RegisterViewController {
             make.width.equalTo(320)
             make.height.equalTo(64)
         }
+        
+        loadingView.snp.makeConstraints { make in
+            make.edges.equalToSuperview()
+        }
     }
     
     func configureUI() {
@@ -146,6 +152,8 @@ private extension RegisterViewController {
         view.backgroundColor = .customBackgroundColor2
         let dismissKeyboardGesture = UITapGestureRecognizer(target: self, action: #selector(dismissKeyboard))
         view.addGestureRecognizer(dismissKeyboardGesture)
+        
+        loadingView.isHidden = true
     }
 }
 
@@ -157,8 +165,10 @@ private extension RegisterViewController {
     }
     
     @objc func registerTapped() {
+        loadingView.isHidden = false
         viewModel.signUp(with: emailTextField.text ?? "", and: passwordTextField.text ?? "") { authError in
             if authError != nil {
+                self.loadingView.isHidden = true
                 let alertController = UIAlertController(title: "HATA", message: "Kayıt işlemi başarısız", preferredStyle: .alert)
                 alertController.addAction(
                     UIAlertAction(title: "Tamam", style: .default)
@@ -167,6 +177,7 @@ private extension RegisterViewController {
                 return
             } else {
                 self.navigationController?.pushViewController(RegisterResultViewController(), animated: true)
+                self.loadingView.removeFromSuperview()
             }
         }
     }
