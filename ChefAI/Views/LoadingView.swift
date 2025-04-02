@@ -69,7 +69,3 @@ private extension LoadingView {
         self.backgroundColor = .black.withAlphaComponent(0.5)
     }
 }
-
-#Preview {
-    LoadingView()
-}

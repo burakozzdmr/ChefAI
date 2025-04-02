@@ -16,7 +16,7 @@ class ListCell: UICollectionViewCell {
     
     private let containerView: UIView = {
         let view = UIView()
-        view.backgroundColor = .red
+        view.backgroundColor = .customOptions
         view.clipsToBounds = true
         view.layer.cornerRadius = 16
         return view
@@ -26,16 +26,14 @@ class ListCell: UICollectionViewCell {
         let imageView = UIImageView()
         imageView.image = .init()
         imageView.contentMode = .scaleAspectFill
-        imageView.clipsToBounds = true
-        imageView.layer.cornerRadius = 8
         return imageView
     }()
     
     private let mealNameLabel: UILabel = {
         let label = UILabel()
         label.text = ""
-        label.textColor = .white
-        label.font = .systemFont(ofSize: 16, weight: .medium)
+        label.textColor = .lightGray
+        label.font = .systemFont(ofSize: 16, weight: .black)
         label.numberOfLines = 0
         return label
     }()
@@ -73,19 +71,18 @@ private extension ListCell {
     
     func configureConstraints() {
         containerView.snp.makeConstraints { make in
-            make.edges.equalToSuperview().inset(8)
+            make.edges.equalToSuperview()
         }
         
         mealImageView.snp.makeConstraints { make in
-            make.centerY.equalToSuperview()
+            make.top.bottom.leading.equalToSuperview()
             make.width.height.equalTo(128)
-            make.leading.equalToSuperview().inset(16)
         }
         
         mealNameLabel.snp.makeConstraints { make in
             make.centerY.equalToSuperview()
-            make.leading.equalTo(mealImageView.snp.trailing).offset(16)
-            make.trailing.equalToSuperview().inset(16)
+            make.leading.equalTo(mealImageView.snp.trailing).offset(64)
+            make.trailing.equalToSuperview().inset(64)
         }
     }
     
