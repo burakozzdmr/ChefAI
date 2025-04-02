@@ -32,11 +32,6 @@ private extension TabBarController {
             and: .init(systemName: "magnifyingglass") ?? .init(),
             for: MealsViewController()
         )
-        let mealsVC = createNav(
-            with: "Yemekler",
-            and: .init(systemName: "fork.knife") ?? .init(),
-            for: MealsViewController()
-        )
         let favouriteVC = createNav(
             with: "Favoriler",
             and: .init(systemName: "heart.fill") ?? .init(),
@@ -47,8 +42,13 @@ private extension TabBarController {
             and: .init(systemName: "cart.fill") ?? .init(),
             for: CartViewController()
         )
+        let profileVC = createNav(
+            with: "Profil",
+            and: .init(systemName: "person.fill") ?? .init(),
+            for: ProfileViewController()
+        )
         
-        self.setViewControllers([homepageVC, searchVC, mealsVC, favouriteVC, cartVC], animated: false)
+        self.setViewControllers([homepageVC, searchVC, favouriteVC, cartVC, profileVC], animated: false)
         
         self.tabBar.backgroundColor = .customBackgroundColor2
         self.tabBar.tintColor = .customButton
