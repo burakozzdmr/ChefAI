@@ -88,6 +88,7 @@ class LoginViewController: UIViewController {
     }()
     
     private let viewModel: LoginViewModel
+    private let loadingView: LoadingView = .init()
     
     // MARK: - Life Cycles
     
@@ -120,6 +121,7 @@ private extension LoginViewController {
         footerStackView.addArrangedSubview(dontHaveAccountLabel)
         footerStackView.addArrangedSubview(registerNowLabel)
         view.addSubview(footerStackView)
+        view.addSubview(loadingView)
     }
     
     func configureConstraints() {
@@ -152,6 +154,10 @@ private extension LoginViewController {
             make.centerX.equalToSuperview()
             make.bottom.equalTo(view.safeAreaLayoutGuide).inset(16)
         }
+        
+        loadingView.snp.makeConstraints { make in
+            make.edges.equalToSuperview()
+        }
     }
     
     func configureUI() {
@@ -161,6 +167,8 @@ private extension LoginViewController {
         view.backgroundColor = .customBackgroundColor2
         let dismissKeyboardGesture = UITapGestureRecognizer(target: self, action: #selector(dismissKeyboard))
         view.addGestureRecognizer(dismissKeyboardGesture)
+        
+        loadingView.isHidden = true
     }
 }
 
@@ -168,8 +176,10 @@ private extension LoginViewController {
 
 private extension LoginViewController {
     @objc func loginTapped() {
+        loadingView.isHidden = false
         viewModel.signIn(with: emailTextField.text ?? "", and: passwordTextField.text ?? "") { authError in
             if authError != nil {
+                self.loadingView.isHidden = true
                 let alertController = UIAlertController(title: "HATA", message: "Kullanıcı adı veya şifre hatalı", preferredStyle: .alert)
                 alertController.addAction(
                     UIAlertAction(title: "Tamam", style: .default)
@@ -178,6 +188,7 @@ private extension LoginViewController {
                 return
             } else {
                 self.navigationController?.pushViewController(TabBarController(), animated: true)
+                self.loadingView.removeFromSuperview()
             }
         }
     }

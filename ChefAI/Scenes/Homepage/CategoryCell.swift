@@ -14,21 +14,28 @@ class CategoryCell: UICollectionViewCell {
     
     // MARK: - Properties
     
+    private let containerView: UIView = {
+        let view = UIView()
+        view.backgroundColor = .customOptions
+        view.clipsToBounds = true
+        view.layer.cornerRadius = 16
+        return view
+    }()
+    
     private let categoryImageView: UIImageView = {
         let imageView = UIImageView()
         imageView.image = .init()
-        imageView.contentMode = .scaleToFill
-        imageView.clipsToBounds = true
-        imageView.layer.cornerRadius = 8
+        imageView.contentMode = .scaleAspectFill
         return imageView
     }()
     
     private let categoryNameLabel: UILabel = {
         let label = UILabel()
         label.text = ""
-        label.textColor = .black
-        label.font = .systemFont(ofSize: 16, weight: .heavy)
+        label.textColor = .lightGray
+        label.font = .systemFont(ofSize: 18, weight: .black)
         label.numberOfLines = 0
+        label.textAlignment = .center
         return label
     }()
     
@@ -46,11 +53,10 @@ class CategoryCell: UICollectionViewCell {
     
     // MARK: - Methods
     
-    func configure(with cellContent: Category) {
-        categoryNameLabel.text = cellContent.categoryName
+    func configure(with cell: Category) {
+        categoryNameLabel.text = cell.categoryName
         
-        guard let urlString = cellContent.categoryImageURL, let imageURL = URL(string: urlString) else { return }
-        
+        guard let urlString = cell.categoryImageURL, let imageURL = URL(string: urlString) else { return }
         categoryImageView.kf.setImage(with: imageURL)
     }
 }
@@ -59,38 +65,29 @@ class CategoryCell: UICollectionViewCell {
 
 private extension CategoryCell {
     func addViews() {
-        addSubview(categoryImageView)
-        addSubview(categoryNameLabel)
+        containerView.addSubview(categoryImageView)
+        containerView.addSubview(categoryNameLabel)
+        contentView.addSubview(containerView)
     }
     
     func configureConstraints() {
-        categoryImageView.snp.makeConstraints { make in
-            make.top.equalToSuperview().offset(16)
-            make.centerX.equalToSuperview()
-            make.width.height.equalTo(96)
+        containerView.snp.makeConstraints {
+            $0.edges.equalToSuperview()
         }
         
-        categoryNameLabel.snp.makeConstraints { make in
-            make.top.equalTo(categoryImageView.snp.bottom).offset(8)
-            make.leading.trailing.equalToSuperview().inset(16)
+        categoryImageView.snp.makeConstraints {
+            $0.top.leading.trailing.equalToSuperview()
+            $0.width.height.equalTo(96)
+        }
+        
+        categoryNameLabel.snp.makeConstraints {
+            $0.leading.trailing.equalToSuperview().inset(16)
+            $0.bottom.equalToSuperview().inset(32)
         }
     }
     
     func configureUI() {
         addViews()
         configureConstraints()
-        
-        clipsToBounds = false
-        layer.cornerRadius = 16
-        layer.borderColor = UIColor.lightGray.withAlphaComponent(0.2).cgColor
-        layer.borderWidth = 1
-        
-        layer.shadowColor = UIColor.black.cgColor
-        layer.shadowOffset = CGSize(width: 0, height: 4)
-        layer.shadowRadius = 10
-        layer.shadowOpacity = 0.15
-        layer.masksToBounds = false
-        
-        layer.shadowPath = UIBezierPath(roundedRect: bounds, cornerRadius: layer.cornerRadius).cgPath
     }
 }

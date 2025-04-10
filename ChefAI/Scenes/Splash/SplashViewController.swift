@@ -73,11 +73,14 @@ private extension SplashViewController {
                 return
             }
             let authNavController = UINavigationController(rootViewController: LoginViewController())
-            if sceneDelegate.window?.rootViewController is TabBarController {
-                return
-            }
-            UIView.transition(with: sceneDelegate.window!, duration: 0.5, options: .transitionCrossDissolve) {
-                sceneDelegate.window?.rootViewController = authNavController
+            let tabBarNavController = UINavigationController(rootViewController: TabBarController())
+            
+            UIView.transition(with: sceneDelegate.window!, duration: 0.75, options: .transitionCrossDissolve) {
+                if Auth.auth().currentUser == nil {
+                    sceneDelegate.window?.rootViewController = authNavController
+                } else {
+                    sceneDelegate.window?.rootViewController = tabBarNavController
+                }
             }
         }
     }

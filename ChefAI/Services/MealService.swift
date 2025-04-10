@@ -14,9 +14,9 @@ protocol MealServiceProtocol {
     func searchMealList(searchText: String, completion: @escaping (Result<MealModel, NetworkError>) -> Void)
     func fetchDailyMeal(completion: @escaping (Result<MealModel, NetworkError>) -> Void)
     func fetchMealCategories(completion: @escaping (Result<CategoryModel, NetworkError>) -> Void)
-    func fetchMealList(completion: @escaping (Result<MealListModel, NetworkError>) -> Void)
+    func fetchMealList(completion: @escaping (Result<MealModel, NetworkError>) -> Void)
     func fetchIngredientList(completion: @escaping (Result<IngredientModel, NetworkError>) -> Void)
-    func fetchMealListByCategory(category: String, completion: @escaping (Result<MealListModel, NetworkError>) -> Void)
+    func fetchMealListByCategory(category: String, completion: @escaping (Result<MealModel, NetworkError>) -> Void)
 }
 
 class MealService {}
@@ -75,7 +75,7 @@ extension MealService: MealServiceProtocol {
         }
     }
     
-    func fetchMealList(completion: @escaping (Result<MealListModel, NetworkError>) -> Void) {
+    func fetchMealList(completion: @escaping (Result<MealModel, NetworkError>) -> Void) {
         let request = prepareRequestURL(Endpoint.randomSelection)
         
         switch request {
@@ -97,7 +97,7 @@ extension MealService: MealServiceProtocol {
         }
     }
     
-    func fetchMealListByCategory(category: String, completion: @escaping (Result<MealListModel, NetworkError>) -> Void) {
+    func fetchMealListByCategory(category: String, completion: @escaping (Result<MealModel, NetworkError>) -> Void) {
         let request = prepareRequestURL(Endpoint.filter("c", category))
         
         switch request {

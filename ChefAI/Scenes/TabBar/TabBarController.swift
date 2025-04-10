@@ -27,28 +27,18 @@ private extension TabBarController {
             and: .init(systemName: "house") ?? .init(),
             for: HomepageViewController()
         )
-        let searchVC = createNav(
-            with: "Ara",
-            and: .init(systemName: "magnifyingglass") ?? .init(),
-            for: MealsViewController()
-        )
         let mealsVC = createNav(
             with: "Yemekler",
             and: .init(systemName: "fork.knife") ?? .init(),
             for: MealsViewController()
         )
-        let favouriteVC = createNav(
-            with: "Favoriler",
-            and: .init(systemName: "heart.fill") ?? .init(),
-            for: FavouriteViewController()
-        )
-        let cartVC = createNav(
-            with: "Sepet",
-            and: .init(systemName: "cart.fill") ?? .init(),
-            for: CartViewController()
+        let profileVC = createNav(
+            with: "Profil",
+            and: .init(systemName: "person.fill") ?? .init(),
+            for: ProfileViewController()
         )
         
-        self.setViewControllers([homepageVC, searchVC, mealsVC, favouriteVC, cartVC], animated: false)
+        self.setViewControllers([homepageVC, mealsVC, profileVC], animated: false)
         
         self.tabBar.backgroundColor = .customBackgroundColor2
         self.tabBar.tintColor = .customButton

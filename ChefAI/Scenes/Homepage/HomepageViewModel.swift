@@ -20,14 +20,14 @@ class HomepageViewModel {
     var dailyMealList: [Meal] = []
     var categoryList: [Category] = []
     var ingredientList: [Ingredient] = []
-    var mealList: [MealList] = []
-    var breakfastList: [MealList] = []
-    var starterList: [MealList] = []
-    var meatList: [MealList] = []
-    var seafoodList: [MealList] = []
-    var vegetarianList: [MealList] = []
-    var pastaList: [MealList] = []
-    var dessertList: [MealList] = []
+    var mealList: [Meal] = []
+    var breakfastList: [Meal] = []
+    var starterList: [Meal] = []
+    var meatList: [Meal] = []
+    var seafoodList: [Meal] = []
+    var vegetarianList: [Meal] = []
+    var pastaList: [Meal] = []
+    var dessertList: [Meal] = []
     
     var sectionList: [String] = [
         "Günün Yemeği",
@@ -80,8 +80,8 @@ extension HomepageViewModel {
                 DispatchQueue.main.async {
                     self.delegate?.didUpdateData()
                 }
-            case .failure:
-                print(NetworkError.emptyDataError.errorMessage)
+            case .failure(let error):
+                print("Daily meal error: \(error)")
             }
         }
     }
@@ -95,8 +95,8 @@ extension HomepageViewModel {
                 DispatchQueue.main.async {
                     self.delegate?.didUpdateData()
                 }
-            case .failure:
-                print(NetworkError.emptyDataError.errorMessage)
+            case .failure(let error):
+                print("Ingredients error: \(error)")
             }
         }
     }
@@ -110,8 +110,8 @@ extension HomepageViewModel {
                 DispatchQueue.main.async {
                     self.delegate?.didUpdateData()
                 }
-            case .failure:
-                print(NetworkError.emptyDataError.errorMessage)
+            case .failure(let error):
+                print("Categories error: \(error)")
             }
         }
     }
@@ -125,8 +125,8 @@ extension HomepageViewModel {
                 DispatchQueue.main.async {
                     self.delegate?.didUpdateData()
                 }
-            case .failure:
-                print(NetworkError.emptyDataError.errorMessage)
+            case .failure(let error):
+                print("Meal list error: \(error)")
             }
         }
     }
@@ -141,30 +141,24 @@ extension HomepageViewModel {
                 switch categoryType {
                 case .breakfast:
                     self.breakfastList = categories.meals
-
                 case .starter:
                     self.starterList = categories.meals
-                    
                 case .chicken, .beef:
                     self.meatList.append(contentsOf: categories.meals)
-                    
                 case .seafood:
                     self.seafoodList = categories.meals
-                    
                 case .vegetarian:
                     self.vegetarianList = categories.meals
-                    
                 case .pasta:
                     self.pastaList = categories.meals
-                    
                 case .dessert:
                     self.dessertList = categories.meals
                 }
                 DispatchQueue.main.async {
                     self.delegate?.didUpdateData()
                 }
-            case .failure:
-                print(NetworkError.emptyDataError.errorMessage)
+            case .failure(let error):
+                print("\(categoryTitle) error: \(error)")
             }
         }
     }

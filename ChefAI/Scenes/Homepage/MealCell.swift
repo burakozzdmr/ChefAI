@@ -14,21 +14,28 @@ class MealCell: UICollectionViewCell {
     
     // MARK: - Properties
     
+    private let containerView: UIView = {
+        let view = UIView()
+        view.backgroundColor = .customOptions
+        view.clipsToBounds = true
+        view.layer.cornerRadius = 16
+        return view
+    }()
+    
     private let mealImageView: UIImageView = {
         let imageView = UIImageView()
         imageView.image = .init()
         imageView.contentMode = .scaleAspectFill
-        imageView.clipsToBounds = true
-        imageView.layer.cornerRadius = 8
         return imageView
     }()
     
     private let mealNameLabel: UILabel = {
         let label = UILabel()
         label.text = ""
-        label.textColor = .black
-        label.font = .systemFont(ofSize: 16, weight: .heavy)
-        label.numberOfLines = 3
+        label.textColor = .lightGray
+        label.font = .systemFont(ofSize: 14, weight: .black)
+        label.numberOfLines = 0
+        label.textAlignment = .center
         return label
     }()
     
@@ -46,11 +53,10 @@ class MealCell: UICollectionViewCell {
     
     // MARK: - Methods
     
-    func configure(with cellContent: MealList) {
-        mealNameLabel.text = cellContent.mealName
+    func configure(with cell: Meal) {
+        mealNameLabel.text = cell.mealName
         
-        guard let urlString = cellContent.mealImageURL, let imageURL = URL(string: urlString) else { return }
-        
+        guard let urlString = cell.mealImageURL, let imageURL = URL(string: urlString) else { return }
         mealImageView.kf.setImage(with: imageURL)
     }
 }
@@ -59,38 +65,30 @@ class MealCell: UICollectionViewCell {
 
 private extension MealCell {
     func addViews() {
-        addSubview(mealImageView)
-        addSubview(mealNameLabel)
+        containerView.addSubview(mealImageView)
+        containerView.addSubview(mealNameLabel)
+        contentView.addSubview(containerView)
     }
     
     func configureConstraints() {
-        mealImageView.snp.makeConstraints { make in
-            make.top.equalToSuperview().offset(16)
-            make.centerX.equalToSuperview()
-            make.width.height.equalTo(96)
+        containerView.snp.makeConstraints {
+            $0.edges.equalToSuperview()
         }
         
-        mealNameLabel.snp.makeConstraints { make in
-            make.top.equalTo(mealImageView.snp.bottom).offset(8)
-            make.leading.trailing.equalToSuperview().inset(16)
+        mealImageView.snp.makeConstraints {
+            $0.top.leading.trailing.equalToSuperview()
+            $0.width.height.equalTo(96)
+        }
+        
+        mealNameLabel.snp.makeConstraints {
+            $0.top.equalTo(mealImageView.snp.bottom).offset(32)
+            $0.leading.trailing.equalToSuperview().inset(4)
+            $0.bottom.equalToSuperview().inset(4)
         }
     }
     
     func configureUI() {
         addViews()
         configureConstraints()
-        
-        clipsToBounds = false
-        layer.cornerRadius = 16
-        layer.borderColor = UIColor.lightGray.withAlphaComponent(0.2).cgColor
-        layer.borderWidth = 1
-        
-        layer.shadowColor = UIColor.black.cgColor
-        layer.shadowOffset = CGSize(width: 0, height: 4)
-        layer.shadowRadius = 10
-        layer.shadowOpacity = 0.15
-        layer.masksToBounds = false
-        
-        layer.shadowPath = UIBezierPath(roundedRect: bounds, cornerRadius: layer.cornerRadius).cgPath
     }
 }
