@@ -165,9 +165,11 @@ private extension HomepageViewController {
 
 // MARK: - Objective-C Methods
 
-private extension HomepageViewController {
-    @objc func askChefTapped() {
-        
+@objc private extension HomepageViewController {
+    func askChefTapped() {
+        let chefVC = ChefViewController()
+        chefVC.modalPresentationStyle = .fullScreen
+        present(chefVC, animated: true, completion: nil)
     }
 }
 

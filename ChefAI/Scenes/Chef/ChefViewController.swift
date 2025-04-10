@@ -1,13 +1,13 @@
 //
-//  CartViewController.swift
+//  ChefViewController.swift
 //  ChefAI
 //
-//  Created by Burak Özdemir on 7.03.2025.
+//  Created by Burak Özdemir on 6.04.2025.
 //
 
 import UIKit
 
-class CartViewController: UIViewController {
+class ChefViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
