@@ -9,10 +9,10 @@
 /* Begin PBXBuildFile section */
 		0808DDF62D96E4390006DCFC /* Lottie in Frameworks */ = {isa = PBXBuildFile; productRef = 0808DDF52D96E4390006DCFC /* Lottie */; };
 		081C0A952D78EF000045BE3E /* SnapKit in Frameworks */ = {isa = PBXBuildFile; productRef = 081C0A942D78EF000045BE3E /* SnapKit */; };
-		081C0AA32D7904F30045BE3E /* BYCustomTextField in Frameworks */ = {isa = PBXBuildFile; productRef = 081C0AA22D7904F30045BE3E /* BYCustomTextField */; };
 		083EBC992D7A4AB4008FDD41 /* FirebaseAuth in Frameworks */ = {isa = PBXBuildFile; productRef = 083EBC982D7A4AB4008FDD41 /* FirebaseAuth */; };
 		083EBC9B2D7A4AB4008FDD41 /* FirebaseFirestore in Frameworks */ = {isa = PBXBuildFile; productRef = 083EBC9A2D7A4AB4008FDD41 /* FirebaseFirestore */; };
 		083EBC9D2D7A4AB4008FDD41 /* FirebaseStorage in Frameworks */ = {isa = PBXBuildFile; productRef = 083EBC9C2D7A4AB4008FDD41 /* FirebaseStorage */; };
+		08E9E5512DA9353900AAAC62 /* BYCustomTextField in Frameworks */ = {isa = PBXBuildFile; productRef = 08E9E5502DA9353900AAAC62 /* BYCustomTextField */; };
 		08EE3BD92D7EE37700CFD321 /* Kingfisher in Frameworks */ = {isa = PBXBuildFile; productRef = 08EE3BD82D7EE37700CFD321 /* Kingfisher */; };
 /* End PBXBuildFile section */
 
@@ -48,11 +48,11 @@
 			files = (
 				08EE3BD92D7EE37700CFD321 /* Kingfisher in Frameworks */,
 				0808DDF62D96E4390006DCFC /* Lottie in Frameworks */,
-				081C0AA32D7904F30045BE3E /* BYCustomTextField in Frameworks */,
 				083EBC9B2D7A4AB4008FDD41 /* FirebaseFirestore in Frameworks */,
 				083EBC992D7A4AB4008FDD41 /* FirebaseAuth in Frameworks */,
 				083EBC9D2D7A4AB4008FDD41 /* FirebaseStorage in Frameworks */,
 				081C0A952D78EF000045BE3E /* SnapKit in Frameworks */,
+				08E9E5512DA9353900AAAC62 /* BYCustomTextField in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -96,12 +96,12 @@
 			name = ChefAI;
 			packageProductDependencies = (
 				081C0A942D78EF000045BE3E /* SnapKit */,
-				081C0AA22D7904F30045BE3E /* BYCustomTextField */,
 				083EBC982D7A4AB4008FDD41 /* FirebaseAuth */,
 				083EBC9A2D7A4AB4008FDD41 /* FirebaseFirestore */,
 				083EBC9C2D7A4AB4008FDD41 /* FirebaseStorage */,
 				08EE3BD82D7EE37700CFD321 /* Kingfisher */,
 				0808DDF52D96E4390006DCFC /* Lottie */,
+				08E9E5502DA9353900AAAC62 /* BYCustomTextField */,
 			);
 			productName = ChefAI;
 			productReference = 082FBB7E2D787CF2008776FF /* ChefAI.app */;
@@ -133,10 +133,10 @@
 			minimizedProjectReferenceProxies = 1;
 			packageReferences = (
 				081C0A932D78EF000045BE3E /* XCRemoteSwiftPackageReference "SnapKit" */,
-				081C0AA12D7904F30045BE3E /* XCRemoteSwiftPackageReference "BYCustomTextField" */,
 				083EBC972D7A4AB4008FDD41 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */,
 				08EE3BD72D7EE37700CFD321 /* XCRemoteSwiftPackageReference "Kingfisher" */,
 				0808DDF42D96E4390006DCFC /* XCRemoteSwiftPackageReference "lottie-ios" */,
+				08E9E54F2DA9353900AAAC62 /* XCRemoteSwiftPackageReference "BYCustomTextField" */,
 			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = 082FBB7F2D787CF2008776FF /* Products */;
@@ -398,20 +398,20 @@
 				minimumVersion = 5.7.1;
 			};
 		};
-		081C0AA12D7904F30045BE3E /* XCRemoteSwiftPackageReference "BYCustomTextField" */ = {
-			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "https://github.com/bayramyelec/BYCustomTextField";
-			requirement = {
-				kind = upToNextMajorVersion;
-				minimumVersion = 1.2.4;
-			};
-		};
 		083EBC972D7A4AB4008FDD41 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/firebase/firebase-ios-sdk";
 			requirement = {
 				kind = upToNextMajorVersion;
 				minimumVersion = 11.9.0;
+			};
+		};
+		08E9E54F2DA9353900AAAC62 /* XCRemoteSwiftPackageReference "BYCustomTextField" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/bayramyelec/BYCustomTextField";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 1.2.4;
 			};
 		};
 		08EE3BD72D7EE37700CFD321 /* XCRemoteSwiftPackageReference "Kingfisher" */ = {
@@ -435,11 +435,6 @@
 			package = 081C0A932D78EF000045BE3E /* XCRemoteSwiftPackageReference "SnapKit" */;
 			productName = SnapKit;
 		};
-		081C0AA22D7904F30045BE3E /* BYCustomTextField */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = 081C0AA12D7904F30045BE3E /* XCRemoteSwiftPackageReference "BYCustomTextField" */;
-			productName = BYCustomTextField;
-		};
 		083EBC982D7A4AB4008FDD41 /* FirebaseAuth */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = 083EBC972D7A4AB4008FDD41 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
@@ -454,6 +449,11 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 083EBC972D7A4AB4008FDD41 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
 			productName = FirebaseStorage;
+		};
+		08E9E5502DA9353900AAAC62 /* BYCustomTextField */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 08E9E54F2DA9353900AAAC62 /* XCRemoteSwiftPackageReference "BYCustomTextField" */;
+			productName = BYCustomTextField;
 		};
 		08EE3BD82D7EE37700CFD321 /* Kingfisher */ = {
 			isa = XCSwiftPackageProductDependency;
