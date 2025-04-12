@@ -17,7 +17,7 @@ class ProfileViewController: UIViewController {
     private let userImageView: UIImageView = {
         let imageView: UIImageView = .init()
         imageView.image = .init(systemName: "camera")
-        imageView.contentMode = .scaleAspectFit
+        imageView.contentMode = .scaleToFill
         imageView.clipsToBounds = true
         imageView.layer.cornerRadius = 64
         imageView.layer.borderWidth = 5
@@ -34,6 +34,7 @@ class ProfileViewController: UIViewController {
         button.backgroundColor = .customButton
         button.clipsToBounds = true
         button.layer.cornerRadius = 20
+        button.addTarget(self, action: #selector(editPhotoTapped), for: .touchUpInside)
         return button
     }()
     
@@ -65,6 +66,15 @@ class ProfileViewController: UIViewController {
         super.viewDidLoad()
 
         configureUI()
+        
+        viewModel.permissionResult = { [weak self] result in
+            switch result {
+            case .showPhotoLibrary:
+                self?.presentImagePicker()
+            case .showPermissionDeniedAlert:
+                self?.showPermissionDeniedAlert()
+            }
+        }
     }
     
     // MARK: - Inits
@@ -82,7 +92,18 @@ class ProfileViewController: UIViewController {
 // MARK: - Objective - C Methods
 
 @objc private extension ProfileViewController {
-    
+    func editPhotoTapped() {
+        let alert = UIAlertController(title: "Add Profile Photo", message: "", preferredStyle: .actionSheet)
+        alert.addAction(
+            UIAlertAction(title: "Select to Gallery", style: .default) { _ in
+                self.viewModel.handleGalleryPermission()
+            }
+        )
+        alert.addAction(
+            UIAlertAction(title: "Cancel", style: .cancel)
+        )
+        present(alert, animated: true)
+    }
 }
 
 // MARK: - Privates
@@ -129,6 +150,30 @@ private extension ProfileViewController {
         view.backgroundColor = .customBackgroundColor2
         navigationController?.navigationBar.isHidden = true
     }
+    
+    func presentImagePicker() {
+        let imagePicker = UIImagePickerController()
+        imagePicker.sourceType = .photoLibrary
+        imagePicker.delegate = self
+        present(imagePicker, animated: true)
+    }
+
+    func showPermissionDeniedAlert() {
+        let alert = UIAlertController(
+            title: "Photo Access Needed",
+            message: "Please allow photo access from Settings to select a profile picture.",
+            preferredStyle: .alert
+        )
+        
+        alert.addAction(UIAlertAction(title: "Open Settings", style: .default) { _ in
+            guard let settingsURL = URL(string: UIApplication.openSettingsURLString),
+                  UIApplication.shared.canOpenURL(settingsURL) else { return }
+            UIApplication.shared.open(settingsURL)
+        })
+        
+        alert.addAction(UIAlertAction(title: "Cancel", style: .cancel))
+        present(alert, animated: true)
+    }
 }
 
 // MARK: - UITableViewDataSource
@@ -149,10 +194,38 @@ extension ProfileViewController: UITableViewDataSource {
 
 extension ProfileViewController: UITableViewDelegate {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        tableView.deselectRow(at: indexPath, animated: true)
+        let sectionType: SettingsSectionType = .init(for: indexPath.section)
+        
+        switch sectionType {
+        case .privacyPolicy:
+            viewModel.openPrivacyPolicy()
+            
+        case .rateUs:
+            viewModel.openRateUs()
+            
+        case .upgradeToPremium:
+            viewModel.openPaywall()
+            
+        case .logOut:
+            viewModel.logOut()
+        }
     }
 }
 
-#Preview {
-    ProfileViewController()
+// MARK: - UIImagePickerControllerDelegate
+
+extension ProfileViewController: UIImagePickerControllerDelegate, UINavigationControllerDelegate {
+    func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
+        if let selectedImage = info[.originalImage] as? UIImage {
+            DispatchQueue.main.async {
+                self.userImageView.image = selectedImage
+            }
+            self.viewModel.addProfilePhoto()
+        }
+        picker.dismiss(animated: true)
+    }
+
+    func imagePickerControllerDidCancel(_ picker: UIImagePickerController) {
+        picker.dismiss(animated: true)
+    }
 }

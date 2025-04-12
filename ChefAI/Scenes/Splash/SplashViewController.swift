@@ -49,14 +49,14 @@ private extension SplashViewController {
     }
     
     func configureConstraints() {
-        appLogoImageView.snp.makeConstraints { make in
-            make.centerX.centerY.equalToSuperview()
-            make.width.height.equalTo(256)
+        appLogoImageView.snp.makeConstraints {
+            $0.centerX.centerY.equalToSuperview()
+            $0.width.height.equalTo(256)
         }
         
-        loadingIndicatorView.snp.makeConstraints { make in
-            make.bottom.equalTo(view.safeAreaLayoutGuide).inset(96)
-            make.centerX.equalToSuperview()
+        loadingIndicatorView.snp.makeConstraints {
+            $0.bottom.equalTo(view.safeAreaLayoutGuide).inset(96)
+            $0.centerX.equalToSuperview()
         }
     }
     

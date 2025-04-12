@@ -50,8 +50,8 @@ private extension DailyMealCell {
     }
     
     func configureConstraints() {
-        mealImageView.snp.makeConstraints { make in
-            make.edges.equalToSuperview()
+        mealImageView.snp.makeConstraints {
+            $0.edges.equalToSuperview()
         }
     }
     

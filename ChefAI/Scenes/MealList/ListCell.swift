@@ -70,19 +70,19 @@ private extension ListCell {
     }
     
     func configureConstraints() {
-        containerView.snp.makeConstraints { make in
-            make.edges.equalToSuperview()
+        containerView.snp.makeConstraints {
+            $0.edges.equalToSuperview()
         }
         
-        mealImageView.snp.makeConstraints { make in
-            make.top.bottom.leading.equalToSuperview()
-            make.width.height.equalTo(128)
+        mealImageView.snp.makeConstraints {
+            $0.top.bottom.leading.equalToSuperview()
+            $0.width.height.equalTo(128)
         }
         
-        mealNameLabel.snp.makeConstraints { make in
-            make.centerY.equalToSuperview()
-            make.leading.equalTo(mealImageView.snp.trailing).offset(64)
-            make.trailing.equalToSuperview().inset(64)
+        mealNameLabel.snp.makeConstraints {
+            $0.centerY.equalToSuperview()
+            $0.leading.equalTo(mealImageView.snp.trailing).offset(64)
+            $0.trailing.equalToSuperview().inset(64)
         }
     }
     

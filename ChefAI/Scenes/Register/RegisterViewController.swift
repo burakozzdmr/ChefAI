@@ -109,39 +109,39 @@ private extension RegisterViewController {
     }
     
     func configureConstraints() {
-        appLogoImageView.snp.makeConstraints { make in
-            make.top.equalTo(view.safeAreaLayoutGuide).offset(64)
-            make.centerX.equalToSuperview()
-            make.width.height.equalTo(128)
+        appLogoImageView.snp.makeConstraints { 
+            $0.top.equalTo(view.safeAreaLayoutGuide).offset(64)
+            $0.centerX.equalToSuperview()
+            $0.width.height.equalTo(128)
         }
         
-        usernameTextField.snp.makeConstraints { make in
-            make.top.equalTo(appLogoImageView.snp.bottom).offset(48)
-            make.centerX.equalToSuperview()
-            make.width.equalTo(320)
+        usernameTextField.snp.makeConstraints {
+            $0.top.equalTo(appLogoImageView.snp.bottom).offset(48)
+            $0.centerX.equalToSuperview()
+            $0.width.equalTo(320)
         }
         
-        emailTextField.snp.makeConstraints { make in
-            make.top.equalTo(usernameTextField.snp.bottom).offset(32)
-            make.centerX.equalToSuperview()
-            make.width.equalTo(320)
+        emailTextField.snp.makeConstraints {
+            $0.top.equalTo(usernameTextField.snp.bottom).offset(32)
+            $0.centerX.equalToSuperview()
+            $0.width.equalTo(320)
         }
         
-        passwordTextField.snp.makeConstraints { make in
-            make.top.equalTo(emailTextField.snp.bottom).offset(32)
-            make.centerX.equalToSuperview()
-            make.width.equalTo(320)
+        passwordTextField.snp.makeConstraints {
+            $0.top.equalTo(emailTextField.snp.bottom).offset(32)
+            $0.centerX.equalToSuperview()
+            $0.width.equalTo(320)
         }
         
-        registerButton.snp.makeConstraints { make in
-            make.bottom.equalTo(view.safeAreaLayoutGuide).inset(64)
-            make.centerX.equalToSuperview()
-            make.width.equalTo(320)
-            make.height.equalTo(64)
+        registerButton.snp.makeConstraints {
+            $0.bottom.equalTo(view.safeAreaLayoutGuide).inset(64)
+            $0.centerX.equalToSuperview()
+            $0.width.equalTo(320)
+            $0.height.equalTo(64)
         }
         
-        loadingView.snp.makeConstraints { make in
-            make.edges.equalToSuperview()
+        loadingView.snp.makeConstraints {
+            $0.edges.equalToSuperview()
         }
     }
     

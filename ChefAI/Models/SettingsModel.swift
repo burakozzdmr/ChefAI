@@ -10,5 +10,4 @@ import Foundation
 struct SettingsModel {
     let image: String
     let name: String
-    let contentURL: String
 }

@@ -64,6 +64,8 @@ class ChefViewController: UIViewController {
         return stackView
     }()
     
+    
+    
     // MARK: - Life Cycles
     
     override func viewDidLoad() {
@@ -134,10 +136,7 @@ private extension ChefViewController {
 
 @objc private extension ChefViewController {
     func sendTapped() {
-        // gpt service call with viewModel
-        
         promptTextField.text = ""
-        
     }
     
     func dismissTapped() {

@@ -80,20 +80,20 @@ private extension HomepageViewController {
     }
     
     func configureConstraints() {
-        mealsCollectionView.snp.makeConstraints { make in
-            make.top.bottom.equalTo(view.safeAreaLayoutGuide)
-            make.leading.trailing.equalToSuperview()
+        mealsCollectionView.snp.makeConstraints {
+            $0.top.bottom.equalTo(view.safeAreaLayoutGuide)
+            $0.leading.trailing.equalToSuperview()
         }
         
-        askToChefButton.snp.makeConstraints { make in
-            make.bottom.equalTo(view.safeAreaLayoutGuide).inset(16)
-            make.trailing.equalToSuperview().inset(16)
-            make.width.equalTo(128)
-            make.height.equalTo(48)
+        askToChefButton.snp.makeConstraints {
+            $0.bottom.equalTo(view.safeAreaLayoutGuide).inset(16)
+            $0.trailing.equalToSuperview().inset(16)
+            $0.width.equalTo(128)
+            $0.height.equalTo(48)
         }
         
-        loadingView.snp.makeConstraints { make in
-            make.edges.equalToSuperview()
+        loadingView.snp.makeConstraints {
+            $0.edges.equalToSuperview()
         }
     }
     

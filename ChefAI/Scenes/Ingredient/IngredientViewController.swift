@@ -81,24 +81,24 @@ private extension IngredientViewController {
     }
     
     func configureConstraints() {
-        ingredientImageView.snp.makeConstraints { make in
-            make.top.equalToSuperview().offset(128)
-            make.centerX.equalToSuperview()
-            make.width.height.equalTo(156)
+        ingredientImageView.snp.makeConstraints {
+            $0.top.equalToSuperview().offset(128)
+            $0.centerX.equalToSuperview()
+            $0.width.height.equalTo(156)
         }
         
-        ingredientNameLabel.snp.makeConstraints { make in
-            make.top.equalTo(ingredientImageView.snp.bottom).offset(32)
-            make.leading.trailing.equalToSuperview().inset(16)
+        ingredientNameLabel.snp.makeConstraints {
+            $0.top.equalTo(ingredientImageView.snp.bottom).offset(32)
+            $0.leading.trailing.equalToSuperview().inset(16)
         }
         
-        ingredientDescriptionLabel.snp.makeConstraints { make in
-            make.top.equalTo(ingredientNameLabel.snp.bottom).offset(64)
-            make.leading.trailing.equalToSuperview().inset(16)
+        ingredientDescriptionLabel.snp.makeConstraints {
+            $0.top.equalTo(ingredientNameLabel.snp.bottom).offset(64)
+            $0.leading.trailing.equalToSuperview().inset(16)
         }
         
-        ingredientScrollView.snp.makeConstraints { make in
-            make.edges.equalToSuperview()
+        ingredientScrollView.snp.makeConstraints {
+            $0.edges.equalToSuperview()
         }
     }
     
