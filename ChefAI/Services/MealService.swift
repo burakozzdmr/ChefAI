@@ -19,7 +19,13 @@ protocol MealServiceProtocol {
     func fetchMealListByCategory(category: String, completion: @escaping (Result<MealModel, NetworkError>) -> Void)
 }
 
-class MealService {}
+class MealService {
+    private let networkManager: NetworkManagerProtocol
+    
+    init(networkManager: NetworkManager = .init()) {
+        self.networkManager = networkManager
+    }
+}
 
 // MARK: - MealServiceProtocol
 
@@ -47,7 +53,7 @@ extension MealService: MealServiceProtocol {
         
         switch request {
         case .success(let request):
-            NetworkManager.shared.executeSearchMealList(request: request, searchText: searchText, completion: completion)
+            networkManager.executeSearchMealList(request: request, searchText: searchText, completion: completion)
         case .failure:
             print("Error message: \(NetworkError.requestFailedError.errorMessage)")
         }
@@ -58,7 +64,7 @@ extension MealService: MealServiceProtocol {
         
         switch request {
         case .success(let request):
-            NetworkManager.shared.executeDailyMeal(request: request, completion: completion)
+            networkManager.executeDailyMeal(request: request, completion: completion)
         case .failure:
             print("Error message: \(NetworkError.requestFailedError.errorMessage)")
         }
@@ -69,7 +75,7 @@ extension MealService: MealServiceProtocol {
         
         switch request {
         case .success(let request):
-            NetworkManager.shared.executeMealCategories(request: request, completion: completion)
+            networkManager.executeMealCategories(request: request, completion: completion)
         case .failure:
             print("Error Message: \(NetworkError.requestFailedError.errorMessage)")
         }
@@ -80,7 +86,7 @@ extension MealService: MealServiceProtocol {
         
         switch request {
         case .success(let request):
-            NetworkManager.shared.executeMealList(request: request, completion: completion)
+            networkManager.executeMealList(request: request, completion: completion)
         case .failure:
             print("Error Message: \(NetworkError.requestFailedError.errorMessage)")
         }
@@ -91,7 +97,7 @@ extension MealService: MealServiceProtocol {
         
         switch request {
         case .success(let request):
-            NetworkManager.shared.executeIngredientList(request: request, completion: completion)
+            networkManager.executeIngredientList(request: request, completion: completion)
         case .failure:
             print("Error Message: \(NetworkError.requestFailedError.errorMessage)")
         }
@@ -102,7 +108,7 @@ extension MealService: MealServiceProtocol {
         
         switch request {
         case .success(let request):
-            NetworkManager.shared.executeMealListByCategory(request: request, completion: completion)
+            networkManager.executeMealListByCategory(request: request, completion: completion)
         case .failure:
             print("Error Message: \(NetworkError.requestFailedError.errorMessage)")
         }

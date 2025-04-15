@@ -7,15 +7,21 @@
 
 import Foundation
 
+protocol NetworkManagerProtocol {
+    func executeSearchMealList(request: URLRequest, searchText: String, completion: @escaping (Result<MealModel, NetworkError>) -> Void)
+    func executeDailyMeal(request: URLRequest, completion: @escaping (Result<MealModel, NetworkError>) -> Void)
+    func executeMealCategories(request: URLRequest, completion: @escaping (Result<CategoryModel, NetworkError>) -> Void)
+    func executeMealList(request: URLRequest, completion: @escaping (Result<MealModel, NetworkError>) -> Void)
+    func executeIngredientList(request: URLRequest, completion: @escaping (Result<IngredientModel, NetworkError>) -> Void)
+    func executeMealListByCategory(request: URLRequest, completion: @escaping (Result<MealModel, NetworkError>) -> Void)
+}
+
 // MARK: - NetworkManager
 
 class NetworkManager {
-    static let shared = NetworkManager()
-    private let service: MealServiceProtocol
     private let session: URLSession
     
-    private init(service: MealService = .init()) {
-        self.service = service
+    init() {
         self.session = URLSession(configuration: .default)
     }
 }
@@ -46,9 +52,9 @@ private extension NetworkManager {
     }
 }
 
-// MARK: - Publics
+// MARK: - NetworkManagerProtocol
 
-extension NetworkManager {
+extension NetworkManager: NetworkManagerProtocol {
     func executeSearchMealList(request: URLRequest, searchText: String, completion: @escaping (Result<MealModel, NetworkError>) -> Void) {
         sendRequest(
             request: request,
