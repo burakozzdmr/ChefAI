@@ -23,6 +23,7 @@ class HomepageViewController: UIViewController {
         collectionView.delegate = self
         collectionView.dataSource = self
         collectionView.backgroundColor = .clear
+        collectionView.contentInsetAdjustmentBehavior = .never
         collectionView.register(MealCell.self, forCellWithReuseIdentifier: MealCell.identifier)
         collectionView.register(CategoryCell.self, forCellWithReuseIdentifier: CategoryCell.identifier)
         collectionView.register(DailyMealCell.self, forCellWithReuseIdentifier: DailyMealCell.identifier)
@@ -386,7 +387,6 @@ extension HomepageViewController: UICollectionViewDelegate {
 
 extension HomepageViewController: HomepageViewModelDelegate {
     func didUpdateData() {
-        print("didUpdateData executed")
         mealsCollectionView.reloadData()
     }
 }

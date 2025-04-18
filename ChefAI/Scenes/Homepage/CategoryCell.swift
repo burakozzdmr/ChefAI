@@ -25,18 +25,24 @@ class CategoryCell: UICollectionViewCell {
     private let categoryImageView: UIImageView = {
         let imageView = UIImageView()
         imageView.image = .init()
-        imageView.contentMode = .scaleAspectFill
+        imageView.contentMode = .scaleToFill
         return imageView
     }()
     
     private let categoryNameLabel: UILabel = {
         let label = UILabel()
         label.text = ""
-        label.textColor = .lightGray
+        label.textColor = .white
         label.font = .systemFont(ofSize: 18, weight: .black)
-        label.numberOfLines = 0
+        label.numberOfLines = 3
         label.textAlignment = .center
         return label
+    }()
+    
+    private let bottomView: UIView = {
+        let view: UIView = .init()
+        view.backgroundColor = .black.withAlphaComponent(0.5)
+        return view
     }()
     
     // MARK: - Inits
@@ -65,24 +71,29 @@ class CategoryCell: UICollectionViewCell {
 
 private extension CategoryCell {
     func addViews() {
-        containerView.addSubview(categoryImageView)
-        containerView.addSubview(categoryNameLabel)
         contentView.addSubview(containerView)
+        containerView.addSubview(categoryImageView)
+        containerView.addSubview(bottomView)
+        bottomView.addSubview(categoryNameLabel)
     }
     
     func configureConstraints() {
         containerView.snp.makeConstraints {
-            $0.edges.equalToSuperview()
+            $0.edges.equalTo(contentView).inset(8)
         }
         
         categoryImageView.snp.makeConstraints {
-            $0.top.leading.trailing.equalToSuperview()
-            $0.width.height.equalTo(96)
+            $0.edges.equalTo(containerView)
+        }
+        
+        bottomView.snp.makeConstraints {
+            $0.leading.trailing.bottom.equalTo(containerView)
+            $0.height.equalTo(48)
         }
         
         categoryNameLabel.snp.makeConstraints {
-            $0.leading.trailing.equalToSuperview().inset(16)
-            $0.bottom.equalToSuperview().inset(32)
+            $0.centerY.equalTo(bottomView)
+            $0.leading.trailing.equalTo(bottomView).inset(8)
         }
     }
     

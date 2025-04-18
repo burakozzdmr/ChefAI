@@ -28,9 +28,9 @@ private extension TabBarController {
             for: HomepageViewController()
         )
         let mealsVC = createNav(
-            with: "Yemekler",
-            and: .init(systemName: "fork.knife") ?? .init(),
-            for: MealsViewController()
+            with: "Ara",
+            and: .init(systemName: "magnifyingglass") ?? .init(),
+            for: TabSearchViewController()
         )
         let profileVC = createNav(
             with: "Profil",
@@ -43,6 +43,15 @@ private extension TabBarController {
         self.tabBar.backgroundColor = .customBackgroundColor2
         self.tabBar.tintColor = .customButton
         self.tabBar.unselectedItemTintColor = .lightGray
+        
+        if #available(iOS 15.0, *) {
+            let appearance = UITabBarAppearance()
+            appearance.configureWithOpaqueBackground()
+            appearance.backgroundColor = .customBackgroundColor2
+
+            UITabBar.appearance().standardAppearance = appearance
+            UITabBar.appearance().scrollEdgeAppearance = appearance
+        }
     }
     
     func createNav(with title: String, and image: UIImage, for controller: UIViewController) -> UINavigationController {
