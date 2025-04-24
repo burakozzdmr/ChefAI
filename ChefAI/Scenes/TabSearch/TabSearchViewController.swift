@@ -121,7 +121,10 @@ private extension TabSearchViewController {
     }
     
     @objc private func searchTapped() {
-        print("Search bar tapped")
+        let searchNavController = UINavigationController(rootViewController: SearchViewController())
+        searchNavController.modalTransitionStyle = .crossDissolve
+        searchNavController.modalPresentationStyle = .fullScreen
+        present(searchNavController, animated: true, completion: nil)
     }
 }
 
