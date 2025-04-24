@@ -53,7 +53,11 @@ extension MealService: MealServiceProtocol {
         
         switch request {
         case .success(let request):
-            networkManager.executeSearchMealList(request: request, searchText: searchText, completion: completion)
+            networkManager.sendRequest(
+                request: request,
+                as: MealModel.self,
+                completion: completion
+            )
         case .failure:
             print("Error message: \(NetworkError.requestFailedError.errorMessage)")
         }
@@ -64,7 +68,11 @@ extension MealService: MealServiceProtocol {
         
         switch request {
         case .success(let request):
-            networkManager.executeDailyMeal(request: request, completion: completion)
+            networkManager.sendRequest(
+                request: request,
+                as: MealModel.self,
+                completion: completion
+            )
         case .failure:
             print("Error message: \(NetworkError.requestFailedError.errorMessage)")
         }
@@ -75,7 +83,11 @@ extension MealService: MealServiceProtocol {
         
         switch request {
         case .success(let request):
-            networkManager.executeMealCategories(request: request, completion: completion)
+            networkManager.sendRequest(
+                request: request,
+                as: CategoryModel.self,
+                completion: completion
+            )
         case .failure:
             print("Error Message: \(NetworkError.requestFailedError.errorMessage)")
         }
@@ -86,7 +98,11 @@ extension MealService: MealServiceProtocol {
         
         switch request {
         case .success(let request):
-            networkManager.executeMealList(request: request, completion: completion)
+            networkManager.sendRequest(
+                request: request,
+                as: MealModel.self,
+                completion: completion
+            )
         case .failure:
             print("Error Message: \(NetworkError.requestFailedError.errorMessage)")
         }
@@ -97,7 +113,11 @@ extension MealService: MealServiceProtocol {
         
         switch request {
         case .success(let request):
-            networkManager.executeIngredientList(request: request, completion: completion)
+            networkManager.sendRequest(
+                request: request,
+                as: IngredientModel.self,
+                completion: completion
+            )
         case .failure:
             print("Error Message: \(NetworkError.requestFailedError.errorMessage)")
         }
@@ -108,7 +128,11 @@ extension MealService: MealServiceProtocol {
         
         switch request {
         case .success(let request):
-            networkManager.executeMealListByCategory(request: request, completion: completion)
+            networkManager.sendRequest(
+                request: request,
+                as: MealModel.self,
+                completion: completion
+            )
         case .failure:
             print("Error Message: \(NetworkError.requestFailedError.errorMessage)")
         }
