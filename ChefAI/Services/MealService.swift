@@ -31,7 +31,7 @@ class MealService {
 
 extension MealService: MealServiceProtocol {
     func prepareRequestURL(_ endpoint: Endpoint) -> Result<URLRequest, NetworkError> {
-        guard var urlComponents = URLComponents(string: endpoint.baseURL + NetworkConstants.apiKey + "/" + endpoint.path) else {
+        guard var urlComponents = URLComponents(string: endpoint.baseURL + NetworkConstants.mealApiKey + "/" + endpoint.path) else {
             print(NetworkError.invalidURL.errorMessage)
             return .failure(.invalidURL)
         }
