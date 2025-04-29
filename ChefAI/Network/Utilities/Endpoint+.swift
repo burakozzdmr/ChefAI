@@ -29,19 +29,13 @@ enum Endpoint {
     case latest
     case list(String)
     case filter(String, String)
-    case completions
 }
 
 // MARK: - EndpointProtocol
 
 extension Endpoint: EndpointProtocol {
     var baseURL: String {
-        switch self {
-        case .completions:
-            return NetworkConstants.gptBaseURL
-        default:
-            return NetworkConstants.mealBaseURL
-        }
+        return NetworkConstants.mealBaseURL
     }
     
     var path: String {
@@ -62,8 +56,6 @@ extension Endpoint: EndpointProtocol {
             return NetworkConstants.listPath
         case .filter:
             return NetworkConstants.filterPath
-        case .completions:
-            return NetworkConstants.completionsPath
         }
     }
     
@@ -93,18 +85,11 @@ extension Endpoint: EndpointProtocol {
             return [
                 URLQueryItem(name: "\(ListType)", value: "\(listQuery)")
             ]
-        case .completions:
-            return nil
         }
     }
     
     var method: HTTPMethod {
-        switch self {
-        case .completions:
-            return .POST
-        default:
-            return .GET
-        }
+        return .GET
     }
     
     var headers: [String : String]? {

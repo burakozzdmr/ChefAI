@@ -64,7 +64,6 @@ class ChefViewController: UIViewController {
     }()
     
     
-    
     // MARK: - Life Cycles
     
     override func viewDidLoad() {
@@ -75,13 +74,7 @@ class ChefViewController: UIViewController {
 
     // MARK: - Inits
     
-    init(viewModel: ChefViewModel = .init()) {
-        super.init(nibName: nil, bundle: nil)
-    }
     
-    required init ?(coder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
-    }
 }
 
 // MARK: - Privates
@@ -135,7 +128,7 @@ private extension ChefViewController {
 
 @objc private extension ChefViewController {
     func sendTapped() {
-        promptTextField.text = ""
+        
     }
     
     func dismissTapped() {
@@ -175,8 +168,4 @@ extension ChefViewController: UITextFieldDelegate {
         textField.resignFirstResponder()
         return true
     }
-}
-
-#Preview {
-    ChefViewController()
 }

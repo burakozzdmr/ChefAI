@@ -31,6 +31,12 @@ extension NetworkManager: NetworkManagerProtocol {
                 return
             }
             
+            if let httpResponse = response as? HTTPURLResponse {
+                print(httpResponse.statusCode)
+            } else {
+                print("empty error here we go ")
+            }
+            
             guard let data = data else {
                 completion(.failure(.emptyDataError))
                 return
@@ -38,9 +44,11 @@ extension NetworkManager: NetworkManagerProtocol {
             
             do {
                 let jsonResponse = try JSONDecoder().decode(T.self, from: data)
+                print(jsonResponse)
                 completion(.success(jsonResponse))
             } catch {
                 print("JSON DECODE ERROR: \(error.localizedDescription)")
+                completion(.failure(.decodeError))
             }
         }
         .resume()
