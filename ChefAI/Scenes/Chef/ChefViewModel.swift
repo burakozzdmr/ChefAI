@@ -10,6 +10,10 @@ import Foundation
 class ChefViewModel {
     private let geminiService: GeminiServiceProtocol
     
+    let promptRules = """
+    Sen profesyonel bir mutfak şefisin. Kullanıcı sana sadece yemek tarifi, kaloriler, makro değerleri yani kısacası yemek hakkında birşey sorduğunda cevap ver. Alakasız bir soru sorarsa sana örneğin futbol gibi nazik bir şekilde cevap vermeyi reddet. Ayrıca kullanıcı sana hangi dilde soru soruyorsa o dilde cevap ver.İşte kullanıcının sana sorduğu soru: 
+"""
+    
     init(geminiService: GeminiService = .init()) {
         self.geminiService = geminiService
     }

@@ -136,10 +136,8 @@ private extension ChefViewController {
 
 @objc private extension ChefViewController {
     func sendTapped() {
-        let promptRule = """
-        Sen profesyonel bir mutfak şefisin. Kullanıcı sana sadece yemek tarifi, kaloriler, makro değerleri yani kısacası yemek hakkında birşey sorduğunda cevap ver. Alakasız bir soru sorarsa sana örneğin futbol gibi nazik bir şekilde cevap vermeyi reddet. Ayrıca kullanıcı sana hangi dilde soru soruyorsa o dilde cevap ver.İşte kullanıcının sana sorduğu soru: 
-"""
-        viewModel.sendPrompt(prompt: promptRule + (promptTextField.text ?? "")) { [weak self] gptResponse in
+
+        viewModel.sendPrompt(prompt: viewModel.promptRules + (promptTextField.text ?? "")) { [weak self] gptResponse in
             guard self != nil else { return }
             
             switch gptResponse {
