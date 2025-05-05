@@ -9,8 +9,8 @@ import UIKit
 import SnapKit
 import Kingfisher
 
-class SearchCell: UICollectionViewCell {
-    static let identifier = "searchCell"
+class TabSearchCell: UICollectionViewCell {
+    static let identifier = "tabSearchCell"
     
     // MARK: - Properties
     
@@ -68,7 +68,7 @@ class SearchCell: UICollectionViewCell {
 
 // MARK: - Privates
 
-private extension SearchCell {
+private extension TabSearchCell {
     func addViews() {
         addSubview(containerView)
         containerView.addSubviews(

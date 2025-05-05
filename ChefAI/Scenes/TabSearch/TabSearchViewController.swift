@@ -45,7 +45,7 @@ class TabSearchViewController: UIViewController {
         collectionView.dataSource = self
         collectionView.backgroundColor = .customBackgroundColor2
         
-        collectionView.register(SearchCell.self, forCellWithReuseIdentifier: SearchCell.identifier)
+        collectionView.register(TabSearchCell.self, forCellWithReuseIdentifier: TabSearchCell.identifier)
         return collectionView
     }()
     
@@ -136,7 +136,7 @@ extension TabSearchViewController: UICollectionViewDataSource {
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: SearchCell.identifier, for: indexPath) as! SearchCell
+        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: TabSearchCell.identifier, for: indexPath) as! TabSearchCell
         cell.configure(cell: viewModel.mostSearchMealList[indexPath.row])
         return cell
     }

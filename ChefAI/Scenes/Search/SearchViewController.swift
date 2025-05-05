@@ -33,9 +33,10 @@ class SearchViewController: UIViewController {
         let tableView: UITableView = .init()
         tableView.delegate = self
         tableView.dataSource = self
-        tableView.rowHeight = 60
+        tableView.rowHeight = 80
         tableView.backgroundColor = .customBackgroundColor2
         tableView.separatorStyle = .none
+        tableView.register(SearchCell.self, forCellReuseIdentifier: SearchCell.identifier)
         return tableView
     }()
     
@@ -54,6 +55,8 @@ class SearchViewController: UIViewController {
     init(viewModel: SearchViewModel = .init()) {
         self.viewModel = viewModel
         super.init(nibName: nil, bundle: nil)
+        
+        viewModel.delegate = self
     }
     
     required init ?(coder: NSCoder) {
@@ -106,11 +109,13 @@ private extension SearchViewController {
 
 extension SearchViewController: UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return 0
+        return viewModel.searchMealList.count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        return .init()
+        let cell = tableView.dequeueReusableCell(withIdentifier: SearchCell.identifier, for: indexPath) as! SearchCell
+        cell.configure(with: viewModel.searchMealList[indexPath.row])
+        return cell
     }
 }
 
@@ -118,11 +123,7 @@ extension SearchViewController: UITableViewDataSource {
 
 extension SearchViewController: UITableViewDelegate {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        
-    }
-    
-    func tableView(_ tableView: UITableView, trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
-        return .init()
+        // present meal detail screen
     }
 }
 
@@ -130,7 +131,11 @@ extension SearchViewController: UITableViewDelegate {
 
 extension SearchViewController: UISearchResultsUpdating {
     func updateSearchResults(for searchController: UISearchController) {
-        print(searchController.searchBar.text!)
+        if searchController.searchBar.text != "" {
+            viewModel.searchMeal(searchText: searchController.searchBar.text ?? "")
+        } else {
+            // fetchLatestSelectedMeals() call
+        }
     }
 }
 
@@ -139,5 +144,17 @@ extension SearchViewController: UISearchResultsUpdating {
 extension SearchViewController: UISearchBarDelegate {
     func searchBarCancelButtonClicked(_ searchBar: UISearchBar) {
         dismiss(animated: false)
+    }
+}
+
+// MARK: - SearchViewModelProtocol
+
+extension SearchViewController: SearchViewModelProtocol {
+    func didUpdateData() {
+        UIView.transition(with: searchResultTableView, duration: 0.5, options: .transitionCrossDissolve) {
+            DispatchQueue.main.async {
+                self.searchResultTableView.reloadData()
+            }
+        }
     }
 }
