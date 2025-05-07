@@ -10,7 +10,6 @@ import Foundation
 // MARK: - Protocools
 
 protocol MealServiceProtocol {
-    func prepareRequestURL(_ endpoint: Endpoint) -> Result<URLRequest, NetworkError>
     func searchMealList(searchText: String, completion: @escaping (Result<MealModel, NetworkError>) -> Void)
     func fetchDailyMeal(completion: @escaping (Result<MealModel, NetworkError>) -> Void)
     func fetchMealCategories(completion: @escaping (Result<CategoryModel, NetworkError>) -> Void)
@@ -27,9 +26,9 @@ class MealService {
     }
 }
 
-// MARK: - MealServiceProtocol
+// MARK: - Privates
 
-extension MealService: MealServiceProtocol {
+private extension MealService {
     func prepareRequestURL(_ endpoint: Endpoint) -> Result<URLRequest, NetworkError> {
         guard var urlComponents = URLComponents(string: endpoint.baseURL + NetworkConstants.mealApiKey + "/" + endpoint.path) else {
             print(NetworkError.invalidURL.errorMessage)
@@ -47,7 +46,11 @@ extension MealService: MealServiceProtocol {
         request.httpMethod = endpoint.method.rawValue
         return .success(request)
     }
-    
+}
+
+// MARK: - MealServiceProtocol
+
+extension MealService: MealServiceProtocol {
     func searchMealList(searchText: String, completion: @escaping (Result<MealModel, NetworkError>) -> Void) {
         let request = prepareRequestURL(Endpoint.search(searchText))
         

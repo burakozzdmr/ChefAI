@@ -8,7 +8,6 @@
 import Foundation
 
 protocol GeminiServiceProtocol {
-    func prepareRequestURL(_ endpoint: Endpoint) -> Result<URLRequest, NetworkError>
     func sendPrompt(prompt: String, completion: @escaping (Result<GeminiResponse, NetworkError>) -> Void)
 }
 
@@ -22,9 +21,9 @@ class GeminiService {
     }
 }
 
-// MARK: - GeminiServiceProtocol
+// MARK: - Privates
 
-extension GeminiService: GeminiServiceProtocol {
+private extension GeminiService {
     func prepareRequestURL(_ endpoint: Endpoint) -> Result<URLRequest, NetworkError> {
         guard var urlComponents = URLComponents(string: endpoint.baseURL + endpoint.path) else {
             return .failure(.invalidURL)
@@ -42,7 +41,11 @@ extension GeminiService: GeminiServiceProtocol {
         print(request.url?.absoluteString ?? "invalid url string")
         return .success(request)
     }
-    
+}
+
+// MARK: - GeminiServiceProtocol
+
+extension GeminiService: GeminiServiceProtocol {
     func sendPrompt(prompt: String, completion: @escaping (Result<GeminiResponse, NetworkError>) -> Void) {
         let request = prepareRequestURL(Endpoint.gemini)
         

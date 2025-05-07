@@ -24,22 +24,24 @@ class ChefViewController: UIViewController {
         return button
     }()
     
-    private lazy var chefTableView: UITableView = {
+    private lazy var chatTableView: UITableView = {
         let tableView: UITableView = .init()
         tableView.delegate = self
         tableView.dataSource = self
+        tableView.backgroundColor = .customBackgroundColor2
         tableView.separatorStyle = .none
-        tableView.backgroundColor = .systemGreen
+        tableView.rowHeight = UITableView.automaticDimension
+        tableView.estimatedRowHeight = 80
         tableView.register(ChatCell.self, forCellReuseIdentifier: ChatCell.identifier)
         return tableView
     }()
     
     private lazy var promptTextField: UnderlineTextField = {
         let textField: UnderlineTextField = .init()
-        textField.placeholder = "Type something"
+        textField.placeholder = "Ask to Chef"
         textField.borderStyle = .none
         textField.delegate = self
-        textField.textColor = .lightGray
+        textField.textColor = .red
         textField.returnKeyType = .send
         return textField
     }()
@@ -78,6 +80,8 @@ class ChefViewController: UIViewController {
     init(viewModel: ChefViewModel = .init()) {
         self.viewModel = viewModel
         super.init(nibName: nil, bundle: nil)
+        
+        viewModel.delegate = self
     }
     
     required init ?(coder: NSCoder) {
@@ -90,30 +94,29 @@ class ChefViewController: UIViewController {
 private extension ChefViewController {
     func addViews() {
         view.addSubviews(
+            bottomStackView,
             dismissButton,
-            chefTableView,
-            bottomStackView
+            chatTableView
         )
-        
         bottomStackView.addArrangedSubview(promptTextField)
         bottomStackView.addArrangedSubview(sendButton)
     }
     
     func configureConstraints() {
         dismissButton.snp.makeConstraints {
-            $0.top.equalTo(view.safeAreaLayoutGuide).offset(8)
-            $0.trailing.equalToSuperview().inset(36)
+            $0.top.equalTo(view.safeAreaLayoutGuide).offset(16)
+            $0.trailing.equalToSuperview().offset(-16)
         }
         
-        chefTableView.snp.makeConstraints {
-            $0.top.equalTo(view.safeAreaLayoutGuide).offset(48)
+        chatTableView.snp.makeConstraints {
+            $0.top.equalTo(dismissButton.snp.bottom).offset(16)
             $0.leading.trailing.equalToSuperview()
-            $0.bottom.equalTo(bottomStackView.snp.top).offset(-16)
+            $0.bottom.equalTo(bottomStackView.snp.top).offset(-8)
         }
         
         bottomStackView.snp.makeConstraints {
-            $0.centerX.equalToSuperview()
-            $0.width.equalTo(360)
+            $0.top.equalTo(chatTableView.snp.bottom).offset(16)
+            $0.leading.trailing.equalToSuperview().inset(16)
             $0.bottom.equalTo(view.safeAreaLayoutGuide)
         }
         
@@ -127,8 +130,6 @@ private extension ChefViewController {
         configureConstraints()
         
         view.backgroundColor = .white
-        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(dismissKeyboard))
-        view.addGestureRecognizer(tapGesture)
     }
 }
 
@@ -136,24 +137,22 @@ private extension ChefViewController {
 
 @objc private extension ChefViewController {
     func sendTapped() {
-
-        viewModel.sendPrompt(prompt: viewModel.promptRules + (promptTextField.text ?? "")) { [weak self] gptResponse in
-            guard self != nil else { return }
-            
-            switch gptResponse {
-            case .success(let responseData):
-                print("yazdır amk şu response u")
-                print("GPT RESPONSE MESSAGE: \(responseData)")
-            case .failure:
-                print("view controller boş data")
-                print(NetworkError.emptyDataError.errorMessage)
-            }
-        }
+        viewModel.sendMessage(promptText: promptTextField.text ?? "")
+        
         promptTextField.text = ""
     }
     
     func dismissTapped() {
-        dismiss(animated: true)
+        let alert = UIAlertController(title: "UYARI", message: "Sohbeti bitirmek üzeresiniz", preferredStyle: .alert)
+        alert.addAction(
+            UIAlertAction(title: "Evet", style: .default, handler: { _ in
+                self.dismiss(animated: true)
+            })
+        )
+        alert.addAction(
+            UIAlertAction(title: "İptal", style: .destructive)
+        )
+        self.present(alert, animated: true)
     }
     
     func dismissKeyboard() {
@@ -169,17 +168,14 @@ extension ChefViewController: UITableViewDataSource {
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: ChatCell.identifier, for: indexPath) as! ChatCell
-        return cell
+        return .init()
     }
 }
 
 // MARK: - UITableViewDelegate
 
 extension ChefViewController: UITableViewDelegate {
-    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        tableView.deselectRow(at: indexPath, animated: false)
-    }
+    
 }
 
 // MARK: - UITextFieldDelegate
@@ -188,5 +184,17 @@ extension ChefViewController: UITextFieldDelegate {
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
         textField.resignFirstResponder()
         return true
+    }
+}
+
+// MARK: - ChefViewModelProtocol
+
+extension ChefViewController: ChefViewModelProtocol {
+    func didUpdateData() {
+        UIView.transition(with: chatTableView, duration: 0.25, options: .transitionCrossDissolve) {
+            DispatchQueue.main.async {
+                self.chatTableView.reloadData()
+            }
+        }
     }
 }
