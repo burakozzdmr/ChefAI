@@ -137,7 +137,7 @@ private extension ChefViewController {
 
 @objc private extension ChefViewController {
     func sendTapped() {
-        viewModel.sendMessage(promptText: promptTextField.text ?? "")
+        viewModel.sendMessage(promptText: viewModel.geminiPrompt + (promptTextField.text ?? ""))
         
         promptTextField.text = ""
     }

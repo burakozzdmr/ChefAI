@@ -13,8 +13,14 @@ protocol ChefViewModelProtocol: AnyObject {
 
 class ChefViewModel {
     private let geminiService: GeminiServiceProtocol
-    private(set) var chatMessageList: [String] = []
     weak var delegate: ChefViewModelProtocol?
+    var chatMessageList: [String] = []
+    let geminiPrompt =
+"""
+    Sen profesyonel bir mutfak şefisin. Kullanıcılar sana sadece yemek ile alakalı sorular sorduğunda cevaplar vermeni istiyorum. Örneğin bir yemek tarifi, bir yemeğin makro değerleri kalorileri veya bir yemek yapmak için hangi malzemeler gerektiği gibi sorulara cevap ver sadece. Eğer çok alakasız sorular gelirse lütfen bunu kibar bir şekilde reddet. Kullanıcı sana hangi dilde soru sorduysa o dilde cevap ver. Örneğin ispanyolca bir soru gelirse sende aynı şekilde ispanyolca bir şekilde cevap ver.
+
+        İşte kullanıcının sana sorduğu soru: 
+"""
     
     init(geminiService: GeminiService = .init()) {
         self.geminiService = geminiService
