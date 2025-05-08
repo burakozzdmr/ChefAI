@@ -33,6 +33,8 @@ class ChefViewController: UIViewController {
         tableView.rowHeight = UITableView.automaticDimension
         tableView.estimatedRowHeight = 80
         tableView.register(ChatCell.self, forCellReuseIdentifier: ChatCell.identifier)
+        tableView.keyboardDismissMode = .onDrag
+        tableView.contentInset = UIEdgeInsets(top: 8, left: 0, bottom: 8, right: 0)
         return tableView
     }()
     
@@ -41,7 +43,7 @@ class ChefViewController: UIViewController {
         textField.placeholder = "Ask to Chef"
         textField.borderStyle = .none
         textField.delegate = self
-        textField.textColor = .red
+        textField.textColor = .white
         textField.returnKeyType = .send
         return textField
     }()
@@ -66,13 +68,18 @@ class ChefViewController: UIViewController {
     }()
     
     private let viewModel: ChefViewModel
+    private var bottomStackViewBottomConstraint: Constraint?
     
     // MARK: - Life Cycles
     
     override func viewDidLoad() {
         super.viewDidLoad()
-
         configureUI()
+        setupKeyboardObservers()
+    }
+    
+    deinit {
+        NotificationCenter.default.removeObserver(self)
     }
 
     // MARK: - Inits
@@ -84,7 +91,7 @@ class ChefViewController: UIViewController {
         viewModel.delegate = self
     }
     
-    required init ?(coder: NSCoder) {
+    required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
 }
@@ -117,7 +124,7 @@ private extension ChefViewController {
         bottomStackView.snp.makeConstraints {
             $0.top.equalTo(chatTableView.snp.bottom).offset(16)
             $0.leading.trailing.equalToSuperview().inset(16)
-            $0.bottom.equalTo(view.safeAreaLayoutGuide)
+            bottomStackViewBottomConstraint = $0.bottom.equalTo(view.safeAreaLayoutGuide).constraint
         }
         
         sendButton.snp.makeConstraints {
@@ -129,16 +136,52 @@ private extension ChefViewController {
         addViews()
         configureConstraints()
         
-        view.backgroundColor = .white
+        view.backgroundColor = .customBackgroundColor2
+    }
+    
+    func setupKeyboardObservers() {
+        NotificationCenter.default.addObserver(
+            self,
+            selector: #selector(keyboardWillShow),
+            name: UIResponder.keyboardWillShowNotification,
+            object: nil
+        )
+        
+        NotificationCenter.default.addObserver(
+            self,
+            selector: #selector(keyboardWillHide),
+            name: UIResponder.keyboardWillHideNotification,
+            object: nil
+        )
     }
 }
 
 // MARK: - Objective - C Methods
 
 @objc private extension ChefViewController {
-    func sendTapped() {
-        viewModel.sendMessage(promptText: viewModel.geminiPrompt + (promptTextField.text ?? ""))
+    func keyboardWillShow(_ notification: Notification) {
+        guard let keyboardFrame = notification.userInfo?[UIResponder.keyboardFrameEndUserInfoKey] as? CGRect else { return }
         
+        let keyboardHeight = keyboardFrame.height
+        let duration = notification.userInfo?[UIResponder.keyboardAnimationDurationUserInfoKey] as? Double ?? 0.25
+        
+        UIView.animate(withDuration: duration) {
+            self.bottomStackViewBottomConstraint?.update(offset: -keyboardHeight)
+            self.view.layoutIfNeeded()
+        }
+    }
+    
+    func keyboardWillHide(_ notification: Notification) {
+        let duration = notification.userInfo?[UIResponder.keyboardAnimationDurationUserInfoKey] as? Double ?? 0.25
+        
+        UIView.animate(withDuration: duration) {
+            self.bottomStackViewBottomConstraint?.update(offset: 0)
+            self.view.layoutIfNeeded()
+        }
+    }
+    
+    func sendTapped() {
+        viewModel.sendMessage(promptText: promptTextField.text ?? "")
         promptTextField.text = ""
     }
     
@@ -164,18 +207,29 @@ private extension ChefViewController {
 
 extension ChefViewController: UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return 0
+        return viewModel.chatMessageList.count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        return .init()
+        let cell = tableView.dequeueReusableCell(withIdentifier: ChatCell.identifier, for: indexPath) as! ChatCell
+        let chatMessage = viewModel.chatMessageList[indexPath.row]
+        cell.configure(with: chatMessage.message, type: chatMessage.type)
+        return cell
     }
 }
 
 // MARK: - UITableViewDelegate
 
 extension ChefViewController: UITableViewDelegate {
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        tableView.deselectRow(at: indexPath, animated: true)
+    }
     
+    func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
+        if indexPath.row == viewModel.chatMessageList.count - 1 {
+            tableView.scrollToRow(at: indexPath, at: .bottom, animated: true)
+        }
+    }
 }
 
 // MARK: - UITextFieldDelegate

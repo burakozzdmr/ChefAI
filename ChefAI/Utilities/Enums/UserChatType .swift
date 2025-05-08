@@ -6,20 +6,8 @@
 //
 
 import Foundation
-import FirebaseAuth
 
 enum UserChatType {
+    case user
     case gemini
-    case normalUser
-    
-    init(for userEmail: String) {
-        let userID: String = Auth.auth().currentUser?.email ?? ""
-        
-        switch userEmail {
-        case userID:
-            self = .normalUser
-        default:
-            self = .gemini
-        }
-    }
 }
