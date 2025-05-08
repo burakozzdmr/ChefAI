@@ -32,11 +32,17 @@ class MealCell: UICollectionViewCell {
     private let mealNameLabel: UILabel = {
         let label = UILabel()
         label.text = ""
-        label.textColor = .lightGray
+        label.textColor = .white
         label.font = .systemFont(ofSize: 14, weight: .black)
-        label.numberOfLines = 0
+        label.numberOfLines = 3
         label.textAlignment = .center
         return label
+    }()
+    
+    private let bottomView: UIView = {
+        let view: UIView = .init()
+        view.backgroundColor = .black.withAlphaComponent(0.5)
+        return view
     }()
     
     // MARK: - Inits
@@ -65,25 +71,29 @@ class MealCell: UICollectionViewCell {
 
 private extension MealCell {
     func addViews() {
-        containerView.addSubview(mealImageView)
-        containerView.addSubview(mealNameLabel)
         contentView.addSubview(containerView)
+        containerView.addSubview(mealImageView)
+        containerView.addSubview(bottomView)
+        bottomView.addSubview(mealNameLabel)
     }
     
     func configureConstraints() {
         containerView.snp.makeConstraints {
-            $0.edges.equalToSuperview()
+            $0.edges.equalTo(contentView).inset(8)
         }
         
         mealImageView.snp.makeConstraints {
-            $0.top.leading.trailing.equalToSuperview()
-            $0.width.height.equalTo(96)
+            $0.edges.equalTo(containerView)
+        }
+        
+        bottomView.snp.makeConstraints {
+            $0.leading.trailing.bottom.equalTo(containerView)
+            $0.height.equalTo(48)
         }
         
         mealNameLabel.snp.makeConstraints {
-            $0.top.equalTo(mealImageView.snp.bottom).offset(32)
-            $0.leading.trailing.equalToSuperview().inset(4)
-            $0.bottom.equalToSuperview().inset(4)
+            $0.centerY.equalTo(bottomView)
+            $0.leading.trailing.equalTo(bottomView).inset(8)
         }
     }
     

@@ -16,7 +16,7 @@ class SectionHeaderView: UICollectionReusableView {
     private let titleLabel: UILabel = {
         let label = UILabel()
         label.font = .systemFont(ofSize: 24, weight: .black)
-        label.textColor = .customBackground
+        label.textColor = .white
         return label
     }()
     
@@ -47,9 +47,9 @@ private extension SectionHeaderView {
     }
     
     func configureConstraints() {
-        titleLabel.snp.makeConstraints { make in
-            make.leading.equalToSuperview().offset(16)
-            make.centerY.equalToSuperview()
+        titleLabel.snp.makeConstraints {
+            $0.leading.equalToSuperview().offset(16)
+            $0.centerY.equalToSuperview()
         }
     }
     

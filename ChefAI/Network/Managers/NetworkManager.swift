@@ -7,22 +7,23 @@
 
 import Foundation
 
+protocol NetworkManagerProtocol {
+    func sendRequest<T: Codable>(request: URLRequest, as: T.Type, completion: @escaping (Result<T, NetworkError>) -> Void)
+}
+
 // MARK: - NetworkManager
 
 class NetworkManager {
-    static let shared = NetworkManager()
-    private let service: MealServiceProtocol
     private let session: URLSession
     
-    private init(service: MealService = .init()) {
-        self.service = service
+    init() {
         self.session = URLSession(configuration: .default)
     }
 }
 
-// MARK: - Privates
+// MARK: - NetworkManagerProtocol
 
-private extension NetworkManager {
+extension NetworkManager: NetworkManagerProtocol {
     func sendRequest<T: Codable>(request: URLRequest, as: T.Type, completion: @escaping (Result<T, NetworkError>) -> Void) {
         session.dataTask(with: request) { data, response, error in
             if error != nil {
@@ -40,60 +41,9 @@ private extension NetworkManager {
                 completion(.success(jsonResponse))
             } catch {
                 print("JSON DECODE ERROR: \(error.localizedDescription)")
+                completion(.failure(.decodeError))
             }
         }
         .resume()
-    }
-}
-
-// MARK: - Publics
-
-extension NetworkManager {
-    func executeSearchMealList(request: URLRequest, searchText: String, completion: @escaping (Result<MealModel, NetworkError>) -> Void) {
-        sendRequest(
-            request: request,
-            as: MealModel.self,
-            completion: completion
-        )
-    }
-    
-    func executeDailyMeal(request: URLRequest, completion: @escaping (Result<MealModel, NetworkError>) -> Void) {
-        sendRequest(
-            request: request,
-            as: MealModel.self,
-            completion: completion
-        )
-    }
-    
-    func executeMealCategories(request: URLRequest, completion: @escaping (Result<CategoryModel, NetworkError>) -> Void) {
-        sendRequest(
-            request: request,
-            as: CategoryModel.self,
-            completion: completion
-        )
-    }
-    
-    func executeMealList(request: URLRequest, completion: @escaping (Result<MealModel, NetworkError>) -> Void) {
-        sendRequest(
-            request: request,
-            as: MealModel.self,
-            completion: completion
-        )
-    }
-    
-    func executeIngredientList(request: URLRequest, completion: @escaping (Result<IngredientModel, NetworkError>) -> Void) {
-        sendRequest(
-            request: request,
-            as: IngredientModel.self,
-            completion: completion
-        )
-    }
-    
-    func executeMealListByCategory(request: URLRequest, completion: @escaping (Result<MealModel, NetworkError>) -> Void) {
-        sendRequest(
-            request: request,
-            as: MealModel.self,
-            completion: completion
-        )
     }
 }

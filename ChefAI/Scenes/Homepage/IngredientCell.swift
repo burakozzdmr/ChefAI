@@ -32,10 +32,16 @@ class IngredientCell: UICollectionViewCell {
     private let ingredientNameLabel: UILabel = {
         let label = UILabel()
         label.text = ""
-        label.textColor = .lightGray
+        label.textColor = .white
         label.font = .systemFont(ofSize: 18, weight: .black)
-        label.numberOfLines = 0
+        label.numberOfLines = 3
         return label
+    }()
+    
+    private let bottomView: UIView = {
+        let view: UIView = .init()
+        view.backgroundColor = .black.withAlphaComponent(0.5)
+        return view
     }()
     
     // MARK: - Inits
@@ -64,9 +70,12 @@ class IngredientCell: UICollectionViewCell {
 
 private extension IngredientCell {
     func addViews() {
-        containerView.addSubview(ingredientImageView)
-        containerView.addSubview(ingredientNameLabel)
         contentView.addSubview(containerView)
+        containerView.addSubviews(
+            ingredientImageView,
+            bottomView,
+            ingredientNameLabel
+        )
     }
     
     func configureConstraints() {
@@ -75,14 +84,17 @@ private extension IngredientCell {
         }
         
         ingredientImageView.snp.makeConstraints {
-            $0.top.leading.trailing.equalToSuperview()
-            $0.width.height.equalTo(128)
+            $0.edges.equalToSuperview()
         }
         
         ingredientNameLabel.snp.makeConstraints {
-            $0.top.equalTo(ingredientImageView.snp.bottom).offset(32)
-            $0.leading.trailing.equalToSuperview().inset(4)
-            $0.bottom.equalToSuperview().inset(4)
+            $0.centerY.equalTo(bottomView)
+            $0.leading.trailing.equalToSuperview().inset(8)
+        }
+        
+        bottomView.snp.makeConstraints {
+            $0.leading.trailing.bottom.equalToSuperview()
+            $0.height.equalTo(48)
         }
     }
     

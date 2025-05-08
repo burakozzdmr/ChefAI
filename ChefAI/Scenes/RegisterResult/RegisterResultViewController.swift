@@ -61,22 +61,22 @@ private extension RegisterResultViewController {
     }
     
     func configureConstraints() {
-        successmarkImageView.snp.makeConstraints { make in
-            make.top.equalToSuperview().offset(240)
-            make.centerX.equalToSuperview()
-            make.width.height.equalTo(128)
+        successmarkImageView.snp.makeConstraints {
+            $0.top.equalToSuperview().offset(240)
+            $0.centerX.equalToSuperview()
+            $0.width.height.equalTo(128)
         }
         
-        thatsItLabel.snp.makeConstraints { make in
-            make.top.equalTo(successmarkImageView.snp.bottom).offset(32)
-            make.centerX.equalToSuperview()
+        thatsItLabel.snp.makeConstraints {
+            $0.top.equalTo(successmarkImageView.snp.bottom).offset(32)
+            $0.centerX.equalToSuperview()
         }
         
-        backToLoginButton.snp.makeConstraints { make in
-            make.top.equalTo(thatsItLabel.snp.bottom).offset(96)
-            make.centerX.equalToSuperview()
-            make.width.equalTo(320)
-            make.height.equalTo(64)
+        backToLoginButton.snp.makeConstraints {
+            $0.top.equalTo(thatsItLabel.snp.bottom).offset(96)
+            $0.centerX.equalToSuperview()
+            $0.width.equalTo(320)
+            $0.height.equalTo(64)
         }
     }
     

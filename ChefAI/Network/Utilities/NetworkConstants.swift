@@ -8,7 +8,8 @@
 import Foundation
 
 class NetworkConstants {
-    static let baseURL = "https://www.themealdb.com/api/json/v2/"
+    static let mealBaseURL = "https://www.themealdb.com/api/json/v2/"
+    static let geminiBaseURL = "https://generativelanguage.googleapis.com/v1/models/"
     static let searchPath = "search.php"
     static let lookupPath = "lookup.php"
     static let randomPath = "random.php"
@@ -17,5 +18,7 @@ class NetworkConstants {
     static let latestPath = "latest.php"
     static let listPath = "list.php"
     static let filterPath = "filter.php"
-    static let apiKey = "65232507"
+    static let geminiPath = "gemini-2.0-flash-lite:generateContent"
+    static let mealApiKey = "65232507"
+    static let geminiApiKey = "AIzaSyDYqHN1of7rWJjs8MMoF5v6fumWJk8olNE"
 }

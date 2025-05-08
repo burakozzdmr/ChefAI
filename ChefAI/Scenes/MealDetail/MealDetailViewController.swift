@@ -99,31 +99,31 @@ private extension MealDetailViewController {
     }
     
     func configureConstraints() {
-        mealImageView.snp.makeConstraints { make in
-            make.top.equalToSuperview().offset(128)
-            make.centerX.equalToSuperview()
-            make.width.height.equalTo(156)
+        mealImageView.snp.makeConstraints {
+            $0.top.equalToSuperview().offset(128)
+            $0.centerX.equalToSuperview()
+            $0.width.height.equalTo(156)
         }
         
-        mealNameLabel.snp.makeConstraints { make in
-            make.top.equalTo(mealImageView.snp.bottom).offset(32)
-            make.leading.trailing.equalToSuperview().inset(16)
+        mealNameLabel.snp.makeConstraints {
+            $0.top.equalTo(mealImageView.snp.bottom).offset(32)
+            $0.leading.trailing.equalToSuperview().inset(16)
         }
         
-        mealDescriptionLabel.snp.makeConstraints { make in
-            make.top.equalTo(mealNameLabel.snp.bottom).offset(64)
-            make.leading.trailing.equalToSuperview().inset(16)
+        mealDescriptionLabel.snp.makeConstraints {
+            $0.top.equalTo(mealNameLabel.snp.bottom).offset(64)
+            $0.leading.trailing.equalToSuperview().inset(16)
         }
         
-        goToRecipeButton.snp.makeConstraints { make in
-            make.top.equalTo(mealDescriptionLabel.snp.bottom).offset(32)
-            make.centerX.equalToSuperview()
-            make.width.equalTo(320)
-            make.height.equalTo(56)
+        goToRecipeButton.snp.makeConstraints {
+            $0.top.equalTo(mealDescriptionLabel.snp.bottom).offset(32)
+            $0.centerX.equalToSuperview()
+            $0.width.equalTo(320)
+            $0.height.equalTo(56)
         }
         
-        detailScrollView.snp.makeConstraints { make in
-            make.edges.equalToSuperview()
+        detailScrollView.snp.makeConstraints {
+            $0.edges.equalToSuperview()
         }
     }
     
