@@ -77,10 +77,7 @@ class ChefViewController: UIViewController {
         configureUI()
         setupKeyboardObservers()
     }
-    
-    deinit {
-        NotificationCenter.default.removeObserver(self)
-    }
+
 
     // MARK: - Inits
     
@@ -93,6 +90,10 @@ class ChefViewController: UIViewController {
     
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
+    }
+    
+    deinit {
+        NotificationCenter.default.removeObserver(self)
     }
 }
 

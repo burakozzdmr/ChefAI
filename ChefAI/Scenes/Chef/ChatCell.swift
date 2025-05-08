@@ -28,16 +28,21 @@ class ChatCell: UITableViewCell {
     private let userImageView: UIImageView = {
         let imageView = UIImageView()
         imageView.image = UIImage(systemName: "person.circle.fill")
-        imageView.tintColor = .lightGray
+        imageView.tintColor = .white
         imageView.contentMode = .scaleAspectFit
+        imageView.clipsToBounds = true
+        imageView.layer.cornerRadius = 16
         return imageView
     }()
     
     private let geminiImageView: UIImageView = {
         let imageView = UIImageView()
         imageView.image = UIImage(systemName: "brain.head.profile")
-        imageView.tintColor = .customButton
+        imageView.tintColor = .white
+        imageView.backgroundColor = .customButton
         imageView.contentMode = .scaleAspectFit
+        imageView.clipsToBounds = true
+        imageView.layer.cornerRadius = 16
         return imageView
     }()
     
