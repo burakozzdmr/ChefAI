@@ -40,9 +40,7 @@ class ChefViewModel {
                 if let responseText = messageList.candidates.first?.content.parts.first?.text {
                     let geminiMessage = UserChatModel(message: responseText, type: .gemini)
                     self.chatMessageList.append(geminiMessage)
-                    DispatchQueue.main.async {
-                        self.delegate?.didUpdateData()
-                    }
+                    delegate?.didUpdateData()
                 }
             case .failure:
                 print(NetworkError.emptyDataError.errorMessage)

@@ -7,56 +7,98 @@
 
 import UIKit
 import SnapKit
-
-// MARK: - MealDetailViewController
+import Kingfisher
+import WebKit
 
 class MealDetailViewController: UIViewController {
 
     // MARK: - Properties
     
     private let detailScrollView: UIScrollView = {
-        let scrollView = UIScrollView()
+        let scrollView: UIScrollView = .init()
         scrollView.isScrollEnabled = true
-        scrollView.backgroundColor = .customBackgroundColor2
+        scrollView.showsVerticalScrollIndicator = true
+        scrollView.alwaysBounceVertical = true
         return scrollView
     }()
     
-    private let mealImageView: UIImageView = {
-        let imageView = UIImageView()
+    private let contentView: UIView = {
+        let view: UIView = .init()
+        return view
+    }()
+    
+    private let detailImageView: UIImageView = {
+        let imageView: UIImageView = .init()
         imageView.image = .init()
         imageView.contentMode = .scaleAspectFill
         imageView.clipsToBounds = true
-        imageView.layer.cornerRadius = 16
+        imageView.layer.cornerRadius = 24
         return imageView
     }()
     
-    private let mealNameLabel: UILabel = {
-        let label = UILabel()
+    private let detailNameLabel: UILabel = {
+        let label: UILabel = .init()
         label.text = ""
-        label.textColor = .black
-        label.font = .systemFont(ofSize: 24, weight: .bold)
+        label.textColor = .white
+        label.font = .systemFont(ofSize: 24, weight: .black)
         label.numberOfLines = 0
         return label
     }()
     
-    private let mealDescriptionLabel: UILabel = {
-        let label = UILabel()
+    private let categoryView: UIView = {
+        let view: UIView = .init()
+        view.backgroundColor = .darkGray
+        view.clipsToBounds = true
+        view.layer.cornerRadius = 16
+        return view
+    }()
+    
+    private let categoryNameLabel: UILabel = {
+        let label: UILabel = .init()
         label.text = ""
-        label.textColor = .black
-        label.font = .systemFont(ofSize: 18, weight: .semibold)
-        label.numberOfLines = 0
+        label.textColor = .white
+        label.font = .systemFont(ofSize: 16, weight: .heavy)
         return label
     }()
     
-    private lazy var goToRecipeButton: UIButton = {
-        let button = UIButton()
-        button.setTitle("Go To Recipe", for: .normal)
-        button.tintColor = .white
-        button.backgroundColor = .customButton
-        button.clipsToBounds = true
-        button.layer.cornerRadius = 16
-        button.addTarget(self, action: #selector(recipeTapped), for: .touchUpInside)
-        return button
+    private let areaView: UIView = {
+        let view: UIView = .init()
+        view.backgroundColor = .darkGray
+        view.clipsToBounds = true
+        view.layer.cornerRadius = 16
+        return view
+    }()
+    
+    private let detailAreaLabel: UILabel = {
+        let label: UILabel = .init()
+        label.text = ""
+        label.textColor = .white
+        label.font = .systemFont(ofSize: 16, weight: .heavy)
+        return label
+    }()
+    
+    private let recipeLabel: UILabel = {
+        let label: UILabel = .init()
+        label.text = "Recipe"
+        label.textColor = .white
+        label.font = .systemFont(ofSize: 24, weight: .heavy)
+        return label
+    }()
+    
+    private let detailVideoWebView: WKWebView = {
+        let webView: WKWebView = .init()
+        webView.clipsToBounds = true
+        webView.layer.cornerRadius = 24
+        return webView
+    }()
+    
+    private let detailDescriptionLabel: UILabel = {
+        let label: UILabel = .init()
+        label.text = ""
+        label.textColor = .white
+        label.font = .systemFont(ofSize: 14, weight: .regular)
+        label.numberOfLines = 0
+        return label
     }()
     
     private let viewModel: MealDetailViewModel
@@ -79,61 +121,116 @@ class MealDetailViewController: UIViewController {
     required init ?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
-    
-    // MARK: - Objective-C Methods
-    
-    @objc private func recipeTapped() {
-        
-    }
 }
 
 // MARK: - Privates
     
 private extension MealDetailViewController {
     func addViews() {
-        detailScrollView.addSubview(mealImageView)
-        detailScrollView.addSubview(mealNameLabel)
-        detailScrollView.addSubview(mealDescriptionLabel)
-        detailScrollView.addSubview(goToRecipeButton)
         view.addSubview(detailScrollView)
+        detailScrollView.addSubview(contentView)
+        
+        contentView.addSubviews(
+            detailImageView,
+            detailNameLabel,
+            categoryView,
+            areaView,
+            recipeLabel,
+            detailVideoWebView,
+            detailDescriptionLabel
+        )
+        
+        categoryView.addSubview(categoryNameLabel)
+        areaView.addSubview(detailAreaLabel)
     }
     
     func configureConstraints() {
-        mealImageView.snp.makeConstraints {
-            $0.top.equalToSuperview().offset(128)
-            $0.centerX.equalToSuperview()
-            $0.width.height.equalTo(156)
-        }
-        
-        mealNameLabel.snp.makeConstraints {
-            $0.top.equalTo(mealImageView.snp.bottom).offset(32)
-            $0.leading.trailing.equalToSuperview().inset(16)
-        }
-        
-        mealDescriptionLabel.snp.makeConstraints {
-            $0.top.equalTo(mealNameLabel.snp.bottom).offset(64)
-            $0.leading.trailing.equalToSuperview().inset(16)
-        }
-        
-        goToRecipeButton.snp.makeConstraints {
-            $0.top.equalTo(mealDescriptionLabel.snp.bottom).offset(32)
-            $0.centerX.equalToSuperview()
-            $0.width.equalTo(320)
-            $0.height.equalTo(56)
-        }
-        
         detailScrollView.snp.makeConstraints {
             $0.edges.equalToSuperview()
         }
+        
+        contentView.snp.makeConstraints {
+            $0.edges.equalToSuperview()
+            $0.width.equalTo(detailScrollView)
+        }
+        
+        detailImageView.snp.makeConstraints {
+            $0.top.equalToSuperview().offset(16)
+            $0.leading.trailing.equalToSuperview().inset(16)
+            $0.height.equalTo(240)
+        }
+        
+        detailNameLabel.snp.makeConstraints {
+            $0.top.equalTo(detailImageView.snp.bottom).offset(16)
+            $0.leading.equalToSuperview().offset(16)
+            $0.trailing.equalToSuperview().offset(-16)
+        }
+        
+        categoryView.snp.makeConstraints {
+            $0.top.equalTo(detailNameLabel.snp.bottom).offset(16)
+            $0.leading.equalToSuperview().offset(16)
+            $0.width.equalTo(160)
+            $0.height.equalTo(40)
+        }
+        
+        categoryNameLabel.snp.makeConstraints {
+            $0.center.equalToSuperview()
+        }
+        
+        areaView.snp.makeConstraints {
+            $0.top.equalTo(detailNameLabel.snp.bottom).offset(16)
+            $0.leading.equalTo(categoryView.snp.trailing).offset(32)
+            $0.width.equalTo(160)
+            $0.height.equalTo(40)
+        }
+        
+        detailAreaLabel.snp.makeConstraints {
+            $0.center.equalToSuperview()
+        }
+        
+        recipeLabel.snp.makeConstraints {
+            $0.top.equalTo(categoryView.snp.bottom).offset(32)
+            $0.leading.equalToSuperview().offset(16)
+        }
+        
+        detailVideoWebView.snp.makeConstraints {
+            $0.top.equalTo(recipeLabel.snp.bottom).offset(24)
+            $0.leading.trailing.equalToSuperview().inset(16)
+            $0.height.equalTo(240)
+        }
+        
+        detailDescriptionLabel.snp.makeConstraints {
+            $0.top.equalTo(detailVideoWebView.snp.bottom).offset(24)
+            $0.leading.trailing.equalToSuperview().inset(16)
+            $0.bottom.equalToSuperview().offset(-16)
+        }
     }
     
-    func configureComponents() {
+    func setupComponents() {
+        detailNameLabel.text = viewModel.mealDetailData.mealName
+        categoryNameLabel.text = viewModel.mealDetailData.mealCategory
+        detailAreaLabel.text = viewModel.mealDetailData.mealArea
+        detailDescriptionLabel.text = viewModel.mealDetailData.mealDescription
         
+        guard let urlString = viewModel.mealDetailData.mealImageURL,
+              let imageURL = URL(string: urlString),
+              let videoURL = viewModel.mealDetailData.mealYoutubeURL,
+              let embeddedVideoURL = URL(string: EmbedFormatter.convertToEmbed(from: videoURL))
+        else { return }
+        
+        detailImageView.kf.setImage(with: imageURL)
+        
+        let videoRequest: URLRequest = .init(url: embeddedVideoURL)
+        detailVideoWebView.load(videoRequest)
     }
     
     func configureUI() {
         addViews()
         configureConstraints()
-        configureComponents()
+        setupComponents()
+        
+        view.backgroundColor = .customBackgroundColor2
+        detailScrollView.backgroundColor = .customBackgroundColor2
+        contentView.backgroundColor = .customBackgroundColor2
     }
 }
