@@ -31,7 +31,6 @@ class HomepageViewModel {
     
     var sectionList: [String] = [
         "Günün Yemeği",
-        "Malzemeler",
         "Kategoriler",
         "Popüler Yemekler",
         "Kahvaltı",

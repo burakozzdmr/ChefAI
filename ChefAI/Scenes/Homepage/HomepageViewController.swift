@@ -187,9 +187,6 @@ extension HomepageViewController: UICollectionViewDataSource {
         case .dailyMeal:
             return viewModel.dailyMealList.count
             
-        case .ingredientList:
-            return viewModel.ingredientList.count
-            
         case .categoryList:
             return viewModel.categoryList.count
             
@@ -226,11 +223,6 @@ extension HomepageViewController: UICollectionViewDataSource {
         case .dailyMeal:
             let cell = collectionView.dequeueReusableCell(withReuseIdentifier: DailyMealCell.identifier, for: indexPath) as! DailyMealCell
             cell.configure(with: viewModel.dailyMealList[indexPath.row])
-            return cell
-            
-        case .ingredientList:
-            let cell = collectionView.dequeueReusableCell(withReuseIdentifier: IngredientCell.identifier, for: indexPath) as! IngredientCell
-            cell.configure(with: viewModel.ingredientList[indexPath.row])
             return cell
             
         case .categoryList:
@@ -306,13 +298,6 @@ extension HomepageViewController: UICollectionViewDelegate {
             self.navigationController?.pushViewController(
                 MealDetailViewController(
                     viewModel: MealDetailViewModel(mealDetailData: viewModel.dailyMealList[indexPath.row])
-                ),
-                animated: true
-            )
-        case .ingredientList:
-            self.navigationController?.pushViewController(
-                IngredientViewController(
-                    viewModel: IngredientViewModel(ingredientData: viewModel.ingredientList[indexPath.row])
                 ),
                 animated: true
             )
