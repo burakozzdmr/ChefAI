@@ -145,7 +145,15 @@ extension TabSearchViewController: UICollectionViewDataSource {
 // MARK: - UICollectionViewDelegate
 
 extension TabSearchViewController: UICollectionViewDelegate {
-    
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        let mealDetailVC = PresentMealDetailViewController(
+            viewModel: PresentMealDetailViewModel(
+                mealDetailData: viewModel.mostSearchMealList[indexPath.row]
+            )
+        )
+        mealDetailVC.modalPresentationStyle = .fullScreen
+        present(mealDetailVC, animated: true)
+    }
 }
 
 // MARK: - TabSearchViewModelProtocol

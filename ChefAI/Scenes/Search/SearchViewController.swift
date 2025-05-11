@@ -123,7 +123,13 @@ extension SearchViewController: UITableViewDataSource {
 
 extension SearchViewController: UITableViewDelegate {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        // present meal detail screen
+        let mealDetailVC = PresentMealDetailViewController(
+            viewModel: PresentMealDetailViewModel(
+                mealDetailData: viewModel.searchMealList[indexPath.row]
+            )
+        )
+        mealDetailVC.modalPresentationStyle = .fullScreen
+        present(mealDetailVC, animated: true)
     }
 }
 
