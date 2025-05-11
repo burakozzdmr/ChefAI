@@ -7,6 +7,7 @@
 
 import UIKit
 import SnapKit
+import WebKit
 
 // MARK: - ProfileViewController
 
@@ -194,20 +195,46 @@ extension ProfileViewController: UITableViewDataSource {
 
 extension ProfileViewController: UITableViewDelegate {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        let sectionType: SettingsSectionType = .init(for: indexPath.section)
+        let sectionType: SettingsSectionType = .init(for: indexPath.row)
         
         switch sectionType {
         case .privacyPolicy:
-            viewModel.openPrivacyPolicy()
+            guard let url = URL(string: "https://www.google.com") else { return }
+            UIApplication.shared.open(url)
             
         case .rateUs:
-            viewModel.openRateUs()
+            guard let url = URL(string: "https://www.google.com") else { return }
+            UIApplication.shared.open(url)
             
         case .upgradeToPremium:
-            viewModel.openPaywall()
+            break
             
         case .logOut:
-            viewModel.logOut()
+            let alertController = UIAlertController(
+                title: "ÇIKIŞ",
+                message: "Çıkış yapmak istediğinize emin misiniz ?",
+                preferredStyle: .alert
+            )
+            alertController.addAction(
+                UIAlertAction(title: "Evet", style: .default, handler: { _ in
+                    self.viewModel.logOut { logoutState in
+                        if logoutState != nil {
+                            let errorAlertController = UIAlertController(
+                                title: "HATA", message: "Çıkış işlemi başarısız", preferredStyle: .alert
+                            )
+                            errorAlertController.addAction(UIAlertAction(title: "Tamam", style: .cancel))
+                            self.present(errorAlertController, animated: true)
+                            
+                        } else {
+                            let loginVC = LoginViewController()
+                            loginVC.modalPresentationStyle = .fullScreen
+                            self.present(loginVC, animated: true)
+                        }
+                    }
+                })
+            )
+            alertController.addAction(UIAlertAction(title: "Hayır", style: .destructive))
+            self.present(alertController, animated: true)
         }
     }
 }

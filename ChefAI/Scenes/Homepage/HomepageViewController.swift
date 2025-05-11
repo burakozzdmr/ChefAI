@@ -56,6 +56,7 @@ class HomepageViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         configureUI()
+        
         viewModel.delegate = self
     }
     
@@ -104,11 +105,7 @@ private extension HomepageViewController {
         
         view.backgroundColor = .customBackgroundColor2
         navigationController?.navigationBar.isHidden = true
-        
         loadingView.isHidden = false
-        DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
-            self.loadingView.removeFromSuperview()
-        }
     }
     
     func createSectionLayout(cellSectionIndex: CellSizeType) -> NSCollectionLayoutSection {
@@ -372,6 +369,9 @@ extension HomepageViewController: UICollectionViewDelegate {
 
 extension HomepageViewController: HomepageViewModelDelegate {
     func didUpdateData() {
-        mealsCollectionView.reloadData()
+        DispatchQueue.main.async {
+            self.mealsCollectionView.reloadData()
+            self.loadingView.isHidden = true
+        }
     }
 }
