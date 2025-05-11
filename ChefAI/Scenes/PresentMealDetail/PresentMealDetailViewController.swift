@@ -115,6 +115,7 @@ class PresentMealDetailViewController: UIViewController {
     }()
     
     private let viewModel: PresentMealDetailViewModel
+    private let loadingView: LoadingView = .init()
     
     // MARK: - Life Cycles
     
@@ -242,6 +243,8 @@ private extension PresentMealDetailViewController {
         view.backgroundColor = .customBackgroundColor2
         detailScrollView.backgroundColor = .customBackgroundColor2
         contentView.backgroundColor = .customBackgroundColor2
+        
+        loadingView.isHidden = false
     }
 }
 
@@ -265,6 +268,10 @@ extension PresentMealDetailViewController: MealDetailViewModelOutputProtocol {
         else { return }
         
         detailImageView.kf.setImage(with: imageURL)
+        
+        DispatchQueue.main.async {
+            self.loadingView.isHidden = true
+        }
         
         let videoRequest: URLRequest = .init(url: embeddedVideoURL)
         detailVideoWebView.load(videoRequest)

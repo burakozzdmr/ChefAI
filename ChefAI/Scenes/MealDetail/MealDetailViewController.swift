@@ -106,6 +106,7 @@ class MealDetailViewController: UIViewController {
     }()
     
     private let viewModel: MealDetailViewModel
+    private let loadingView: LoadingView = .init()
     
     // MARK: - Life Cycles
     
@@ -134,6 +135,7 @@ class MealDetailViewController: UIViewController {
 private extension MealDetailViewController {
     func addViews() {
         view.addSubview(detailScrollView)
+        view.addSubview(loadingView)
         detailScrollView.addSubview(contentView)
         
         contentView.addSubviews(
@@ -152,6 +154,10 @@ private extension MealDetailViewController {
     
     func configureConstraints() {
         detailScrollView.snp.makeConstraints {
+            $0.edges.equalToSuperview()
+        }
+        
+        loadingView.snp.makeConstraints {
             $0.edges.equalToSuperview()
         }
         
@@ -219,6 +225,8 @@ private extension MealDetailViewController {
         view.backgroundColor = .customBackgroundColor2
         detailScrollView.backgroundColor = .customBackgroundColor2
         contentView.backgroundColor = .customBackgroundColor2
+        
+        loadingView.isHidden = false
     }
 }
 
@@ -242,6 +250,10 @@ extension MealDetailViewController: MealDetailViewModelOutputProtocol {
         else { return }
         
         detailImageView.kf.setImage(with: imageURL)
+        
+        DispatchQueue.main.async {
+            self.loadingView.isHidden = true
+        }
         
         let videoRequest: URLRequest = .init(url: embeddedVideoURL)
         detailVideoWebView.load(videoRequest)

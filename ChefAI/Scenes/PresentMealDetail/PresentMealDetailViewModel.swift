@@ -26,10 +26,10 @@ class PresentMealDetailViewModel {
             switch mealList {
             case .success(let meals):
                 guard let safeMealsData = meals.meals.first else { return }
-                
                 DispatchQueue.main.async {
                     self.outputDelegate?.fetchDetailData(mealDetailData: safeMealsData)
                 }
+                
             case .failure:
                 print(NetworkError.emptyDataError.errorMessage)
             }
