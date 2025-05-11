@@ -10,6 +10,10 @@ import SnapKit
 import Kingfisher
 import WebKit
 
+protocol MealDetailViewModelOutputProtocol: AnyObject {
+    func fetchDetailData(mealDetailData: Meal)
+}
+
 class MealDetailViewController: UIViewController {
 
     // MARK: - Properties
@@ -116,6 +120,8 @@ class MealDetailViewController: UIViewController {
     init(viewModel: MealDetailViewModel) {
         self.viewModel = viewModel
         super.init(nibName: nil, bundle: nil)
+        
+        self.viewModel.outputDelegate = self
     }
     
     required init ?(coder: NSCoder) {
@@ -206,15 +212,32 @@ private extension MealDetailViewController {
         }
     }
     
-    func setupComponents() {
-        detailNameLabel.text = viewModel.mealDetailData.mealName
-        categoryNameLabel.text = viewModel.mealDetailData.mealCategory
-        detailAreaLabel.text = viewModel.mealDetailData.mealArea
-        detailDescriptionLabel.text = viewModel.mealDetailData.mealDescription
+    func configureUI() {
+        addViews()
+        configureConstraints()
         
-        guard let urlString = viewModel.mealDetailData.mealImageURL,
+        view.backgroundColor = .customBackgroundColor2
+        detailScrollView.backgroundColor = .customBackgroundColor2
+        contentView.backgroundColor = .customBackgroundColor2
+    }
+}
+
+// MARK: - MealDetailViewModelOutputProtocol
+
+extension MealDetailViewController: MealDetailViewModelOutputProtocol {
+    func fetchDetailData(mealDetailData: Meal) {
+        print("fetchDetailData is executed !")
+        
+        print("--------------- DETAIL MEAL DATA ---------------")
+        print(mealDetailData)
+        detailNameLabel.text = mealDetailData.mealName
+        categoryNameLabel.text = mealDetailData.mealCategory
+        detailAreaLabel.text = mealDetailData.mealArea
+        detailDescriptionLabel.text = mealDetailData.mealDescription
+        
+        guard let urlString = mealDetailData.mealImageURL,
               let imageURL = URL(string: urlString),
-              let videoURL = viewModel.mealDetailData.mealYoutubeURL,
+              let videoURL = mealDetailData.mealYoutubeURL,
               let embeddedVideoURL = URL(string: EmbedFormatter.convertToEmbed(from: videoURL))
         else { return }
         
@@ -222,15 +245,5 @@ private extension MealDetailViewController {
         
         let videoRequest: URLRequest = .init(url: embeddedVideoURL)
         detailVideoWebView.load(videoRequest)
-    }
-    
-    func configureUI() {
-        addViews()
-        configureConstraints()
-        setupComponents()
-        
-        view.backgroundColor = .customBackgroundColor2
-        detailScrollView.backgroundColor = .customBackgroundColor2
-        contentView.backgroundColor = .customBackgroundColor2
     }
 }

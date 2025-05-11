@@ -135,6 +135,7 @@ extension HomepageViewModel {
         
         service.fetchMealListByCategory(category: categoryTitle) { [weak self] categoryList in
             guard let self else { return }
+            
             switch categoryList {
             case .success(let categories):
                 switch categoryType {
