@@ -7,7 +7,7 @@
 
 import Foundation
 
-struct UserChatModel {
+struct UserChatModel: Codable {
     let message: String
     let type: UserChatType
 }
