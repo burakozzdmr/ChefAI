@@ -23,7 +23,7 @@ class AuthService {}
 // MARK: - AuthServiceProtocol
 
 extension AuthService: AuthServiceProtocol {
-    func signIn(with email: String, and password: String, completion: @escaping ((any Error)?) -> Void) {
+    func signIn(with email: String, and password: String, completion: @escaping (Error?) -> Void) {
         Auth.auth().signIn(withEmail: email, password: password) { _, error in
             if let error = error {
                 completion(error)
@@ -33,7 +33,7 @@ extension AuthService: AuthServiceProtocol {
         }
     }
     
-    func signUp(with email: String, and password: String, completion: @escaping ((any Error)?) -> Void) {
+    func signUp(with email: String, and password: String, completion: @escaping (Error?) -> Void) {
         Auth.auth().createUser(withEmail: email, password: password) { _, error in
             if let error = error {
                 completion(error)
@@ -43,7 +43,7 @@ extension AuthService: AuthServiceProtocol {
         }
     }
     
-    func signOut(completion: @escaping ((any Error)?) -> Void) {
+    func signOut(completion: @escaping (Error?) -> Void) {
         do {
             try Auth.auth().signOut()
             completion(nil)

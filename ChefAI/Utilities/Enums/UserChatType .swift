@@ -7,7 +7,7 @@
 
 import Foundation
 
-enum UserChatType {
+enum UserChatType: Codable {
     case user
     case gemini
 }

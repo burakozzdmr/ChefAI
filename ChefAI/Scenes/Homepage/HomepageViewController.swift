@@ -56,6 +56,7 @@ class HomepageViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         configureUI()
+        
         viewModel.delegate = self
     }
     
@@ -104,11 +105,7 @@ private extension HomepageViewController {
         
         view.backgroundColor = .customBackgroundColor2
         navigationController?.navigationBar.isHidden = true
-        
         loadingView.isHidden = false
-        DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
-            self.loadingView.removeFromSuperview()
-        }
     }
     
     func createSectionLayout(cellSectionIndex: CellSizeType) -> NSCollectionLayoutSection {
@@ -187,9 +184,6 @@ extension HomepageViewController: UICollectionViewDataSource {
         case .dailyMeal:
             return viewModel.dailyMealList.count
             
-        case .ingredientList:
-            return viewModel.ingredientList.count
-            
         case .categoryList:
             return viewModel.categoryList.count
             
@@ -226,11 +220,6 @@ extension HomepageViewController: UICollectionViewDataSource {
         case .dailyMeal:
             let cell = collectionView.dequeueReusableCell(withReuseIdentifier: DailyMealCell.identifier, for: indexPath) as! DailyMealCell
             cell.configure(with: viewModel.dailyMealList[indexPath.row])
-            return cell
-            
-        case .ingredientList:
-            let cell = collectionView.dequeueReusableCell(withReuseIdentifier: IngredientCell.identifier, for: indexPath) as! IngredientCell
-            cell.configure(with: viewModel.ingredientList[indexPath.row])
             return cell
             
         case .categoryList:
@@ -309,13 +298,6 @@ extension HomepageViewController: UICollectionViewDelegate {
                 ),
                 animated: true
             )
-        case .ingredientList:
-            self.navigationController?.pushViewController(
-                IngredientViewController(
-                    viewModel: IngredientViewModel(ingredientData: viewModel.ingredientList[indexPath.row])
-                ),
-                animated: true
-            )
         case .categoryList:
             self.navigationController?.pushViewController(
                 MealListViewController(
@@ -387,6 +369,9 @@ extension HomepageViewController: UICollectionViewDelegate {
 
 extension HomepageViewController: HomepageViewModelDelegate {
     func didUpdateData() {
-        mealsCollectionView.reloadData()
+        DispatchQueue.main.async {
+            self.mealsCollectionView.reloadData()
+            self.loadingView.isHidden = true
+        }
     }
 }

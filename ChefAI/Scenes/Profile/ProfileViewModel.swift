@@ -15,6 +15,7 @@ enum PhotoPickerAction {
 
 class ProfileViewModel {
     var permissionResult: ((PhotoPickerAction) -> Void)?
+    private let authService: AuthServiceProtocol
     
     let settingsList: [SettingsModel] = [
         SettingsModel(image: "shield.fill", name: "Privacy Policy"),
@@ -23,7 +24,8 @@ class ProfileViewModel {
         SettingsModel(image: "arrow.right.square.fill", name: "Log Out"),
     ]
     
-    init() {
+    init(authService: AuthService = .init()) {
+        self.authService = authService
         loadProfilePhoto()
     }
     
@@ -47,7 +49,7 @@ class ProfileViewModel {
         case .denied, .restricted, .limited:
             permissionResult?(.showPermissionDeniedAlert)
             
-        @unknown default:
+        default:
             break
         }
     }
@@ -60,19 +62,7 @@ class ProfileViewModel {
         
     }
     
-    func openPrivacyPolicy() {
-        
-    }
-    
-    func openRateUs() {
-        
-    }
-    
-    func openPaywall() {
-        
-    }
-    
-    func logOut() {
-        
+    func logOut(completion: @escaping (Error?) -> Void) {
+        authService.signOut(completion: completion)
     }
 }

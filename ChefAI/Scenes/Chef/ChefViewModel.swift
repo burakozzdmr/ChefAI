@@ -24,29 +24,32 @@ class ChefViewModel {
     
     init(geminiService: GeminiService = .init()) {
         self.geminiService = geminiService
+        
+        fetchChatMessage()
     }
     
     func sendMessage(promptText: String) {
-        // Add user message to chat
         let userMessage = UserChatModel(message: promptText, type: .user)
-        chatMessageList.append(userMessage)
-        delegate?.didUpdateData()
+        StorageManager.shared.addChatMessage(message: userMessage)
+        fetchChatMessage()
         
-        // Send to Gemini and handle response
         geminiService.sendPrompt(prompt: geminiPrompt + promptText) { [weak self] geminiResponse in
             guard let self else { return }
             switch geminiResponse {
             case .success(let messageList):
                 if let responseText = messageList.candidates.first?.content.parts.first?.text {
                     let geminiMessage = UserChatModel(message: responseText, type: .gemini)
-                    self.chatMessageList.append(geminiMessage)
-                    DispatchQueue.main.async {
-                        self.delegate?.didUpdateData()
-                    }
+                    StorageManager.shared.addChatMessage(message: geminiMessage)
+                    fetchChatMessage()
                 }
             case .failure:
                 print(NetworkError.emptyDataError.errorMessage)
             }
         }
+    }
+    
+    func fetchChatMessage() {
+        chatMessageList = StorageManager.shared.fetchChatMessages()
+        delegate?.didUpdateData()
     }
 }

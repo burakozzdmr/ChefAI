@@ -1,8 +1,8 @@
 //
-//  MealDetailViewController.swift
+//  PresentMealDetailViewController.swift
 //  ChefAI
 //
-//  Created by Burak Özdemir on 18.03.2025.
+//  Created by Burak Özdemir on 11.05.2025.
 //
 
 import UIKit
@@ -10,11 +10,11 @@ import SnapKit
 import Kingfisher
 import WebKit
 
-protocol MealDetailViewModelOutputProtocol: AnyObject {
+protocol PresentMealDetailViewModelOutputProtocol: AnyObject {
     func fetchDetailData(mealDetailData: Meal)
 }
 
-class MealDetailViewController: UIViewController {
+class PresentMealDetailViewController: UIViewController {
 
     // MARK: - Properties
     
@@ -29,6 +29,15 @@ class MealDetailViewController: UIViewController {
     private let contentView: UIView = {
         let view: UIView = .init()
         return view
+    }()
+    
+    private lazy var dismissButton: UIButton = {
+        let button: UIButton = .init()
+        let symbolConfiguration = UIImage.SymbolConfiguration(pointSize: 24, weight: .heavy)
+        button.setImage(UIImage(systemName: "xmark", withConfiguration: symbolConfiguration), for: .normal)
+        button.tintColor = .customButton
+        button.addTarget(self, action: #selector(dismissTapped), for: .touchUpInside)
+        return button
     }()
     
     private let detailImageView: UIImageView = {
@@ -105,7 +114,7 @@ class MealDetailViewController: UIViewController {
         return label
     }()
     
-    private let viewModel: MealDetailViewModel
+    private let viewModel: PresentMealDetailViewModel
     private let loadingView: LoadingView = .init()
     
     // MARK: - Life Cycles
@@ -118,7 +127,7 @@ class MealDetailViewController: UIViewController {
     
     // MARK: - Inits
     
-    init(viewModel: MealDetailViewModel) {
+    init(viewModel: PresentMealDetailViewModel) {
         self.viewModel = viewModel
         super.init(nibName: nil, bundle: nil)
         
@@ -130,16 +139,24 @@ class MealDetailViewController: UIViewController {
     }
 }
 
+// MARK: - Objective-C Methods
+
+@objc private extension PresentMealDetailViewController {
+    func dismissTapped() {
+        self.dismiss(animated: true)
+    }
+}
+
 // MARK: - Privates
     
-private extension MealDetailViewController {
+private extension PresentMealDetailViewController {
     func addViews() {
         view.addSubview(detailScrollView)
-        view.addSubview(loadingView)
         detailScrollView.addSubview(contentView)
         
         contentView.addSubviews(
             detailImageView,
+            dismissButton,
             detailNameLabel,
             categoryView,
             areaView,
@@ -157,19 +174,20 @@ private extension MealDetailViewController {
             $0.edges.equalToSuperview()
         }
         
-        loadingView.snp.makeConstraints {
-            $0.edges.equalToSuperview()
-        }
-        
         contentView.snp.makeConstraints {
             $0.edges.equalToSuperview()
             $0.width.equalTo(detailScrollView)
         }
         
         detailImageView.snp.makeConstraints {
-            $0.top.equalToSuperview().offset(16)
+            $0.top.equalTo(dismissButton.snp.bottom).offset(16)
             $0.leading.trailing.equalToSuperview().inset(16)
             $0.height.equalTo(240)
+        }
+        
+        dismissButton.snp.makeConstraints {
+            $0.top.equalToSuperview().offset(16)
+            $0.trailing.equalToSuperview().inset(32)
         }
         
         detailNameLabel.snp.makeConstraints {
@@ -232,7 +250,7 @@ private extension MealDetailViewController {
 
 // MARK: - MealDetailViewModelOutputProtocol
 
-extension MealDetailViewController: MealDetailViewModelOutputProtocol {
+extension PresentMealDetailViewController: MealDetailViewModelOutputProtocol {
     func fetchDetailData(mealDetailData: Meal) {
         print("fetchDetailData is executed !")
         

@@ -1,14 +1,13 @@
 //
-//  MealDetailViewModel.swift
+//  PresentMealDetailViewModel.swift
 //  ChefAI
 //
-//  Created by Burak Özdemir on 18.03.2025.
+//  Created by Burak Özdemir on 11.05.2025.
 //
 
 import Foundation
 
-class MealDetailViewModel {
-    
+class PresentMealDetailViewModel {
     let mealDetailData: Meal
     private let service: MealServiceProtocol
     weak var outputDelegate: MealDetailViewModelOutputProtocol?

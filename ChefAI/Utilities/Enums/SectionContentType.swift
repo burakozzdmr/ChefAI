@@ -11,7 +11,6 @@ import Foundation
 
 enum SectionContentType {
     case dailyMeal
-    case ingredientList
     case categoryList
     case mealList
     case breakfast
@@ -27,22 +26,20 @@ enum SectionContentType {
         case 0:
             self = .dailyMeal
         case 1:
-            self = .ingredientList
-        case 2:
             self = .categoryList
-        case 3:
+        case 2:
             self = .mealList
-        case 4:
+        case 3:
             self = .breakfast
-        case 5:
+        case 4:
             self = .starter
-        case 6:
+        case 5:
             self = .meat
-        case 7:
+        case 6:
             self = .seafood
-        case 8:
+        case 7:
             self = .vegetarian
-        case 9:
+        case 8:
             self = .pasta
         default:
             self = .dessert

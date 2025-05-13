@@ -16,6 +16,7 @@ protocol MealServiceProtocol {
     func fetchMealList(completion: @escaping (Result<MealModel, NetworkError>) -> Void)
     func fetchIngredientList(completion: @escaping (Result<IngredientModel, NetworkError>) -> Void)
     func fetchMealListByCategory(category: String, completion: @escaping (Result<MealModel, NetworkError>) -> Void)
+    func fetchMealListByMealID(mealID: String, completion: @escaping (Result<MealModel, NetworkError>) -> Void)
 }
 
 class MealService {
@@ -128,6 +129,21 @@ extension MealService: MealServiceProtocol {
     
     func fetchMealListByCategory(category: String, completion: @escaping (Result<MealModel, NetworkError>) -> Void) {
         let request = prepareRequestURL(Endpoint.filter("c", category))
+        
+        switch request {
+        case .success(let request):
+            networkManager.sendRequest(
+                request: request,
+                as: MealModel.self,
+                completion: completion
+            )
+        case .failure:
+            print("Error Message: \(NetworkError.requestFailedError.errorMessage)")
+        }
+    }
+    
+    func fetchMealListByMealID(mealID: String, completion: @escaping (Result<MealModel, NetworkError>) -> Void) {
+        let request = prepareRequestURL(Endpoint.lookup(mealID))
         
         switch request {
         case .success(let request):
