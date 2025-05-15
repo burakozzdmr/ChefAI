@@ -17,12 +17,13 @@ class ProfileViewController: UIViewController {
 
     private let userImageView: UIImageView = {
         let imageView: UIImageView = .init()
-        imageView.image = .init(systemName: "camera")
-        imageView.contentMode = .scaleToFill
+        imageView.image = .init(systemName: "person.fill")
+        imageView.contentMode = .scaleAspectFill
         imageView.clipsToBounds = true
-        imageView.layer.cornerRadius = 64
+        imageView.layer.cornerRadius = 80
         imageView.layer.borderWidth = 5
         imageView.layer.borderColor = UIColor.lightGray.cgColor
+        imageView.tintColor = .white
         return imageView
     }()
     
@@ -41,9 +42,9 @@ class ProfileViewController: UIViewController {
     
     private let usernameLabel: UILabel = {
         let label: UILabel = .init()
-        label.text = "@sburraakm"
+        label.text = "Burak Özdemir"
         label.textColor = .lightGray
-        label.font = .systemFont(ofSize: 24, weight: .heavy)
+        label.font = .systemFont(ofSize: 32, weight: .heavy)
         label.numberOfLines = 2
         return label
     }()
@@ -123,12 +124,12 @@ private extension ProfileViewController {
         userImageView.snp.makeConstraints {
             $0.top.equalTo(view.safeAreaLayoutGuide).offset(32)
             $0.centerX.equalToSuperview()
-            $0.width.height.equalTo(128)
+            $0.width.height.equalTo(160)
         }
         
         editPhotoButton.snp.makeConstraints {
-            $0.top.equalTo(userImageView.snp.bottom).inset(40)
-            $0.leading.equalTo(userImageView.snp.trailing).inset(36)
+            $0.top.equalTo(userImageView.snp.bottom).inset(48)
+            $0.leading.equalTo(userImageView.snp.trailing).inset(48)
             $0.width.height.equalTo(40)
         }
         
@@ -247,7 +248,6 @@ extension ProfileViewController: UIImagePickerControllerDelegate, UINavigationCo
             DispatchQueue.main.async {
                 self.userImageView.image = selectedImage
             }
-            self.viewModel.addProfilePhoto()
         }
         picker.dismiss(animated: true)
     }

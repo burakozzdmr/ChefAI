@@ -92,7 +92,12 @@ extension MealListViewController: UICollectionViewDataSource {
 
 extension MealListViewController: UICollectionViewDelegate {
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        
+        let detailVC = MealDetailViewController(
+            viewModel: MealDetailViewModel(
+                mealDetailData: viewModel.mealListByCategory[indexPath.row]
+            )
+        )
+        navigationController?.pushViewController(detailVC, animated: true)
     }
 }
 

@@ -16,7 +16,6 @@ class ListCell: UICollectionViewCell {
     
     private let containerView: UIView = {
         let view = UIView()
-        view.backgroundColor = .customOptions
         view.clipsToBounds = true
         view.layer.cornerRadius = 16
         return view
@@ -32,13 +31,20 @@ class ListCell: UICollectionViewCell {
     private let mealNameLabel: UILabel = {
         let label = UILabel()
         label.text = ""
-        label.textColor = .lightGray
-        label.font = .systemFont(ofSize: 16, weight: .black)
-        label.numberOfLines = 0
+        label.textColor = .white
+        label.font = .systemFont(ofSize: 18, weight: .black)
+        label.numberOfLines = 3
+        label.textAlignment = .center
         return label
     }()
     
-    // MARK: - Life Cycles
+    private let bottomView: UIView = {
+        let view: UIView = .init()
+        view.backgroundColor = .black.withAlphaComponent(0.5)
+        return view
+    }()
+    
+    // MARK: - Inits
     
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -54,8 +60,8 @@ class ListCell: UICollectionViewCell {
     
     func configure(with cellContent: Meal) {
         guard let urlString = cellContent.mealImageURL, let imageURL = URL(string: urlString) else { return }
+
         mealImageView.kf.setImage(with: imageURL)
-        
         mealNameLabel.text = cellContent.mealName
     }
 }
@@ -64,9 +70,12 @@ class ListCell: UICollectionViewCell {
 
 private extension ListCell {
     func addViews() {
-        containerView.addSubview(mealImageView)
-        containerView.addSubview(mealNameLabel)
-        self.addSubview(containerView)
+        contentView.addSubview(containerView)
+        containerView.addSubviews(
+            mealImageView,
+            bottomView,
+            mealNameLabel
+        )
     }
     
     func configureConstraints() {
@@ -75,14 +84,17 @@ private extension ListCell {
         }
         
         mealImageView.snp.makeConstraints {
-            $0.top.bottom.leading.equalToSuperview()
-            $0.width.height.equalTo(128)
+            $0.edges.equalToSuperview()
         }
         
         mealNameLabel.snp.makeConstraints {
-            $0.centerY.equalToSuperview()
-            $0.leading.equalTo(mealImageView.snp.trailing).offset(64)
-            $0.trailing.equalToSuperview().inset(64)
+            $0.centerY.equalTo(bottomView)
+            $0.leading.trailing.equalToSuperview().inset(32)
+        }
+        
+        bottomView.snp.makeConstraints {
+            $0.leading.trailing.bottom.equalToSuperview()
+            $0.height.equalTo(48)
         }
     }
     
