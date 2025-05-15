@@ -12,6 +12,18 @@ class MealListViewController: UIViewController {
 
     // MARK: - Properties
     
+    private lazy var backButton: UIButton = {
+        let button: UIButton = .init()
+        let configuration = UIImage.SymbolConfiguration(pointSize: 24, weight: .heavy)
+        button.setImage(UIImage(systemName: "chevron.left", withConfiguration: configuration), for: .normal)
+        button.tintColor = .customButton
+        button.backgroundColor = .white
+        button.clipsToBounds = true
+        button.layer.cornerRadius = 24
+        button.addTarget(self, action: #selector(backTapped), for: .touchUpInside)
+        return button
+    }()
+    
     private lazy var mealsCollectionView: UICollectionView = {
         let flowLayout = UICollectionViewFlowLayout()
         flowLayout.scrollDirection = .vertical
@@ -55,13 +67,23 @@ class MealListViewController: UIViewController {
 
 private extension MealListViewController {
     func addViews() {
-        view.addSubview(mealsCollectionView)
+        view.addSubviews(
+            mealsCollectionView,
+            backButton
+        )
     }
     
     func configureConstraints() {
+        backButton.snp.makeConstraints {
+            $0.top.equalTo(view.safeAreaLayoutGuide)
+            $0.leading.equalToSuperview().offset(16)
+            $0.width.height.equalTo(48)
+        }
+        
         mealsCollectionView.snp.makeConstraints {
-            $0.top.bottom.equalTo(view.safeAreaLayoutGuide)
+            $0.top.equalTo(backButton.snp.bottom).offset(16)
             $0.leading.trailing.equalToSuperview()
+            $0.bottom.equalToSuperview()
         }
     }
     
@@ -71,6 +93,14 @@ private extension MealListViewController {
         
         view.backgroundColor = .customBackgroundColor2
         navigationItem.title = viewModel.categoryTitle
+    }
+}
+
+// MARK: - Objective-C Methods
+
+@objc private extension MealListViewController {
+    func backTapped() {
+        self.navigationController?.popViewController(animated: true)
     }
 }
 
