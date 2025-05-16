@@ -31,4 +31,31 @@ class StorageManager {
             userDefaults.set(data, forKey: defaultsKey)
         }
     }
+    
+    func loadImageFromDisk(userID: String) -> Data? {
+        let fileURL = getDocumentsDirectory().appendingPathComponent("\(userID)_profile_image.jpg")
+        
+        if FileManager.default.fileExists(atPath: fileURL.path) {
+            print("Image found at path: \(fileURL.path)")
+            return try? Data(contentsOf: fileURL)
+        } else {
+            print("No image found for user: \(userID)")
+            return nil
+        }
+    }
+
+    func saveImageToDisk(imageData: Data, userID: String) {
+        let fileURL = getDocumentsDirectory().appendingPathComponent("\(userID)_profile_image.jpg")
+        
+        do {
+            try imageData.write(to: fileURL)
+            print("Image saved to disk: \(fileURL.path)")
+        } catch {
+            print("Error saving image to disk: \(error.localizedDescription)")
+        }
+    }
+    
+    private func getDocumentsDirectory() -> URL {
+        return FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first!
+    }
 }

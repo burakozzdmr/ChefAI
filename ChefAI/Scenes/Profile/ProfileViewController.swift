@@ -66,7 +66,7 @@ class ProfileViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-
+        
         configureUI()
         
         viewModel.permissionResult = { [weak self] result in
@@ -75,6 +75,15 @@ class ProfileViewController: UIViewController {
                 self?.presentImagePicker()
             case .showPermissionDeniedAlert:
                 self?.showPermissionDeniedAlert()
+            }
+        }
+        
+        viewModel.loadProfilePhoto { [weak self] imageData in
+            guard let self else { return }
+            if let safeImage = UIImage(data: imageData) {
+                DispatchQueue.main.async {
+                    self.userImageView.image = safeImage
+                }
             }
         }
     }
@@ -228,8 +237,9 @@ extension ProfileViewController: UITableViewDelegate {
                             
                         } else {
                             let loginVC = LoginViewController()
-                            loginVC.modalPresentationStyle = .fullScreen
-                            self.present(loginVC, animated: true)
+                            let authNavController = UINavigationController(rootViewController: loginVC)
+                            authNavController.modalPresentationStyle = .fullScreen
+                            self.present(authNavController, animated: true)
                         }
                     }
                 })
@@ -246,6 +256,8 @@ extension ProfileViewController: UIImagePickerControllerDelegate, UINavigationCo
     func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
         if let selectedImage = info[.originalImage] as? UIImage {
             DispatchQueue.main.async {
+                guard let imageData = selectedImage.jpegData(compressionQuality: 0.8) else { return }
+                self.viewModel.addProfileImage(imageData: imageData)
                 self.userImageView.image = selectedImage
             }
         }
