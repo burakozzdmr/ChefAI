@@ -84,6 +84,11 @@ class RegisterViewController: UIViewController {
         configureUI()
     }
     
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        self.navigationController?.navigationBar.tintColor = .white
+    }
+    
     // MARK: - Inits
     
     init(viewModel: RegisterViewModel = .init()) {

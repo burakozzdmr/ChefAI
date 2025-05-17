@@ -54,14 +54,7 @@ class RegisterResultViewController: UIViewController {
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        
-        self.navigationController?.navigationItem.hidesBackButton = true
-    }
-    
-    override func viewWillDisappear(_ animated: Bool) {
-        super.viewWillDisappear(animated)
-        
-        self.navigationController?.navigationItem.hidesBackButton = false
+        self.navigationItem.hidesBackButton = true
     }
 }
 
