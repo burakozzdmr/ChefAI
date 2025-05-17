@@ -7,6 +7,7 @@
 
 import UIKit
 import SnapKit
+import Lottie
 
 // MARK: - RegisterResultViewController
 
@@ -14,11 +15,13 @@ class RegisterResultViewController: UIViewController {
 
     // MARK: - Properties
     
-    private let successmarkImageView: UIImageView = {
-        let imageView = UIImageView()
-        imageView.image = .successIcon
-        imageView.contentMode = .scaleToFill
-        return imageView
+    private let successmarkImageView: LottieAnimationView = {
+        let animationView = LottieAnimationView(name: "successAnimation")
+        animationView.animationSpeed = 1
+        animationView.contentMode = .scaleAspectFit
+        animationView.loopMode = .playOnce
+        animationView.play()
+        return animationView
     }()
     
     private let thatsItLabel: UILabel = {
@@ -49,6 +52,17 @@ class RegisterResultViewController: UIViewController {
         configureUI()
     }
     
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        
+        self.navigationController?.navigationItem.hidesBackButton = true
+    }
+    
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        
+        self.navigationController?.navigationItem.hidesBackButton = false
+    }
 }
 
 // MARK: - Privates
@@ -94,4 +108,8 @@ private extension RegisterResultViewController {
     @objc func backLoginTapped() {
         navigationController?.popToRootViewController(animated: true)
     }
+}
+
+#Preview {
+    RegisterResultViewController()
 }

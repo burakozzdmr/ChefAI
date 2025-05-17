@@ -18,6 +18,8 @@ class SearchViewModel {
     
     init(mealService: MealService = .init()) {
         self.mealService = mealService
+        
+        fetchLatestMealList()
     }
     
     func searchMeal(searchText: String) {
@@ -34,5 +36,20 @@ class SearchViewModel {
                 print(NetworkError.emptyDataError.errorMessage)
             }
         }
+    }
+    
+    func fetchLatestMealList() {
+        searchMealList = StorageManager.shared.fetchLatestMeals()
+        delegate?.didUpdateData()
+    }
+    
+    func addLatestMeal(selectedMeal: Meal) {
+        StorageManager.shared.addLatestMeal(with: selectedMeal)
+        fetchLatestMealList()
+    }
+    
+    func deleteLatestMeal(selectedMealID: String) {
+        StorageManager.shared.deleteLatestMeal(at: selectedMealID)
+        fetchLatestMealList()
     }
 }

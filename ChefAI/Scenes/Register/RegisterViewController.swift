@@ -176,6 +176,7 @@ private extension RegisterViewController {
                 self.present(alertController, animated: true)
                 return
             } else {
+                self.viewModel.saveUsername(with: self.usernameTextField.text ?? "")
                 self.navigationController?.pushViewController(RegisterResultViewController(), animated: true)
                 self.loadingView.removeFromSuperview()
             }

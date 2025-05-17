@@ -27,6 +27,7 @@ class SettingsCell: UITableViewCell {
         let imageView: UIImageView = .init()
         imageView.image = .init()
         imageView.contentMode = .scaleAspectFit
+        imageView.tintColor = .customButton
         return imageView
     }()
     

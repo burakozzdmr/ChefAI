@@ -17,4 +17,8 @@ class RegisterViewModel {
     func signUp(with email: String, and password: String, completion: @escaping (Error?) -> Void) {
         service.signUp(with: email, and: password, completion: completion)
     }
+    
+    func saveUsername(with username: String) {
+        StorageManager.shared.saveUsername(with: username)
+    }
 }

@@ -187,16 +187,7 @@ private extension ChefViewController {
     }
     
     func dismissTapped() {
-        let alert = UIAlertController(title: "UYARI", message: "Sohbeti bitirmek üzeresiniz", preferredStyle: .alert)
-        alert.addAction(
-            UIAlertAction(title: "Evet", style: .default, handler: { _ in
-                self.dismiss(animated: true)
-            })
-        )
-        alert.addAction(
-            UIAlertAction(title: "İptal", style: .destructive)
-        )
-        self.present(alert, animated: true)
+        dismiss(animated: true)
     }
     
     func dismissKeyboard() {
@@ -246,8 +237,8 @@ extension ChefViewController: UITextFieldDelegate {
 
 extension ChefViewController: ChefViewModelProtocol {
     func didUpdateData() {
-        UIView.transition(with: chatTableView, duration: 0.25, options: .transitionCrossDissolve) {
-            DispatchQueue.main.async {
+        DispatchQueue.main.async {
+            UIView.transition(with: self.chatTableView, duration: 0.25, options: .transitionCrossDissolve) {
                 self.chatTableView.reloadData()
             }
         }

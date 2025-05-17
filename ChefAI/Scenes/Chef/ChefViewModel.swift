@@ -30,7 +30,7 @@ class ChefViewModel {
     
     func sendMessage(promptText: String) {
         let userMessage = UserChatModel(message: promptText, type: .user)
-        StorageManager.shared.addChatMessage(message: userMessage)
+        StorageManager.shared.addChatMessage(with: userMessage)
         fetchChatMessage()
         
         geminiService.sendPrompt(prompt: geminiPrompt + promptText) { [weak self] geminiResponse in
@@ -39,7 +39,7 @@ class ChefViewModel {
             case .success(let messageList):
                 if let responseText = messageList.candidates.first?.content.parts.first?.text {
                     let geminiMessage = UserChatModel(message: responseText, type: .gemini)
-                    StorageManager.shared.addChatMessage(message: geminiMessage)
+                    StorageManager.shared.addChatMessage(with: geminiMessage)
                     fetchChatMessage()
                 }
             case .failure:

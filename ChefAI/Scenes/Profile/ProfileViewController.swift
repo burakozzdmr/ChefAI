@@ -42,7 +42,7 @@ class ProfileViewController: UIViewController {
     
     private let usernameLabel: UILabel = {
         let label: UILabel = .init()
-        label.text = "Burak Özdemir"
+        label.text = ""
         label.textColor = .lightGray
         label.font = .systemFont(ofSize: 32, weight: .heavy)
         label.numberOfLines = 2
@@ -86,6 +86,7 @@ class ProfileViewController: UIViewController {
                 }
             }
         }
+        usernameLabel.text = viewModel.username
     }
     
     // MARK: - Inits

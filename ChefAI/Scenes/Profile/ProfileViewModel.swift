@@ -16,7 +16,7 @@ enum PhotoPickerAction {
 class ProfileViewModel {
     var permissionResult: ((PhotoPickerAction) -> Void)?
     private let authService: AuthServiceProtocol
-    private let storageService: StorageServiceProtocol
+    private(set) var username: String?
     
     let settingsList: [SettingsModel] = [
         SettingsModel(image: "shield.fill", name: "Privacy Policy"),
@@ -25,10 +25,10 @@ class ProfileViewModel {
         SettingsModel(image: "arrow.right.square.fill", name: "Log Out"),
     ]
     
-    init(authService: AuthService = .init(), storageService: StorageService = .init()) {
+    init(authService: AuthService = .init()) {
         self.authService = authService
-        self.storageService = storageService
         
+        fetchUsername()
     }
     
     func handleGalleryPermission() {
@@ -65,6 +65,10 @@ class ProfileViewModel {
     func addProfileImage(imageData: Data) {
         let userID = AuthService.fetchUserID()
         StorageManager.shared.saveImageToDisk(imageData: imageData, userID: userID)
+    }
+    
+    func fetchUsername() {
+        username = StorageManager.shared.fetchUsername()
     }
     
     func logOut(completion: @escaping (Error?) -> Void) {

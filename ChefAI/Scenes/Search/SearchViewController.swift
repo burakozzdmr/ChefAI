@@ -48,6 +48,17 @@ class SearchViewController: UIViewController {
         super.viewDidLoad()
         
         configureUI()
+
+    }
+    
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        searchController.isActive = true
+        
+        DispatchQueue.main.async {
+            self.searchController.searchBar.becomeFirstResponder()
+            self.viewModel.fetchLatestMealList()
+        }
     }
     
     // MARK: - Inits
@@ -123,13 +134,28 @@ extension SearchViewController: UITableViewDataSource {
 
 extension SearchViewController: UITableViewDelegate {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        let selectedMeal = viewModel.searchMealList[indexPath.row]
         let mealDetailVC = PresentMealDetailViewController(
             viewModel: PresentMealDetailViewModel(
-                mealDetailData: viewModel.searchMealList[indexPath.row]
+                mealDetailData: selectedMeal
             )
         )
+        viewModel.addLatestMeal(selectedMeal: selectedMeal)
         mealDetailVC.modalPresentationStyle = .fullScreen
         present(mealDetailVC, animated: true)
+    }
+    
+    func tableView(
+        _ tableView: UITableView,
+        trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath
+    ) -> UISwipeActionsConfiguration? {
+        let deleteAction = UIContextualAction(style: .destructive, title: "", handler: { _, _, _ in
+            self.viewModel.deleteLatestMeal(selectedMealID: self.viewModel.searchMealList[indexPath.row].mealID ?? "")
+        })
+        deleteAction.backgroundColor = .red
+        deleteAction.image = .init(systemName: "trash.fill")
+        
+        return .init(actions: [deleteAction])
     }
 }
 
@@ -140,7 +166,7 @@ extension SearchViewController: UISearchResultsUpdating {
         if searchController.searchBar.text != "" {
             viewModel.searchMeal(searchText: searchController.searchBar.text ?? "")
         } else {
-            // fetchLatestSelectedMeals() call
+            viewModel.fetchLatestMealList()
         }
     }
 }
@@ -157,8 +183,8 @@ extension SearchViewController: UISearchBarDelegate {
 
 extension SearchViewController: SearchViewModelProtocol {
     func didUpdateData() {
-        UIView.transition(with: searchResultTableView, duration: 0.5, options: .transitionCrossDissolve) {
-            DispatchQueue.main.async {
+        DispatchQueue.main.async {
+            UIView.transition(with: self.searchResultTableView, duration: 0.25, options: .transitionCrossDissolve) {
                 self.searchResultTableView.reloadData()
             }
         }
