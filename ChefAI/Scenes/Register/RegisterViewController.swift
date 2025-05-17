@@ -165,20 +165,44 @@ private extension RegisterViewController {
     }
     
     @objc func registerTapped() {
-        loadingView.isHidden = false
-        viewModel.signUp(with: emailTextField.text ?? "", and: passwordTextField.text ?? "") { authError in
-            if authError != nil {
-                self.loadingView.isHidden = true
-                let alertController = UIAlertController(title: "HATA", message: "Kayıt işlemi başarısız", preferredStyle: .alert)
-                alertController.addAction(
-                    UIAlertAction(title: "Tamam", style: .default)
+        if usernameTextField.text == ""
+            || emailTextField.text == ""
+            || passwordTextField.text == "" {
+            let alertController = UIAlertController(
+                title: "HATA",
+                message: "Tüm alanları doldurun.",
+                preferredStyle: .alert
+            )
+            alertController.addAction(
+                UIAlertAction(
+                    title: "Tamam",
+                    style: .default
                 )
-                self.present(alertController, animated: true)
-                return
-            } else {
-                self.viewModel.saveUsername(with: self.usernameTextField.text ?? "")
-                self.navigationController?.pushViewController(RegisterResultViewController(), animated: true)
-                self.loadingView.removeFromSuperview()
+            )
+            self.present(alertController, animated: true)
+        } else {
+            loadingView.isHidden = false
+            viewModel.signUp(with: emailTextField.text ?? "", and: passwordTextField.text ?? "") { authError in
+                if authError != nil {
+                    self.loadingView.isHidden = true
+                    let alertController = UIAlertController(
+                        title: "HATA",
+                        message: "Böyle bir kullanıcı zaten var",
+                        preferredStyle: .alert
+                    )
+                    alertController.addAction(
+                        UIAlertAction(
+                            title: "Tamam",
+                            style: .default
+                        )
+                    )
+                    self.present(alertController, animated: true)
+                    return
+                } else {
+                    self.viewModel.saveUsername(with: self.usernameTextField.text ?? "")
+                    self.navigationController?.pushViewController(RegisterResultViewController(), animated: true)
+                    self.loadingView.removeFromSuperview()
+                }
             }
         }
     }

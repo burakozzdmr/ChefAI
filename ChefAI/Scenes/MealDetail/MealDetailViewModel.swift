@@ -11,7 +11,7 @@ class MealDetailViewModel {
     
     let mealDetailData: Meal
     private let service: MealServiceProtocol
-    weak var outputDelegate: MealDetailViewModelOutputProtocol?
+    weak var outputDelegate: MealDetailControllerProtocol?
     
     init(service: MealService = .init(), mealDetailData: Meal) {
         self.mealDetailData = mealDetailData

@@ -75,8 +75,7 @@ private extension SearchCell {
     
     func configureConstraints() {
         containerView.snp.makeConstraints {
-            $0.top.bottom.equalToSuperview().offset(16)
-            $0.leading.trailing.equalToSuperview()
+            $0.edges.equalToSuperview()
         }
         
         mealImageView.snp.makeConstraints {
@@ -96,5 +95,6 @@ private extension SearchCell {
         configureConstraints()
         
         backgroundColor = .customBackgroundColor2
+        selectionStyle = .none
     }
 }

@@ -176,19 +176,39 @@ private extension LoginViewController {
 
 private extension LoginViewController {
     @objc func loginTapped() {
-        loadingView.isHidden = false
-        viewModel.signIn(with: emailTextField.text ?? "", and: passwordTextField.text ?? "") { authError in
-            if authError != nil {
-                self.loadingView.isHidden = true
-                let alertController = UIAlertController(title: "HATA", message: "Kullanıcı adı veya şifre hatalı", preferredStyle: .alert)
-                alertController.addAction(
-                    UIAlertAction(title: "Tamam", style: .default)
+        if emailTextField.text == ""
+            || passwordTextField.text == "" {
+            let alertController = UIAlertController(
+                title: "HATA",
+                message: "Kullanıcı adı veya şifre eksik",
+                preferredStyle: .alert
+            )
+            alertController.addAction(
+                UIAlertAction(
+                    title: "Tamam",
+                    style: .default
                 )
-                self.present(alertController, animated: true)
-                return
-            } else {
-                self.navigationController?.pushViewController(TabBarController(), animated: true)
-                self.loadingView.removeFromSuperview()
+            )
+            self.present(alertController, animated: true)
+        } else {
+            self.loadingView.isHidden = false
+            viewModel.signIn(with: emailTextField.text ?? "", and: passwordTextField.text ?? "") { authError in
+                if authError != nil {
+                    let alertController = UIAlertController(title: "HATA", message: "Kullanıcı adı veya şifre hatalı", preferredStyle: .alert)
+                    alertController.addAction(
+                        UIAlertAction(
+                            title: "Tamam",
+                            style: .default
+                        )
+                    )
+                    self.loadingView.isHidden = true
+                    self.present(alertController, animated: true) {
+                    }
+                    return
+                } else {
+                    self.navigationController?.pushViewController(TabBarController(), animated: true)
+                    self.loadingView.removeFromSuperview()
+                }
             }
         }
     }

@@ -10,7 +10,7 @@ import SnapKit
 import Kingfisher
 import WebKit
 
-protocol MealDetailViewModelOutputProtocol: AnyObject {
+protocol MealDetailControllerProtocol: AnyObject {
     func fetchDetailData(mealDetailData: Meal)
 }
 
@@ -260,7 +260,7 @@ private extension MealDetailViewController {
 
 // MARK: - MealDetailViewModelOutputProtocol
 
-extension MealDetailViewController: MealDetailViewModelOutputProtocol {
+extension MealDetailViewController: MealDetailControllerProtocol {
     func fetchDetailData(mealDetailData: Meal) {
         print("fetchDetailData is executed !")
         
