@@ -9,6 +9,7 @@ import Foundation
 
 class StorageManager {
     static let shared = StorageManager()
+    
     private let userDefaults: UserDefaults
     private let chatListKey = "com.ChefAI.MessageList"
     private let latestMealsKey = "com.ChefAI.LatestMeals"

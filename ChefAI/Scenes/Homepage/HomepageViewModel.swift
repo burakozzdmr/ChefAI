@@ -162,19 +162,4 @@ extension HomepageViewModel {
             }
         }
     }
-    
-    func getNavigationTitle() -> String {
-        let period: DayPeriodType = .init()
-        
-        switch period {
-        case .morning:
-            return "Günaydın ☀️"
-        case .afternoon:
-            return "İyi Günler 👋🏻"
-        case .evening:
-            return "İyi Akşamlar 🌙"
-        case .night:
-            return "İyi Geceler 🌙"
-        }
-    }
 }

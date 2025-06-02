@@ -16,6 +16,7 @@ protocol EndpointProtocol {
     var method: HTTPMethod { get }
     var headers: [String: String]? { get }
     var parameters: [String: Any]? { get }
+    static func prepareRequestURL(_ endpoint: Endpoint) -> Result<URLRequest, NetworkError>
 }
 
 // MARK: - Enums
@@ -110,10 +111,50 @@ extension Endpoint: EndpointProtocol {
     }
     
     var headers: [String : String]? {
-        return nil
+        switch self {
+        case .gemini:
+            return ["Content-Type": "application/json"]
+        default:
+            return nil
+        }
     }
     
     var parameters: [String : Any]? {
         return nil
+    }
+    
+    static func prepareRequestURL(_ endpoint: Endpoint) -> Result<URLRequest, NetworkError> {
+        switch endpoint {
+        case .gemini:
+            guard var urlComponents = URLComponents(string: endpoint.baseURL + endpoint.path) else {
+                return .failure(.invalidURL)
+            }
+            
+            urlComponents.queryItems = endpoint.queryItems
+            
+            guard let requestURL = urlComponents.url else {
+                return .failure(.requestFailedError)
+            }
+            
+            var request = URLRequest(url: requestURL)
+            request.httpMethod = endpoint.method.rawValue
+            request.allHTTPHeaderFields = endpoint.headers
+            return .success(request)
+            
+        default:
+            guard var urlComponents = URLComponents(string: endpoint.baseURL + NetworkConstants.mealApiKey + endpoint.path) else {
+                return .failure(.invalidURL)
+            }
+            
+            urlComponents.queryItems = endpoint.queryItems
+            
+            guard let requestURL = urlComponents.url else {
+                return .failure(.requestFailedError)
+            }
+            
+            var request = URLRequest(url: requestURL)
+            request.httpMethod = endpoint.method.rawValue
+            return .success(request)
+        }
     }
 }
