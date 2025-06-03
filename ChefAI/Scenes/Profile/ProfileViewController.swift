@@ -221,32 +221,32 @@ extension ProfileViewController: UITableViewDelegate {
             break
             
         case .logOut:
-            let alertController = UIAlertController(
-                title: "ÇIKIŞ",
-                message: "Çıkış yapmak istediğinize emin misiniz ?",
-                preferredStyle: .alert
-            )
-            alertController.addAction(
-                UIAlertAction(title: "Evet", style: .default, handler: { _ in
-                    self.viewModel.logOut { logoutState in
-                        if logoutState != nil {
-                            let errorAlertController = UIAlertController(
-                                title: "HATA", message: "Çıkış işlemi başarısız", preferredStyle: .alert
-                            )
-                            errorAlertController.addAction(UIAlertAction(title: "Tamam", style: .cancel))
-                            self.present(errorAlertController, animated: true)
-                            
-                        } else {
-                            let loginVC = LoginViewController()
-                            let authNavController = UINavigationController(rootViewController: loginVC)
-                            authNavController.modalPresentationStyle = .fullScreen
-                            self.present(authNavController, animated: true)
+            AlertManager.shared.presentAlert(
+                with: "Çıkış yapmak istediğinize emin misiniz ?",
+                and: "",
+                buttons: [
+                    UIAlertAction(title: "Evet", style: .default) { _ in
+                        self.viewModel.logOut { logoutState in
+                            if logoutState != nil {
+                                AlertManager.shared.presentAlert(
+                                    with: "HATA",
+                                    and: "Çıkış işlemi başarısız.",
+                                    buttons: [
+                                        UIAlertAction(title: "Tamam", style: .default)
+                                    ],
+                                    from: self
+                                )
+                            } else {
+                                let loginNavController = UINavigationController(rootViewController: LoginViewController())
+                                loginNavController.modalPresentationStyle = .fullScreen
+                                self.present(loginNavController, animated: true)
+                            }
                         }
-                    }
-                })
+                    },
+                    UIAlertAction(title: "Hayır", style: .destructive)
+                ],
+                from: self
             )
-            alertController.addAction(UIAlertAction(title: "Hayır", style: .destructive))
-            self.present(alertController, animated: true)
         }
     }
 }

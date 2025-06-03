@@ -178,32 +178,28 @@ private extension LoginViewController {
     @objc func loginTapped() {
         if emailTextField.text == ""
             || passwordTextField.text == "" {
-            let alertController = UIAlertController(
-                title: "HATA",
-                message: "Kullanıcı adı veya şifre eksik",
-                preferredStyle: .alert
+            AlertManager.shared.presentAlert(
+                with: "HATA",
+                and: "Kullanıcı adı veya şifre eksik",
+                buttons: [
+                    UIAlertAction(title: "Tamam", style: .default)
+                ],
+                from: self
             )
-            alertController.addAction(
-                UIAlertAction(
-                    title: "Tamam",
-                    style: .default
-                )
-            )
-            self.present(alertController, animated: true)
         } else {
             self.loadingView.isHidden = false
             viewModel.signIn(with: emailTextField.text ?? "", and: passwordTextField.text ?? "") { authError in
                 if authError != nil {
-                    let alertController = UIAlertController(title: "HATA", message: "Kullanıcı adı veya şifre hatalı", preferredStyle: .alert)
-                    alertController.addAction(
-                        UIAlertAction(
-                            title: "Tamam",
-                            style: .default
-                        )
+                    AlertManager.shared.presentAlert(
+                        with: "HATA",
+                        and: "Kullanıcı adı veya şifre hatalı",
+                        buttons: [
+                            UIAlertAction(title: "Tamam", style: .default) { _ in
+                                self.loadingView.isHidden = true
+                            }
+                        ],
+                        from: self
                     )
-                    self.loadingView.isHidden = true
-                    self.present(alertController, animated: true) {
-                    }
                     return
                 } else {
                     self.navigationController?.pushViewController(TabBarController(), animated: true)
@@ -214,6 +210,7 @@ private extension LoginViewController {
     }
     
     @objc func registerNowTapped() {
+        print("registerNowTapped tapped")
         navigationController?.pushViewController(RegisterViewController(viewModel: RegisterViewModel()), animated: true)
     }
     

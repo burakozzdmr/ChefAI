@@ -173,35 +173,27 @@ private extension RegisterViewController {
         if usernameTextField.text == ""
             || emailTextField.text == ""
             || passwordTextField.text == "" {
-            let alertController = UIAlertController(
-                title: "HATA",
-                message: "Tüm alanları doldurun.",
-                preferredStyle: .alert
+            AlertManager.shared.presentAlert(
+                with: "HATA",
+                and: "Tüm alanları doldurun",
+                buttons: [
+                    UIAlertAction(title: "Tamam", style: .default)
+                ],
+                from: self
             )
-            alertController.addAction(
-                UIAlertAction(
-                    title: "Tamam",
-                    style: .default
-                )
-            )
-            self.present(alertController, animated: true)
         } else {
             loadingView.isHidden = false
             viewModel.signUp(with: emailTextField.text ?? "", and: passwordTextField.text ?? "") { authError in
                 if authError != nil {
                     self.loadingView.isHidden = true
-                    let alertController = UIAlertController(
-                        title: "HATA",
-                        message: "Böyle bir kullanıcı zaten var",
-                        preferredStyle: .alert
+                    AlertManager.shared.presentAlert(
+                        with: "HATA",
+                        and: "Böyle bir kullanıcı zaten var",
+                        buttons: [
+                            UIAlertAction(title: "Tamam", style: .default)
+                        ],
+                        from: self
                     )
-                    alertController.addAction(
-                        UIAlertAction(
-                            title: "Tamam",
-                            style: .default
-                        )
-                    )
-                    self.present(alertController, animated: true)
                     return
                 } else {
                     self.viewModel.saveUsername(with: self.usernameTextField.text ?? "")
