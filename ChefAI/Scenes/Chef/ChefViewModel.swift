@@ -42,8 +42,8 @@ class ChefViewModel {
                     StorageManager.shared.addChatMessage(with: geminiMessage)
                     fetchChatMessage()
                 }
-            case .failure:
-                print(NetworkError.emptyDataError.errorMessage)
+            case .failure(let error):
+                print(error.errorMessage)
             }
         }
     }

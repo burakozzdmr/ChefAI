@@ -80,7 +80,7 @@ extension HomepageViewModel {
                     self.delegate?.didUpdateData()
                 }
             case .failure(let error):
-                print("Daily meal error: \(error)")
+                print("Daily meal error: \(error.errorMessage)")
             }
         }
     }
@@ -95,7 +95,7 @@ extension HomepageViewModel {
                     self.delegate?.didUpdateData()
                 }
             case .failure(let error):
-                print("Ingredients error: \(error)")
+                print("Ingredients error: \(error.errorMessage)")
             }
         }
     }
@@ -110,7 +110,7 @@ extension HomepageViewModel {
                     self.delegate?.didUpdateData()
                 }
             case .failure(let error):
-                print("Categories error: \(error)")
+                print("Categories error: \(error.errorMessage)")
             }
         }
     }
@@ -125,7 +125,7 @@ extension HomepageViewModel {
                     self.delegate?.didUpdateData()
                 }
             case .failure(let error):
-                print("Meal list error: \(error)")
+                print("Meal list error: \(error.errorMessage)")
             }
         }
     }
@@ -158,7 +158,7 @@ extension HomepageViewModel {
                     self.delegate?.didUpdateData()
                 }
             case .failure(let error):
-                print("\(categoryTitle) error: \(error)")
+                print("\(categoryTitle) error: \(error.errorMessage)")
             }
         }
     }
