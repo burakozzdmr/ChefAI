@@ -18,8 +18,6 @@ class SearchViewModel {
     
     init(mealService: MealService = .init()) {
         self.mealService = mealService
-        
-        fetchLatestMealList()
     }
     
     func searchMeal(searchText: String) {
@@ -32,24 +30,9 @@ class SearchViewModel {
                 DispatchQueue.main.async {
                     self.delegate?.didUpdateData()
                 }
-            case .failure:
-                print(NetworkError.emptyDataError.errorMessage)
+            case .failure(let error):
+                print(error.errorMessage)
             }
         }
-    }
-    
-    func fetchLatestMealList() {
-        searchMealList = StorageManager.shared.fetchLatestMeals()
-        delegate?.didUpdateData()
-    }
-    
-    func addLatestMeal(selectedMeal: Meal) {
-        StorageManager.shared.addLatestMeal(with: selectedMeal)
-        fetchLatestMealList()
-    }
-    
-    func deleteLatestMeal(selectedMealID: String) {
-        StorageManager.shared.deleteLatestMeal(at: selectedMealID)
-        fetchLatestMealList()
     }
 }

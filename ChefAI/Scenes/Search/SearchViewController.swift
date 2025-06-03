@@ -21,14 +21,6 @@ class SearchViewController: UIViewController {
         return searchController
     }()
     
-    private let latestSearchLabel: UILabel = {
-        let label: UILabel = .init()
-        label.text = "Latest Search"
-        label.textColor = .white
-        label.font = .systemFont(ofSize: 24, weight: .heavy)
-        return label
-    }()
-    
     private lazy var searchResultTableView: UITableView = {
         let tableView: UITableView = .init()
         tableView.delegate = self
@@ -57,7 +49,6 @@ class SearchViewController: UIViewController {
         
         DispatchQueue.main.async {
             self.searchController.searchBar.becomeFirstResponder()
-            self.viewModel.fetchLatestMealList()
         }
     }
     
@@ -80,19 +71,13 @@ class SearchViewController: UIViewController {
 private extension SearchViewController {
     func addViews() {
         view.addSubviews(
-            latestSearchLabel,
             searchResultTableView
         )
     }
     
     func configureConstraints() {
-        latestSearchLabel.snp.makeConstraints {
-            $0.top.equalTo(view.safeAreaLayoutGuide).offset(8)
-            $0.leading.trailing.equalToSuperview().offset(32)
-        }
-        
         searchResultTableView.snp.makeConstraints {
-            $0.top.equalTo(latestSearchLabel.snp.bottom).offset(8)
+            $0.top.equalTo(view.safeAreaLayoutGuide)
             $0.leading.trailing.bottom.equalToSuperview()
         }
     }
@@ -140,22 +125,8 @@ extension SearchViewController: UITableViewDelegate {
                 mealDetailData: selectedMeal
             )
         )
-        viewModel.addLatestMeal(selectedMeal: selectedMeal)
         mealDetailVC.modalPresentationStyle = .fullScreen
         present(mealDetailVC, animated: true)
-    }
-    
-    func tableView(
-        _ tableView: UITableView,
-        trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath
-    ) -> UISwipeActionsConfiguration? {
-        let deleteAction = UIContextualAction(style: .destructive, title: "", handler: { _, _, _ in
-            self.viewModel.deleteLatestMeal(selectedMealID: self.viewModel.searchMealList[indexPath.row].mealID ?? "")
-        })
-        deleteAction.backgroundColor = .red
-        deleteAction.image = .init(systemName: "trash.fill")
-        
-        return .init(actions: [deleteAction])
     }
 }
 
@@ -165,8 +136,6 @@ extension SearchViewController: UISearchResultsUpdating {
     func updateSearchResults(for searchController: UISearchController) {
         if searchController.searchBar.text != "" {
             viewModel.searchMeal(searchText: searchController.searchBar.text ?? "")
-        } else {
-            viewModel.fetchLatestMealList()
         }
     }
 }

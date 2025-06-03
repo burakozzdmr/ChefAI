@@ -31,8 +31,8 @@ class MealListViewModel {
             case .success(let mealListByCategory):
                 self.mealListByCategory = mealListByCategory.meals
                 delegate?.didUpdateData()
-            case .failure:
-                print("Error Message: \(NetworkError.emptyDataError.errorMessage)")
+            case .failure(let error):
+                print("Error Message: \(error.errorMessage)")
             }
         }
     }

@@ -30,8 +30,8 @@ class PresentMealDetailViewModel {
                     self.outputDelegate?.fetchDetailData(mealDetailData: safeMealsData)
                 }
                 
-            case .failure:
-                print(NetworkError.emptyDataError.errorMessage)
+            case .failure(let error):
+                print(error.errorMessage)
             }
         }
     }

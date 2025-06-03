@@ -12,3 +12,4 @@ extension UIImage {
     static let customAppLogo: UIImage = .init(named: "appLogo") ?? .init()
     static let successIcon: UIImage = .init(named: "successmark") ?? .init()
 }
+

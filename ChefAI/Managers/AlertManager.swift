@@ -13,9 +13,10 @@ class AlertManager {
     private init() {}
     
     func presentAlert(with title: String,
-                             and message: String,
-                             buttons alertButtons: [UIAlertAction]? = nil,
-                             from viewController: UIViewController) {
+                      and message: String,
+                      buttons alertButtons: [UIAlertAction]? = nil,
+                      from viewController: UIViewController
+    ) {
         let alertController = UIAlertController(title: title, message: message, preferredStyle: .alert)
         if let safeAlertButtons = alertButtons {
             for button in safeAlertButtons {

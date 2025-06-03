@@ -69,31 +69,4 @@ class StorageManager {
     func fetchUsername() -> String {
         return userDefaults.string(forKey: userDataKey) ?? ""
     }
-    
-    func addLatestMeal(with selectedMeal: Meal) {
-        var latestMealList = fetchLatestMeals()
-        latestMealList.append(selectedMeal)
-        if let data = try? JSONEncoder().encode(latestMealList) {
-            if latestMealList.contains(where: { $0.mealID == selectedMeal.mealID }) && latestMealList.count >= 1 {
-                return
-            }
-            userDefaults.set(data, forKey: latestMealsKey)
-        }
-    }
-    
-    func deleteLatestMeal(at mealID: String) {
-        var latestMealList = fetchLatestMeals()
-        latestMealList.removeAll { $0.mealID == mealID }
-        if let data = try? JSONEncoder().encode(latestMealList) {
-            userDefaults.set(data, forKey: latestMealsKey)
-        }
-    }
-    
-    func fetchLatestMeals() -> [Meal] {
-        guard let latestMealsData = userDefaults.data(forKey: latestMealsKey),
-              let latestMealList = try? JSONDecoder().decode([Meal].self, from: latestMealsData) else {
-            return []
-        }
-        return latestMealList
-    }
 }
