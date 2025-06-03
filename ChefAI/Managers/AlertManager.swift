@@ -8,9 +8,12 @@
 import UIKit
 
 class AlertManager {
-    static let shared = AlertManager()
     
+    // MARK: - Singleton
+    static let shared = AlertManager()
     private init() {}
+    
+    // MARK: - Publics
     
     func presentAlert(with title: String,
                       and message: String,

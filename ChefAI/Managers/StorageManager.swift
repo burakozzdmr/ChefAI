@@ -8,19 +8,19 @@
 import Foundation
 
 class StorageManager {
-    static let shared = StorageManager()
     
+    // MARK: - Singleton
+    static let shared = StorageManager()
     private let userDefaults: UserDefaults
-    private let chatListKey = "com.ChefAI.MessageList"
-    private let latestMealsKey = "com.ChefAI.LatestMeals"
-    private let userDataKey = "com.ChefAI.UserData"
     
     private init(userDefaults: UserDefaults = .standard) {
         self.userDefaults = userDefaults
     }
     
-    func fetchChatMessages() -> [UserChatModel] {
-        guard let chatData = userDefaults.data(forKey: chatListKey),
+    // MARK: - Publics
+    
+    func fetchChatMessages(userID: String) -> [UserChatModel] {
+        guard let chatData = userDefaults.data(forKey: chatListKey()),
               let chatMessage = try? JSONDecoder().decode([UserChatModel].self, from: chatData) else {
             return []
         }
@@ -28,10 +28,10 @@ class StorageManager {
     }
     
     func addChatMessage(with message: UserChatModel) {
-        var messages = fetchChatMessages()
+        var messages = fetchChatMessages(userID: AuthService.fetchUserID())
         messages.append(message)
         if let data = try? JSONEncoder().encode(messages) {
-            userDefaults.set(data, forKey: chatListKey)
+            userDefaults.set(data, forKey: chatListKey())
         }
     }
     
@@ -58,15 +58,29 @@ class StorageManager {
         }
     }
     
-    private func getDocumentsDirectory() -> URL {
-        return FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first!
-    }
-    
     func saveUsername(with username: String) {
-        userDefaults.set(username, forKey: userDataKey)
+        userDefaults.set(username, forKey: userNameKey())
     }
     
     func fetchUsername() -> String {
-        return userDefaults.string(forKey: userDataKey) ?? ""
+        return userDefaults.string(forKey: userNameKey()) ?? ""
+    }
+}
+
+// MARK: - Privates
+
+private extension StorageManager {
+    func getDocumentsDirectory() -> URL {
+        return FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first!
+    }
+    
+    func chatListKey() -> String {
+        let uid = AuthService.fetchUserID()
+        return "com.ChefAI.MessageList.\(uid)"
+    }
+    
+    func userNameKey() -> String {
+        let uid = AuthService.fetchUserID()
+        return "com.ChefAI.UserData.\(uid)"
     }
 }
