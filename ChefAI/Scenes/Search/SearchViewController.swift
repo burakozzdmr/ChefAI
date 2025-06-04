@@ -21,14 +21,6 @@ class SearchViewController: UIViewController {
         return searchController
     }()
     
-    private let latestSearchLabel: UILabel = {
-        let label: UILabel = .init()
-        label.text = "Latest Search"
-        label.textColor = .white
-        label.font = .systemFont(ofSize: 24, weight: .heavy)
-        return label
-    }()
-    
     private lazy var searchResultTableView: UITableView = {
         let tableView: UITableView = .init()
         tableView.delegate = self
@@ -48,6 +40,16 @@ class SearchViewController: UIViewController {
         super.viewDidLoad()
         
         configureUI()
+
+    }
+    
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        searchController.isActive = true
+        
+        DispatchQueue.main.async {
+            self.searchController.searchBar.becomeFirstResponder()
+        }
     }
     
     // MARK: - Inits
@@ -69,19 +71,13 @@ class SearchViewController: UIViewController {
 private extension SearchViewController {
     func addViews() {
         view.addSubviews(
-            latestSearchLabel,
             searchResultTableView
         )
     }
     
     func configureConstraints() {
-        latestSearchLabel.snp.makeConstraints {
-            $0.top.equalTo(view.safeAreaLayoutGuide).offset(8)
-            $0.leading.trailing.equalToSuperview().offset(32)
-        }
-        
         searchResultTableView.snp.makeConstraints {
-            $0.top.equalTo(latestSearchLabel.snp.bottom).offset(8)
+            $0.top.equalTo(view.safeAreaLayoutGuide)
             $0.leading.trailing.bottom.equalToSuperview()
         }
     }
@@ -123,9 +119,10 @@ extension SearchViewController: UITableViewDataSource {
 
 extension SearchViewController: UITableViewDelegate {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        let selectedMeal = viewModel.searchMealList[indexPath.row]
         let mealDetailVC = PresentMealDetailViewController(
             viewModel: PresentMealDetailViewModel(
-                mealDetailData: viewModel.searchMealList[indexPath.row]
+                mealDetailData: selectedMeal
             )
         )
         mealDetailVC.modalPresentationStyle = .fullScreen
@@ -139,8 +136,6 @@ extension SearchViewController: UISearchResultsUpdating {
     func updateSearchResults(for searchController: UISearchController) {
         if searchController.searchBar.text != "" {
             viewModel.searchMeal(searchText: searchController.searchBar.text ?? "")
-        } else {
-            // fetchLatestSelectedMeals() call
         }
     }
 }
@@ -157,8 +152,8 @@ extension SearchViewController: UISearchBarDelegate {
 
 extension SearchViewController: SearchViewModelProtocol {
     func didUpdateData() {
-        UIView.transition(with: searchResultTableView, duration: 0.5, options: .transitionCrossDissolve) {
-            DispatchQueue.main.async {
+        DispatchQueue.main.async {
+            UIView.transition(with: self.searchResultTableView, duration: 0.25, options: .transitionCrossDissolve) {
                 self.searchResultTableView.reloadData()
             }
         }

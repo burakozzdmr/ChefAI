@@ -176,24 +176,41 @@ private extension LoginViewController {
 
 private extension LoginViewController {
     @objc func loginTapped() {
-        loadingView.isHidden = false
-        viewModel.signIn(with: emailTextField.text ?? "", and: passwordTextField.text ?? "") { authError in
-            if authError != nil {
-                self.loadingView.isHidden = true
-                let alertController = UIAlertController(title: "HATA", message: "Kullanıcı adı veya şifre hatalı", preferredStyle: .alert)
-                alertController.addAction(
+        if emailTextField.text == ""
+            || passwordTextField.text == "" {
+            AlertManager.shared.presentAlert(
+                with: "HATA",
+                and: "Kullanıcı adı veya şifre eksik",
+                buttons: [
                     UIAlertAction(title: "Tamam", style: .default)
-                )
-                self.present(alertController, animated: true)
-                return
-            } else {
-                self.navigationController?.pushViewController(TabBarController(), animated: true)
-                self.loadingView.removeFromSuperview()
+                ],
+                from: self
+            )
+        } else {
+            self.loadingView.isHidden = false
+            viewModel.signIn(with: emailTextField.text ?? "", and: passwordTextField.text ?? "") { authError in
+                if authError != nil {
+                    AlertManager.shared.presentAlert(
+                        with: "HATA",
+                        and: "Kullanıcı adı veya şifre hatalı",
+                        buttons: [
+                            UIAlertAction(title: "Tamam", style: .default) { _ in
+                                self.loadingView.isHidden = true
+                            }
+                        ],
+                        from: self
+                    )
+                    return
+                } else {
+                    self.navigationController?.pushViewController(TabBarController(), animated: true)
+                    self.loadingView.removeFromSuperview()
+                }
             }
         }
     }
     
     @objc func registerNowTapped() {
+        print("registerNowTapped tapped")
         navigationController?.pushViewController(RegisterViewController(viewModel: RegisterViewModel()), animated: true)
     }
     

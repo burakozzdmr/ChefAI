@@ -17,12 +17,13 @@ class ProfileViewController: UIViewController {
 
     private let userImageView: UIImageView = {
         let imageView: UIImageView = .init()
-        imageView.image = .init(systemName: "camera")
-        imageView.contentMode = .scaleToFill
+        imageView.image = .init(systemName: "person.fill")
+        imageView.contentMode = .scaleAspectFill
         imageView.clipsToBounds = true
-        imageView.layer.cornerRadius = 64
+        imageView.layer.cornerRadius = 80
         imageView.layer.borderWidth = 5
         imageView.layer.borderColor = UIColor.lightGray.cgColor
+        imageView.tintColor = .white
         return imageView
     }()
     
@@ -41,9 +42,9 @@ class ProfileViewController: UIViewController {
     
     private let usernameLabel: UILabel = {
         let label: UILabel = .init()
-        label.text = "@sburraakm"
+        label.text = ""
         label.textColor = .lightGray
-        label.font = .systemFont(ofSize: 24, weight: .heavy)
+        label.font = .systemFont(ofSize: 32, weight: .heavy)
         label.numberOfLines = 2
         return label
     }()
@@ -65,7 +66,7 @@ class ProfileViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-
+        
         configureUI()
         
         viewModel.permissionResult = { [weak self] result in
@@ -76,6 +77,16 @@ class ProfileViewController: UIViewController {
                 self?.showPermissionDeniedAlert()
             }
         }
+        
+        viewModel.loadProfilePhoto { [weak self] imageData in
+            guard let self else { return }
+            if let safeImage = UIImage(data: imageData) {
+                DispatchQueue.main.async {
+                    self.userImageView.image = safeImage
+                }
+            }
+        }
+        usernameLabel.text = viewModel.username
     }
     
     // MARK: - Inits
@@ -123,12 +134,12 @@ private extension ProfileViewController {
         userImageView.snp.makeConstraints {
             $0.top.equalTo(view.safeAreaLayoutGuide).offset(32)
             $0.centerX.equalToSuperview()
-            $0.width.height.equalTo(128)
+            $0.width.height.equalTo(160)
         }
         
         editPhotoButton.snp.makeConstraints {
-            $0.top.equalTo(userImageView.snp.bottom).inset(40)
-            $0.leading.equalTo(userImageView.snp.trailing).inset(36)
+            $0.top.equalTo(userImageView.snp.bottom).inset(48)
+            $0.leading.equalTo(userImageView.snp.trailing).inset(48)
             $0.width.height.equalTo(40)
         }
         
@@ -210,31 +221,32 @@ extension ProfileViewController: UITableViewDelegate {
             break
             
         case .logOut:
-            let alertController = UIAlertController(
-                title: "ÇIKIŞ",
-                message: "Çıkış yapmak istediğinize emin misiniz ?",
-                preferredStyle: .alert
-            )
-            alertController.addAction(
-                UIAlertAction(title: "Evet", style: .default, handler: { _ in
-                    self.viewModel.logOut { logoutState in
-                        if logoutState != nil {
-                            let errorAlertController = UIAlertController(
-                                title: "HATA", message: "Çıkış işlemi başarısız", preferredStyle: .alert
-                            )
-                            errorAlertController.addAction(UIAlertAction(title: "Tamam", style: .cancel))
-                            self.present(errorAlertController, animated: true)
-                            
-                        } else {
-                            let loginVC = LoginViewController()
-                            loginVC.modalPresentationStyle = .fullScreen
-                            self.present(loginVC, animated: true)
+            AlertManager.shared.presentAlert(
+                with: "Çıkış yapmak istediğinize emin misiniz ?",
+                and: "",
+                buttons: [
+                    UIAlertAction(title: "Evet", style: .default) { _ in
+                        self.viewModel.logOut { logoutState in
+                            if logoutState != nil {
+                                AlertManager.shared.presentAlert(
+                                    with: "HATA",
+                                    and: "Çıkış işlemi başarısız.",
+                                    buttons: [
+                                        UIAlertAction(title: "Tamam", style: .default)
+                                    ],
+                                    from: self
+                                )
+                            } else {
+                                let loginNavController = UINavigationController(rootViewController: LoginViewController())
+                                loginNavController.modalPresentationStyle = .fullScreen
+                                self.present(loginNavController, animated: true)
+                            }
                         }
-                    }
-                })
+                    },
+                    UIAlertAction(title: "Hayır", style: .destructive)
+                ],
+                from: self
             )
-            alertController.addAction(UIAlertAction(title: "Hayır", style: .destructive))
-            self.present(alertController, animated: true)
         }
     }
 }
@@ -245,9 +257,10 @@ extension ProfileViewController: UIImagePickerControllerDelegate, UINavigationCo
     func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
         if let selectedImage = info[.originalImage] as? UIImage {
             DispatchQueue.main.async {
+                guard let imageData = selectedImage.jpegData(compressionQuality: 0.8) else { return }
+                self.viewModel.addProfileImage(imageData: imageData)
                 self.userImageView.image = selectedImage
             }
-            self.viewModel.addProfilePhoto()
         }
         picker.dismiss(animated: true)
     }

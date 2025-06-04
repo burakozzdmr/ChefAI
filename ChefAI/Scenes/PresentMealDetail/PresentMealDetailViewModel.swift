@@ -10,7 +10,7 @@ import Foundation
 class PresentMealDetailViewModel {
     let mealDetailData: Meal
     private let service: MealServiceProtocol
-    weak var outputDelegate: MealDetailViewModelOutputProtocol?
+    weak var outputDelegate: MealDetailControllerProtocol?
     
     init(service: MealService = .init(), mealDetailData: Meal) {
         self.mealDetailData = mealDetailData
@@ -30,8 +30,8 @@ class PresentMealDetailViewModel {
                     self.outputDelegate?.fetchDetailData(mealDetailData: safeMealsData)
                 }
                 
-            case .failure:
-                print(NetworkError.emptyDataError.errorMessage)
+            case .failure(let error):
+                print(error.errorMessage)
             }
         }
     }

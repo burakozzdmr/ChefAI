@@ -14,7 +14,6 @@ class EmbedFormatter {
         } else if url.contains("youtu.be/") {
             return url.replacingOccurrences(of: "youtu.be/", with: "www.youtube.com/embed/")
         }
-        
         return ""
     }
 }

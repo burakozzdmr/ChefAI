@@ -10,7 +10,7 @@ import SnapKit
 import Kingfisher
 import WebKit
 
-protocol MealDetailViewModelOutputProtocol: AnyObject {
+protocol MealDetailControllerProtocol: AnyObject {
     func fetchDetailData(mealDetailData: Meal)
 }
 
@@ -29,6 +29,18 @@ class MealDetailViewController: UIViewController {
     private let contentView: UIView = {
         let view: UIView = .init()
         return view
+    }()
+    
+    private lazy var backButton: UIButton = {
+        let button: UIButton = .init()
+        let configuration = UIImage.SymbolConfiguration(pointSize: 24, weight: .heavy)
+        button.setImage(UIImage(systemName: "chevron.left", withConfiguration: configuration), for: .normal)
+        button.tintColor = .customButton
+        button.backgroundColor = .white
+        button.clipsToBounds = true
+        button.layer.cornerRadius = 24
+        button.addTarget(self, action: #selector(backTapped), for: .touchUpInside)
+        return button
     }()
     
     private let detailImageView: UIImageView = {
@@ -134,11 +146,14 @@ class MealDetailViewController: UIViewController {
     
 private extension MealDetailViewController {
     func addViews() {
-        view.addSubview(detailScrollView)
-        view.addSubview(loadingView)
+        view.addSubviews(
+            detailScrollView,
+            loadingView
+        )
         detailScrollView.addSubview(contentView)
         
         contentView.addSubviews(
+            backButton,
             detailImageView,
             detailNameLabel,
             categoryView,
@@ -147,7 +162,6 @@ private extension MealDetailViewController {
             detailVideoWebView,
             detailDescriptionLabel
         )
-        
         categoryView.addSubview(categoryNameLabel)
         areaView.addSubview(detailAreaLabel)
     }
@@ -166,8 +180,14 @@ private extension MealDetailViewController {
             $0.width.equalTo(detailScrollView)
         }
         
+        backButton.snp.makeConstraints {
+            $0.top.equalToSuperview()
+            $0.leading.equalToSuperview().offset(16)
+            $0.width.height.equalTo(48)
+        }
+        
         detailImageView.snp.makeConstraints {
-            $0.top.equalToSuperview().offset(16)
+            $0.top.equalTo(backButton.snp.bottom).offset(16)
             $0.leading.trailing.equalToSuperview().inset(16)
             $0.height.equalTo(240)
         }
@@ -230,9 +250,17 @@ private extension MealDetailViewController {
     }
 }
 
+// MARK: - Objective-C Methods
+
+@objc private extension MealDetailViewController {
+    func backTapped() {
+        self.navigationController?.popViewController(animated: true)
+    }
+}
+
 // MARK: - MealDetailViewModelOutputProtocol
 
-extension MealDetailViewController: MealDetailViewModelOutputProtocol {
+extension MealDetailViewController: MealDetailControllerProtocol {
     func fetchDetailData(mealDetailData: Meal) {
         print("fetchDetailData is executed !")
         

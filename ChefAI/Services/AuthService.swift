@@ -14,6 +14,7 @@ protocol AuthServiceProtocol {
     func signIn(with email: String, and password: String, completion: @escaping (Error?) -> Void)
     func signUp(with email: String, and password: String, completion: @escaping (Error?) -> Void)
     func signOut(completion: @escaping (Error?) -> Void)
+    static func fetchUserID() -> String
 }
 
 // MARK: - AuthService
@@ -50,5 +51,9 @@ extension AuthService: AuthServiceProtocol {
         } catch {
             completion(error)
         }
+    }
+    
+    static func fetchUserID() -> String {
+        return Auth.auth().currentUser?.uid ?? ""
     }
 }

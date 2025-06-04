@@ -84,6 +84,11 @@ class RegisterViewController: UIViewController {
         configureUI()
     }
     
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        self.navigationController?.navigationBar.tintColor = .white
+    }
+    
     // MARK: - Inits
     
     init(viewModel: RegisterViewModel = .init()) {
@@ -165,19 +170,36 @@ private extension RegisterViewController {
     }
     
     @objc func registerTapped() {
-        loadingView.isHidden = false
-        viewModel.signUp(with: emailTextField.text ?? "", and: passwordTextField.text ?? "") { authError in
-            if authError != nil {
-                self.loadingView.isHidden = true
-                let alertController = UIAlertController(title: "HATA", message: "Kayıt işlemi başarısız", preferredStyle: .alert)
-                alertController.addAction(
+        if usernameTextField.text == ""
+            || emailTextField.text == ""
+            || passwordTextField.text == "" {
+            AlertManager.shared.presentAlert(
+                with: "HATA",
+                and: "Tüm alanları doldurun",
+                buttons: [
                     UIAlertAction(title: "Tamam", style: .default)
-                )
-                self.present(alertController, animated: true)
-                return
-            } else {
-                self.navigationController?.pushViewController(RegisterResultViewController(), animated: true)
-                self.loadingView.removeFromSuperview()
+                ],
+                from: self
+            )
+        } else {
+            loadingView.isHidden = false
+            viewModel.signUp(with: emailTextField.text ?? "", and: passwordTextField.text ?? "") { authError in
+                if authError != nil {
+                    self.loadingView.isHidden = true
+                    AlertManager.shared.presentAlert(
+                        with: "HATA",
+                        and: "Böyle bir kullanıcı zaten var",
+                        buttons: [
+                            UIAlertAction(title: "Tamam", style: .default)
+                        ],
+                        from: self
+                    )
+                    return
+                } else {
+                    self.viewModel.saveUsername(with: self.usernameTextField.text ?? "")
+                    self.navigationController?.pushViewController(RegisterResultViewController(), animated: true)
+                    self.loadingView.removeFromSuperview()
+                }
             }
         }
     }

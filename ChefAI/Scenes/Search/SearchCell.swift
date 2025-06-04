@@ -39,15 +39,6 @@ class SearchCell: UITableViewCell {
         return label
     }()
     
-    private lazy var crossButton: UIButton = {
-        let button: UIButton = .init()
-        button.tintColor = .darkGray
-        let configuration = UIImage.SymbolConfiguration(pointSize: 21, weight: .heavy)
-        button.setImage(UIImage(systemName: "xmark", withConfiguration: configuration), for: .normal)
-        button.addTarget(self, action: #selector(crossTapped), for: .touchUpInside)
-        return button
-    }()
-    
     // MARK: - Inits
     
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
@@ -76,8 +67,7 @@ private extension SearchCell {
     func addViews() {
         containerView.addSubviews(
             mealImageView,
-            mealNameLabel,
-            crossButton
+            mealNameLabel
         )
         
         addSubview(containerView)
@@ -85,8 +75,7 @@ private extension SearchCell {
     
     func configureConstraints() {
         containerView.snp.makeConstraints {
-            $0.top.bottom.equalToSuperview().offset(16)
-            $0.leading.trailing.equalToSuperview()
+            $0.edges.equalToSuperview()
         }
         
         mealImageView.snp.makeConstraints {
@@ -99,11 +88,6 @@ private extension SearchCell {
             $0.centerY.equalToSuperview()
             $0.leading.equalTo(mealImageView.snp.trailing).offset(16)
         }
-        
-        crossButton.snp.makeConstraints {
-            $0.centerY.equalToSuperview()
-            $0.trailing.equalToSuperview().offset(-16)
-        }
     }
     
     func configureUI() {
@@ -111,13 +95,6 @@ private extension SearchCell {
         configureConstraints()
         
         backgroundColor = .customBackgroundColor2
-    }
-}
-
-// MARK: - Objective-C Methods
-
-@objc private extension SearchCell {
-    func crossTapped() {
-        // storage service call for selected meals delete process.
+        selectionStyle = .none
     }
 }
