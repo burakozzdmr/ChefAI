@@ -38,14 +38,13 @@ extension GeminiService: GeminiServiceProtocol {
             } catch {
                 completion(.failure(.decodeError))
             }
-            
             networkManager.sendRequest(
                 request: httpRequest,
                 as: GeminiResponse.self,
                 completion: completion
             )
-        case .failure:
-            print(NetworkError.requestFailedError.errorMessage)
+        case .failure(let error):
+            print(error.errorMessage)
         }
     }
 }

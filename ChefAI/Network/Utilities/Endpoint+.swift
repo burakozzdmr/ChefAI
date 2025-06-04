@@ -15,7 +15,6 @@ protocol EndpointProtocol {
     var queryItems: [URLQueryItem]? { get }
     var method: HTTPMethod { get }
     var headers: [String: String]? { get }
-    var parameters: [String: Any]? { get }
     static func prepareRequestURL(_ endpoint: Endpoint) -> Result<URLRequest, NetworkError>
 }
 
@@ -117,10 +116,6 @@ extension Endpoint: EndpointProtocol {
         default:
             return nil
         }
-    }
-    
-    var parameters: [String : Any]? {
-        return nil
     }
     
     static func prepareRequestURL(_ endpoint: Endpoint) -> Result<URLRequest, NetworkError> {

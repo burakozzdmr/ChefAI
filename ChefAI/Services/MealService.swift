@@ -40,8 +40,8 @@ extension MealService: MealServiceProtocol {
                 as: MealModel.self,
                 completion: completion
             )
-        case .failure:
-            print("Error message: \(NetworkError.requestFailedError.errorMessage)")
+        case .failure(let error):
+            print(error.errorMessage)
         }
     }
     
@@ -55,8 +55,8 @@ extension MealService: MealServiceProtocol {
                 as: MealModel.self,
                 completion: completion
             )
-        case .failure:
-            print("Error message: \(NetworkError.requestFailedError.errorMessage)")
+        case .failure(let error):
+            print(error.errorMessage)
         }
     }
     
@@ -70,8 +70,8 @@ extension MealService: MealServiceProtocol {
                 as: CategoryModel.self,
                 completion: completion
             )
-        case .failure:
-            print("Error Message: \(NetworkError.requestFailedError.errorMessage)")
+        case .failure(let error):
+            print(error.errorMessage)
         }
     }
     
@@ -85,8 +85,8 @@ extension MealService: MealServiceProtocol {
                 as: MealModel.self,
                 completion: completion
             )
-        case .failure:
-            print("Error Message: \(NetworkError.requestFailedError.errorMessage)")
+        case .failure(let error):
+            print(error.errorMessage)
         }
     }
     
@@ -100,8 +100,8 @@ extension MealService: MealServiceProtocol {
                 as: IngredientModel.self,
                 completion: completion
             )
-        case .failure:
-            print("Error Message: \(NetworkError.requestFailedError.errorMessage)")
+        case .failure(let error):
+            print(error.errorMessage)
         }
     }
     
@@ -115,8 +115,8 @@ extension MealService: MealServiceProtocol {
                 as: MealModel.self,
                 completion: completion
             )
-        case .failure:
-            print("Error Message: \(NetworkError.requestFailedError.errorMessage)")
+        case .failure(let error):
+            print(error.errorMessage)
         }
     }
     
@@ -130,8 +130,8 @@ extension MealService: MealServiceProtocol {
                 as: MealModel.self,
                 completion: completion
             )
-        case .failure:
-            print("Error Message: \(NetworkError.requestFailedError.errorMessage)")
+        case .failure(let error):
+            print(error.errorMessage)
         }
     }
 }
