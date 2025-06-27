@@ -32,6 +32,11 @@ private extension TabBarController {
             and: .init(systemName: "magnifyingglass") ?? .init(),
             for: TabSearchViewController()
         )
+        let favouriteVC = createNav(
+            with: "Favoriler",
+            and: .init(systemName: "heart.fill") ?? .init(),
+            for: FavouriteViewController()
+        )
         let profileVC = createNav(
             with: "Profil",
             and: .init(systemName: "person.fill") ?? .init(),
