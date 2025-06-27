@@ -20,7 +20,7 @@ class StorageManager {
     // MARK: - Publics
     
     func fetchChatMessages(userID: String) -> [UserChatModel] {
-        guard let chatData = userDefaults.data(forKey: chatListKey()),
+        guard let chatData = userDefaults.data(forKey: getChatListKey()),
               let chatMessage = try? JSONDecoder().decode([UserChatModel].self, from: chatData) else {
             return []
         }
@@ -31,7 +31,7 @@ class StorageManager {
         var messages = fetchChatMessages(userID: AuthService.fetchUserID())
         messages.append(message)
         if let data = try? JSONEncoder().encode(messages) {
-            userDefaults.set(data, forKey: chatListKey())
+            userDefaults.set(data, forKey: getChatListKey())
         }
     }
     
@@ -59,11 +59,35 @@ class StorageManager {
     }
     
     func saveUsername(with username: String) {
-        userDefaults.set(username, forKey: userNameKey())
+        userDefaults.set(username, forKey: getUserNameKey())
     }
     
     func fetchUsername() -> String {
-        return userDefaults.string(forKey: userNameKey()) ?? ""
+        return userDefaults.string(forKey: getUserNameKey()) ?? ""
+    }
+    
+    func fetchFavouriteMeals(userID: String) -> [Meal] {
+        guard let mealData = userDefaults.data(forKey: getMealsKey()),
+              let meals = try? JSONDecoder().decode([Meal].self, from: mealData) else {
+            return []
+        }
+        return meals
+    }
+    
+    func addFavouriteMeals(with mealData: Meal) {
+        var meals = fetchFavouriteMeals(userID: AuthService.fetchUserID())
+        meals.append(mealData)
+        if let data = try? JSONEncoder().encode(meals) {
+            userDefaults.set(data, forKey: getChatListKey())
+        }
+    }
+    
+    func deleteFavouriteMeals(with mealID: String) {
+        var meals = fetchFavouriteMeals(userID: AuthService.fetchUserID())
+        meals.remove(at: Int(mealID) ?? Int())
+        if let data = try? JSONEncoder().encode(meals) {
+            userDefaults.set(data, forKey: getMealsKey())
+        }
     }
 }
 
@@ -74,13 +98,17 @@ private extension StorageManager {
         return FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first!
     }
     
-    func chatListKey() -> String {
+    func getChatListKey() -> String {
         let uid = AuthService.fetchUserID()
         return "com.ChefAI.MessageList.\(uid)"
     }
     
-    func userNameKey() -> String {
+    func getUserNameKey() -> String {
         let uid = AuthService.fetchUserID()
         return "com.ChefAI.UserData.\(uid)"
+    }
+    
+    func getMealsKey() -> String {
+        return "com.ChefAI.Meals"
     }
 }
