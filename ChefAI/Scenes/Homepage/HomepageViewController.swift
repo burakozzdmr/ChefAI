@@ -50,6 +50,8 @@ class HomepageViewController: UIViewController {
     
     private let viewModel: HomepageViewModel
     private let loadingView: LoadingView = .init()
+    private var indexPath: IndexPath = .init()
+    
     
     // MARK: - Life Cycles
     
@@ -73,14 +75,15 @@ class HomepageViewController: UIViewController {
     
     // MARK: - Methods
     
-    private func dequeueAndConfigureMealCell(collectionView: UICollectionView, indexPath: IndexPath, with meal: Meal) -> UICollectionViewCell {
-        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: MealCell.identifier, for: indexPath) as! MealCell
-        cell.configure(with: meal)
+    private func dequeueAndConfigureMealCell(with indexPath: IndexPath, for mealData: Meal) -> UICollectionViewCell {
+        let cell = mealsCollectionView.dequeueReusableCell(withReuseIdentifier: MealCell.identifier, for: indexPath) as! MealCell
+        cell.configure(with: mealData)
         return cell
     }
     
-    private func homepageToDetail(from viewController: UIViewController) {
-        navigationController?.pushViewController(viewController, animated: true)
+    private func homepageToDetail(with mealData: Meal) {
+        let detailController = MealDetailViewController(viewModel: MealDetailViewModel(mealDetailData: mealData))
+        navigationController?.pushViewController(detailController, animated: true)
     }
 }
 
@@ -230,54 +233,36 @@ extension HomepageViewController: UICollectionViewDataSource {
         
         switch contentType {
         case .dailyMeal:
-            return dequeueAndConfigureMealCell(collectionView: collectionView,
-                                               indexPath: indexPath,
-                                               with: viewModel.dailyMealList[indexPath.row])
+            return dequeueAndConfigureMealCell(with: indexPath, for: viewModel.dailyMealList[indexPath.row])
             
         case .categoryList:
-            return dequeueAndConfigureMealCell(collectionView: collectionView,
-                                               indexPath: indexPath,
-                                               with: viewModel.dailyMealList[indexPath.row])
+            let cell = collectionView.dequeueReusableCell(withReuseIdentifier: CategoryCell.identifier, for: indexPath) as! CategoryCell
+            cell.configure(with: viewModel.categoryList[indexPath.row])
+            return cell
             
         case .mealList:
-            return dequeueAndConfigureMealCell(collectionView: collectionView,
-                                               indexPath: indexPath,
-                                               with: viewModel.dailyMealList[indexPath.row])
+            return dequeueAndConfigureMealCell(with: indexPath, for: viewModel.mealList[indexPath.row])
             
         case .breakfast:
-            return dequeueAndConfigureMealCell(collectionView: collectionView,
-                                               indexPath: indexPath,
-                                               with: viewModel.dailyMealList[indexPath.row])
+            return dequeueAndConfigureMealCell(with: indexPath, for: viewModel.breakfastList[indexPath.row])
             
         case .starter:
-            return dequeueAndConfigureMealCell(collectionView: collectionView,
-                                               indexPath: indexPath,
-                                               with: viewModel.dailyMealList[indexPath.row])
+            return dequeueAndConfigureMealCell(with: indexPath, for: viewModel.starterList[indexPath.row])
             
         case .meat:
-            return dequeueAndConfigureMealCell(collectionView: collectionView,
-                                               indexPath: indexPath,
-                                               with: viewModel.dailyMealList[indexPath.row])
+            return dequeueAndConfigureMealCell(with: indexPath, for: viewModel.meatList[indexPath.row])
             
         case .seafood:
-            return dequeueAndConfigureMealCell(collectionView: collectionView,
-                                               indexPath: indexPath,
-                                               with: viewModel.dailyMealList[indexPath.row])
+            return dequeueAndConfigureMealCell(with: indexPath, for: viewModel.seafoodList[indexPath.row])
             
         case .vegetarian:
-            return dequeueAndConfigureMealCell(collectionView: collectionView,
-                                               indexPath: indexPath,
-                                               with: viewModel.dailyMealList[indexPath.row])
+            return dequeueAndConfigureMealCell(with: indexPath, for: viewModel.vegetarianList[indexPath.row])
             
         case .pasta:
-            return dequeueAndConfigureMealCell(collectionView: collectionView,
-                                               indexPath: indexPath,
-                                               with: viewModel.dailyMealList[indexPath.row])
+            return dequeueAndConfigureMealCell(with: indexPath, for: viewModel.pastaList[indexPath.row])
             
         case .dessert:
-            return dequeueAndConfigureMealCell(collectionView: collectionView,
-                                               indexPath: indexPath,
-                                               with: viewModel.dailyMealList[indexPath.row])
+            return dequeueAndConfigureMealCell(with: indexPath, for: viewModel.dessertList[indexPath.row])
         }
     }
     
@@ -304,94 +289,39 @@ extension HomepageViewController: UICollectionViewDelegate {
         
         switch sectionType {
         case .dailyMeal:
-            homepageToDetail(
-                from: MealDetailViewController(
-                    viewModel: MealDetailViewModel(
-                        mealDetailData: viewModel.dailyMealList[indexPath.row]
-                    )
-                )
-            )
+            homepageToDetail(with: viewModel.dailyMealList[indexPath.row])
             
         case .categoryList:
-            homepageToDetail(
-                from: MealListViewController(
-                    viewModel: MealListViewModel(
-                        categoryTitle: viewModel.categoryList[indexPath.row].categoryName ?? ""
-                    )
-                )
+            navigationController?.pushViewController(
+                MealListViewController(
+                    viewModel: MealListViewModel(categoryTitle: viewModel.categoryList[indexPath.row].categoryName ?? "")
+                ),
+                animated: true
             )
             
         case .mealList:
-            homepageToDetail(
-                from: MealDetailViewController(
-                    viewModel: MealDetailViewModel(
-                        mealDetailData: viewModel.dailyMealList[indexPath.row]
-                    )
-                )
-            )
+            homepageToDetail(with: viewModel.mealList[indexPath.row])
             
         case .breakfast:
-            homepageToDetail(
-                from: MealDetailViewController(
-                    viewModel: MealDetailViewModel(
-                        mealDetailData: viewModel.dailyMealList[indexPath.row]
-                    )
-                )
-            )
+            homepageToDetail(with: viewModel.breakfastList[indexPath.row])
             
         case .starter:
-            homepageToDetail(
-                from: MealDetailViewController(
-                    viewModel: MealDetailViewModel(
-                        mealDetailData: viewModel.dailyMealList[indexPath.row]
-                    )
-                )
-            )
+            homepageToDetail(with: viewModel.starterList[indexPath.row])
             
         case .meat:
-            homepageToDetail(
-                from: MealDetailViewController(
-                    viewModel: MealDetailViewModel(
-                        mealDetailData: viewModel.dailyMealList[indexPath.row]
-                    )
-                )
-            )
+            homepageToDetail(with: viewModel.meatList[indexPath.row])
             
         case .seafood:
-            homepageToDetail(
-                from: MealDetailViewController(
-                    viewModel: MealDetailViewModel(
-                        mealDetailData: viewModel.dailyMealList[indexPath.row]
-                    )
-                )
-            )
+            homepageToDetail(with: viewModel.seafoodList[indexPath.row])
             
         case .vegetarian:
-            homepageToDetail(
-                from: MealDetailViewController(
-                    viewModel: MealDetailViewModel(
-                        mealDetailData: viewModel.dailyMealList[indexPath.row]
-                    )
-                )
-            )
+            homepageToDetail(with: viewModel.vegetarianList[indexPath.row])
             
         case .pasta:
-            homepageToDetail(
-                from: MealDetailViewController(
-                    viewModel: MealDetailViewModel(
-                        mealDetailData: viewModel.dailyMealList[indexPath.row]
-                    )
-                )
-            )
+            homepageToDetail(with: viewModel.pastaList[indexPath.row])
             
         case .dessert:
-            homepageToDetail(
-                from: MealDetailViewController(
-                    viewModel: MealDetailViewModel(
-                        mealDetailData: viewModel.dailyMealList[indexPath.row]
-                    )
-                )
-            )
+            homepageToDetail(with: viewModel.dessertList[indexPath.row])
         }
     }
 }
