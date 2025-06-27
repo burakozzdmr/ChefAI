@@ -101,6 +101,11 @@ extension FavouriteViewController: UICollectionViewDataSource {
 
 extension FavouriteViewController: UICollectionViewDelegate {
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        
+        self.navigationController?.pushViewController(
+            MealDetailViewController(
+                viewModel: MealDetailViewModel(mealDetailData: viewModel.favouriteMealList[indexPath.row])
+            ),
+            animated: true
+        )
     }
 }
