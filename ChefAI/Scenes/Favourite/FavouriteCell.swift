@@ -9,7 +9,7 @@ import UIKit
 import SnapKit
 import Kingfisher
 
-class FavouriteCell: UICollectionViewCell {
+class FavouriteCell: UITableViewCell {
     static let identifier = "favouriteCell"
     
     // MARK: - Properties
@@ -44,8 +44,8 @@ class FavouriteCell: UICollectionViewCell {
         return view
     }()
     
-    override init(frame: CGRect) {
-        super.init(frame: frame)
+    override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
+        super.init(style: style, reuseIdentifier: reuseIdentifier)
         
         configureUI()
     }
