@@ -139,6 +139,8 @@ class PresentMealDetailViewController: UIViewController {
     }
     
     override func viewWillAppear(_ animated: Bool) {
+        favouriteButton.isSelected = viewModel.fetchFavouriteState()
+        
         let configuration = UIImage.SymbolConfiguration(pointSize: 24, weight: .heavy)
         let currentImage: UIImage = viewModel.fetchFavouriteState()
         ? .init(systemName: "heart.fill", withConfiguration: configuration)!
@@ -237,7 +239,7 @@ private extension PresentMealDetailViewController {
         
         dismissButton.snp.makeConstraints {
             $0.top.equalToSuperview().offset(16)
-            $0.trailing.equalToSuperview().inset(32)
+            $0.leading.equalToSuperview().offset(32)
         }
         
         detailNameLabel.snp.makeConstraints {

@@ -115,12 +115,13 @@ extension FavouriteViewController: UICollectionViewDataSource {
 
 extension FavouriteViewController: UICollectionViewDelegate {
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        self.navigationController?.pushViewController(
-            MealDetailViewController(
-                viewModel: MealDetailViewModel(mealDetailData: viewModel.favouriteMealList[indexPath.row])
-            ),
-            animated: true
+        let detailController = PresentMealDetailViewController(
+            viewModel: PresentMealDetailViewModel(
+                mealDetailData: viewModel.favouriteMealList[indexPath.row]
+            )
         )
+        detailController.modalPresentationStyle = .fullScreen
+        present(detailController, animated: true, completion: nil)
     }
 }
 
