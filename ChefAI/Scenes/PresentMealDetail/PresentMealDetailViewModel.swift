@@ -43,4 +43,8 @@ class PresentMealDetailViewModel {
     func deleteFavouriteMeals(with stateValue: Bool) {
         StorageManager.shared.deleteFavouriteMeals(with: stateValue, for: mealDetailData.mealID ?? "")
     }
+    
+    func fetchFavouriteState() -> Bool {
+        return StorageManager.shared.fetchFavouriteState(for: mealDetailData.mealID ?? "")
+    }
 }

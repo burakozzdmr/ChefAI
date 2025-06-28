@@ -138,6 +138,15 @@ class PresentMealDetailViewController: UIViewController {
         configureUI()
     }
     
+    override func viewWillAppear(_ animated: Bool) {
+        let configuration = UIImage.SymbolConfiguration(pointSize: 24, weight: .heavy)
+        let currentImage: UIImage = viewModel.fetchFavouriteState()
+        ? .init(systemName: "heart.fill", withConfiguration: configuration)!
+        : .init(systemName: "heart", withConfiguration: configuration)!
+        
+        favouriteButton.setImage(currentImage, for: .normal)
+    }
+    
     // MARK: - Inits
     
     init(viewModel: PresentMealDetailViewModel) {

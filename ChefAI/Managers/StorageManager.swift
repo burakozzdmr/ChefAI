@@ -83,6 +83,7 @@ class StorageManager {
 
         if let data = try? JSONEncoder().encode(meals) {
             userDefaults.set(data, forKey: getMealsKey())
+            userDefaults.set(stateValue, forKey: mealData.mealID ?? "")
         }
     }
     
@@ -94,6 +95,7 @@ class StorageManager {
 
             if let data = try? JSONEncoder().encode(meals) {
                 userDefaults.set(data, forKey: getMealsKey())
+                userDefaults.set(stateValue, forKey: mealID)
             }
         }
     }
