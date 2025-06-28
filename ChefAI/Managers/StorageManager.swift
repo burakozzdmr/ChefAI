@@ -84,7 +84,9 @@ class StorageManager {
     
     func deleteFavouriteMeals(with mealID: String) {
         var meals = fetchFavouriteMeals(userID: AuthService.fetchUserID())
-        meals.remove(at: Int(mealID) ?? Int())
+        if !meals.isEmpty {
+            meals.remove(at: Int(mealID) ?? Int())
+        }
         if let data = try? JSONEncoder().encode(meals) {
             userDefaults.set(data, forKey: getMealsKey())
         }

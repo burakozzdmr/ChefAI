@@ -35,4 +35,12 @@ class PresentMealDetailViewModel {
             }
         }
     }
+    
+    func addFavouriteMeals() {
+        StorageManager.shared.addFavouriteMeals(with: mealDetailData)
+    }
+    
+    func deleteFavouriteMeals() {
+        StorageManager.shared.deleteFavouriteMeals(with: mealDetailData.mealID ?? "")
+    }
 }

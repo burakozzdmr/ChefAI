@@ -90,6 +90,19 @@ class PresentMealDetailViewController: UIViewController {
         return label
     }()
     
+    private lazy var favouriteButton: UIButton = {
+        let button: UIButton = .init()
+        let configuration = UIImage.SymbolConfiguration(pointSize: 24, weight: .heavy)
+        let image = UIImage(systemName: "heart", withConfiguration: configuration)
+        button.setImage(image, for: .normal)
+        button.tintColor = .white
+        button.backgroundColor = .customButton
+        button.clipsToBounds = true
+        button.layer.cornerRadius = 24
+        button.addTarget(self, action: #selector(favouriteTapped), for: .touchUpInside)
+        return button
+    }()
+    
     private let recipeLabel: UILabel = {
         let label: UILabel = .init()
         label.text = "Recipe"
@@ -145,6 +158,16 @@ class PresentMealDetailViewController: UIViewController {
     func dismissTapped() {
         self.dismiss(animated: true)
     }
+    
+    func favouriteTapped() {
+        if favouriteButton.isSelected {
+            viewModel.addFavouriteMeals()
+            favouriteButton.setImage(.init(systemName: "heart.fill"), for: .normal)
+        } else {
+            viewModel.deleteFavouriteMeals()
+            favouriteButton.setImage(.init(systemName: "heart"), for: .normal)
+        }
+    }
 }
 
 // MARK: - Privates
@@ -160,6 +183,7 @@ private extension PresentMealDetailViewController {
             detailNameLabel,
             categoryView,
             areaView,
+            favouriteButton,
             recipeLabel,
             detailVideoWebView,
             detailDescriptionLabel
@@ -212,6 +236,12 @@ private extension PresentMealDetailViewController {
             $0.leading.equalTo(categoryView.snp.trailing).offset(32)
             $0.width.equalTo(160)
             $0.height.equalTo(40)
+        }
+        
+        favouriteButton.snp.makeConstraints {
+            $0.top.equalToSuperview()
+            $0.trailing.equalToSuperview().inset(32)
+            $0.width.height.equalTo(48)
         }
         
         detailAreaLabel.snp.makeConstraints {

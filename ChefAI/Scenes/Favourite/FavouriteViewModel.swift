@@ -9,9 +9,8 @@ import Foundation
 
 class FavouriteViewModel {
     private(set) var favouriteMealList: [Meal] = []
-    private let service: MealServiceProtocol
     
-    init(service: MealService = .init()) {
-        self.service = service
+    func fetchFavouriteMeals(for userID: String) {
+        favouriteMealList = StorageManager.shared.fetchFavouriteMeals(userID: userID)
     }
 }

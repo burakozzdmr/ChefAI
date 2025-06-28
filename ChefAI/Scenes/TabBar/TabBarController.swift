@@ -43,7 +43,7 @@ private extension TabBarController {
             for: ProfileViewController()
         )
         
-        self.setViewControllers([homepageVC, mealsVC, profileVC], animated: false)
+        self.setViewControllers([homepageVC, mealsVC, favouriteVC, profileVC], animated: false)
         
         self.tabBar.backgroundColor = .customBackgroundColor2
         self.tabBar.tintColor = .customButton

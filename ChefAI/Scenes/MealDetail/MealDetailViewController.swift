@@ -85,6 +85,19 @@ class MealDetailViewController: UIViewController {
         return view
     }()
     
+    private lazy var favouriteButton: UIButton = {
+        let button: UIButton = .init()
+        let configuration = UIImage.SymbolConfiguration(pointSize: 24, weight: .heavy)
+        let image = UIImage(systemName: "heart", withConfiguration: configuration)
+        button.setImage(image, for: .normal)
+        button.tintColor = .white
+        button.backgroundColor = .customButton
+        button.clipsToBounds = true
+        button.layer.cornerRadius = 24
+        button.addTarget(self, action: #selector(favouriteTapped), for: .touchUpInside)
+        return button
+    }()
+    
     private let detailAreaLabel: UILabel = {
         let label: UILabel = .init()
         label.text = ""
@@ -158,6 +171,7 @@ private extension MealDetailViewController {
             detailNameLabel,
             categoryView,
             areaView,
+            favouriteButton,
             recipeLabel,
             detailVideoWebView,
             detailDescriptionLabel
@@ -216,6 +230,12 @@ private extension MealDetailViewController {
             $0.height.equalTo(40)
         }
         
+        favouriteButton.snp.makeConstraints {
+            $0.top.equalToSuperview()
+            $0.trailing.equalToSuperview().inset(32)
+            $0.width.height.equalTo(48)
+        }
+        
         detailAreaLabel.snp.makeConstraints {
             $0.center.equalToSuperview()
         }
@@ -255,6 +275,33 @@ private extension MealDetailViewController {
 @objc private extension MealDetailViewController {
     func backTapped() {
         self.navigationController?.popViewController(animated: true)
+    }
+    
+    func favouriteTapped() {
+        favouriteButton.isSelected.toggle()
+
+        if favouriteButton.isSelected {
+            AlertManager.shared.presentAlert(
+                with: "ChefAI",
+                and: "Favorilere eklendi.",
+                buttons: [UIAlertAction(
+                    title: "Tamam",
+                    style: .default,
+                    handler: { _ in
+                        self.viewModel.addFavouriteMeals()
+                    }
+                )],
+                from: self
+            )
+            let configuration = UIImage.SymbolConfiguration(pointSize: 24, weight: .heavy)
+            let image = UIImage(systemName: "heart.fill", withConfiguration: configuration)
+            favouriteButton.setImage(image, for: .normal)
+        } else {
+            viewModel.deleteFavouriteMeals()
+            let configuration = UIImage.SymbolConfiguration(pointSize: 24, weight: .heavy)
+            let image = UIImage(systemName: "heart", withConfiguration: configuration)
+            favouriteButton.setImage(image, for: .normal)
+        }
     }
 }
 
