@@ -19,19 +19,24 @@ class FavouriteViewController: UIViewController {
     private let favouriteLabel: UILabel = {
         let label: UILabel = .init()
         label.text = "Favourites"
-        label.textColor = .black
+        label.textColor = .white
         label.font = .systemFont(ofSize: 24, weight: .heavy)
         return label
     }()
     
-    private lazy var favouritesTableView: UITableView = {
-        let tableView: UITableView = .init()
-        tableView.delegate = self
-        tableView.dataSource = self
-        tableView.separatorStyle = .none
-        tableView.rowHeight = 140
-        tableView.register(FavouriteCell.self, forCellReuseIdentifier: FavouriteCell.identifier)
-        return tableView
+    private lazy var favouritesCollectionView: UICollectionView = {
+        let flowLayout = UICollectionViewFlowLayout()
+        flowLayout.scrollDirection = .vertical
+        flowLayout.minimumLineSpacing = 16
+        flowLayout.minimumInteritemSpacing = 16
+        flowLayout.itemSize = CGSize(width: UIScreen.main.bounds.width - 32, height: 156)
+        
+        let collectionView = UICollectionView(frame: .zero, collectionViewLayout: flowLayout)
+        collectionView.dataSource = self
+        collectionView.delegate = self
+        collectionView.register(FavouriteCell.self, forCellWithReuseIdentifier: FavouriteCell.identifier)
+        collectionView.backgroundColor = .customBackgroundColor2
+        return collectionView
     }()
     
     private let viewModel: FavouriteViewModel
@@ -42,6 +47,10 @@ class FavouriteViewController: UIViewController {
         super.viewDidLoad()
 
         configureView()
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        viewModel.fetchFavouriteMeals()
     }
     
     // MARK: - Inits
@@ -64,22 +73,24 @@ private extension FavouriteViewController {
     func configureView() {
         addViews()
         configureConstraints()
+        
+        view.backgroundColor = .customBackgroundColor2
     }
     
     func addViews() {
         view.addSubviews(
             favouriteLabel,
-            favouritesTableView
+            favouritesCollectionView
         )
     }
     
     func configureConstraints() {
         favouriteLabel.snp.makeConstraints {
             $0.top.equalToSuperview().offset(64)
-            $0.leading.equalToSuperview().offset(32)
+            $0.leading.equalToSuperview().offset(16)
         }
         
-        favouritesTableView.snp.makeConstraints {
+        favouritesCollectionView.snp.makeConstraints {
             $0.top.equalTo(favouriteLabel.snp.bottom).offset(8)
             $0.leading.trailing.bottom.equalToSuperview()
         }
@@ -88,13 +99,13 @@ private extension FavouriteViewController {
 
 // MARK: - UICollectionViewDataSource
 
-extension FavouriteViewController: UITableViewDataSource {
-    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+extension FavouriteViewController: UICollectionViewDataSource {
+    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         return viewModel.favouriteMealList.count
     }
     
-    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: FavouriteCell.identifier, for: indexPath) as! FavouriteCell
+    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: FavouriteCell.identifier, for: indexPath) as! FavouriteCell
         cell.configure(with: viewModel.favouriteMealList[indexPath.row])
         return cell
     }
@@ -102,23 +113,14 @@ extension FavouriteViewController: UITableViewDataSource {
 
 // MARK: - UICollectionViewDelegate
 
-extension FavouriteViewController: UITableViewDelegate {
-    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+extension FavouriteViewController: UICollectionViewDelegate {
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         self.navigationController?.pushViewController(
             MealDetailViewController(
                 viewModel: MealDetailViewModel(mealDetailData: viewModel.favouriteMealList[indexPath.row])
             ),
             animated: true
         )
-    }
-    
-    func tableView(_ tableView: UITableView, trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
-        let deleteAction = UIContextualAction(style: .destructive, title: "") { _, _, _ in
-            self.viewModel.deleteFavouriteMeals(for: self.viewModel.favouriteMealList[indexPath.row].mealID ?? "")
-        }
-        deleteAction.image = .init(systemName: "trash.fill")
-        deleteAction.backgroundColor = .systemRed
-        return UISwipeActionsConfiguration(actions: [deleteAction])
     }
 }
 
@@ -127,8 +129,8 @@ extension FavouriteViewController: UITableViewDelegate {
 extension FavouriteViewController: FavouriteControllerProtocol {
     func didUpdateData() {
         DispatchQueue.main.async {
-            UIView.transition(with: self.favouritesTableView, duration: 0.5, options: .transitionCrossDissolve) {
-                self.favouritesTableView.reloadData()
+            UIView.transition(with: self.favouritesCollectionView, duration: 0.5, options: .transitionCrossDissolve) {
+                self.favouritesCollectionView.reloadData()
             }
         }
     }

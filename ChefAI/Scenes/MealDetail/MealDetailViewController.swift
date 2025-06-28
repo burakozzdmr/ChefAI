@@ -141,6 +141,10 @@ class MealDetailViewController: UIViewController {
         configureUI()
     }
     
+    override func viewWillAppear(_ animated: Bool) {
+        
+    }
+    
     // MARK: - Inits
     
     init(viewModel: MealDetailViewModel) {
@@ -288,7 +292,7 @@ private extension MealDetailViewController {
                     title: "Tamam",
                     style: .default,
                     handler: { _ in
-                        self.viewModel.addFavouriteMeals()
+                        self.viewModel.addFavouriteMeals(with: self.favouriteButton.isSelected)
                     }
                 )],
                 from: self
@@ -297,7 +301,7 @@ private extension MealDetailViewController {
             let image = UIImage(systemName: "heart.fill", withConfiguration: configuration)
             favouriteButton.setImage(image, for: .normal)
         } else {
-            viewModel.deleteFavouriteMeals()
+            viewModel.deleteFavouriteMeals(with: self.favouriteButton.isSelected)
             let configuration = UIImage.SymbolConfiguration(pointSize: 24, weight: .heavy)
             let image = UIImage(systemName: "heart", withConfiguration: configuration)
             favouriteButton.setImage(image, for: .normal)

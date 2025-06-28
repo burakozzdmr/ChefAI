@@ -160,12 +160,29 @@ class PresentMealDetailViewController: UIViewController {
     }
     
     func favouriteTapped() {
+        favouriteButton.isSelected.toggle()
+
         if favouriteButton.isSelected {
-            viewModel.addFavouriteMeals()
-            favouriteButton.setImage(.init(systemName: "heart.fill"), for: .normal)
+            AlertManager.shared.presentAlert(
+                with: "ChefAI",
+                and: "Favorilere eklendi.",
+                buttons: [UIAlertAction(
+                    title: "Tamam",
+                    style: .default,
+                    handler: { _ in
+                        self.viewModel.addFavouriteMeals(with: self.favouriteButton.isSelected)
+                    }
+                )],
+                from: self
+            )
+            let configuration = UIImage.SymbolConfiguration(pointSize: 24, weight: .heavy)
+            let image = UIImage(systemName: "heart.fill", withConfiguration: configuration)
+            favouriteButton.setImage(image, for: .normal)
         } else {
-            viewModel.deleteFavouriteMeals()
-            favouriteButton.setImage(.init(systemName: "heart"), for: .normal)
+            viewModel.deleteFavouriteMeals(with: self.favouriteButton.isSelected)
+            let configuration = UIImage.SymbolConfiguration(pointSize: 24, weight: .heavy)
+            let image = UIImage(systemName: "heart", withConfiguration: configuration)
+            favouriteButton.setImage(image, for: .normal)
         }
     }
 }

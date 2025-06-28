@@ -9,7 +9,7 @@ import UIKit
 import SnapKit
 import Kingfisher
 
-class FavouriteCell: UITableViewCell {
+class FavouriteCell: UICollectionViewCell {
     static let identifier = "favouriteCell"
     
     // MARK: - Properties
@@ -18,6 +18,7 @@ class FavouriteCell: UITableViewCell {
         let view = UIView()
         view.clipsToBounds = true
         view.layer.cornerRadius = 16
+        view.backgroundColor = .customBackgroundColor2
         return view
     }()
     
@@ -25,6 +26,7 @@ class FavouriteCell: UITableViewCell {
         let imageView = UIImageView()
         imageView.image = .init()
         imageView.contentMode = .scaleAspectFill
+        imageView.backgroundColor = .customBackgroundColor2
         return imageView
     }()
     
@@ -44,8 +46,8 @@ class FavouriteCell: UITableViewCell {
         return view
     }()
     
-    override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
-        super.init(style: style, reuseIdentifier: reuseIdentifier)
+    override init(frame: CGRect) {
+        super.init(frame: .zero)
         
         configureUI()
     }

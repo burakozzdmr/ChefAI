@@ -36,11 +36,11 @@ class PresentMealDetailViewModel {
         }
     }
     
-    func addFavouriteMeals() {
-        StorageManager.shared.addFavouriteMeals(with: mealDetailData)
+    func addFavouriteMeals(with stateValue: Bool) {
+        StorageManager.shared.addFavouriteMeals(with: stateValue, for: mealDetailData)
     }
     
-    func deleteFavouriteMeals() {
-        StorageManager.shared.deleteFavouriteMeals(with: mealDetailData.mealID ?? "")
+    func deleteFavouriteMeals(with stateValue: Bool) {
+        StorageManager.shared.deleteFavouriteMeals(with: stateValue, for: mealDetailData.mealID ?? "")
     }
 }

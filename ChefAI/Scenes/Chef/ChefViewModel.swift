@@ -49,7 +49,7 @@ class ChefViewModel {
     }
     
     func fetchChatMessage() {
-        chatMessageList = StorageManager.shared.fetchChatMessages(userID: AuthService.fetchUserID())
+        chatMessageList = StorageManager.shared.fetchChatMessages()
         delegate?.didUpdateData()
     }
 }

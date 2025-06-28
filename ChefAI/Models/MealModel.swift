@@ -20,6 +20,7 @@ struct Meal: Codable {
     let mealImageURL: String?
     let mealTag: String?
     let mealYoutubeURL: String?
+    var isFavourite: Bool = false
     
     enum CodingKeys: String, CodingKey {
         case mealID = "idMeal"
