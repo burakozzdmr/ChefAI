@@ -32,13 +32,18 @@ private extension TabBarController {
             and: .init(systemName: "magnifyingglass") ?? .init(),
             for: TabSearchViewController()
         )
+        let favouriteVC = createNav(
+            with: "Favoriler",
+            and: .init(systemName: "heart.fill") ?? .init(),
+            for: FavouriteViewController()
+        )
         let profileVC = createNav(
             with: "Profil",
             and: .init(systemName: "person.fill") ?? .init(),
             for: ProfileViewController()
         )
         
-        self.setViewControllers([homepageVC, mealsVC, profileVC], animated: false)
+        self.setViewControllers([homepageVC, mealsVC, favouriteVC, profileVC], animated: false)
         
         self.tabBar.backgroundColor = .customBackgroundColor2
         self.tabBar.tintColor = .customButton
