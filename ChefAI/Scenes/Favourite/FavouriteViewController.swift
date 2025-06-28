@@ -8,6 +8,10 @@
 import UIKit
 import SnapKit
 
+protocol FavouriteControllerProtocol: AnyObject {
+    func didUpdateData()
+}
+
 class FavouriteViewController: UIViewController {
 
     // MARK: - Properties
@@ -45,6 +49,8 @@ class FavouriteViewController: UIViewController {
     init(viewModel: FavouriteViewModel = .init()) {
         self.viewModel = viewModel
         super.init(nibName: nil, bundle: nil)
+        
+        self.viewModel.controllerDelegate = self
     }
     
     required init?(coder: NSCoder) {
@@ -107,6 +113,23 @@ extension FavouriteViewController: UITableViewDelegate {
     }
     
     func tableView(_ tableView: UITableView, trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
-        return .init()
+        let deleteAction = UIContextualAction(style: .destructive, title: "") { _, _, _ in
+            self.viewModel.deleteFavouriteMeals(for: self.viewModel.favouriteMealList[indexPath.row].mealID ?? "")
+        }
+        deleteAction.image = .init(systemName: "trash.fill")
+        deleteAction.backgroundColor = .systemRed
+        return UISwipeActionsConfiguration(actions: [deleteAction])
+    }
+}
+
+// MARK: FavouriteControllerProtocol
+
+extension FavouriteViewController: FavouriteControllerProtocol {
+    func didUpdateData() {
+        DispatchQueue.main.async {
+            UIView.transition(with: self.favouritesTableView, duration: 0.5, options: .transitionCrossDissolve) {
+                self.favouritesTableView.reloadData()
+            }
+        }
     }
 }
