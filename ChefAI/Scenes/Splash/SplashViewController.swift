@@ -17,7 +17,7 @@ class SplashViewController: UIViewController {
     
     private let appLogoImageView: UIImageView = {
         let imageView = UIImageView()
-        imageView.image = .customAppLogo
+        imageView.image = .splash
         imageView.contentMode = .scaleToFill
         return imageView
     }()

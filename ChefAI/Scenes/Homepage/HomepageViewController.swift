@@ -199,6 +199,9 @@ extension HomepageViewController: UICollectionViewDataSource {
         case .dailyMeal:
             return viewModel.dailyMealList.count
             
+        case .ingredientList:
+            return viewModel.ingredientList.count
+            
         case .categoryList:
             return viewModel.categoryList.count
             
@@ -234,6 +237,12 @@ extension HomepageViewController: UICollectionViewDataSource {
         switch contentType {
         case .dailyMeal:
             return dequeueAndConfigureMealCell(with: indexPath, for: viewModel.dailyMealList[indexPath.row])
+            
+        case .ingredientList:
+            let cell = collectionView.dequeueReusableCell(withReuseIdentifier: IngredientCell.identifier, for: indexPath) as! IngredientCell
+            cell.configure(with: viewModel.ingredientList[indexPath.row])
+            cell.ingredientDelegate = self
+            return cell
             
         case .categoryList:
             let cell = collectionView.dequeueReusableCell(withReuseIdentifier: CategoryCell.identifier, for: indexPath) as! CategoryCell
@@ -291,6 +300,8 @@ extension HomepageViewController: UICollectionViewDelegate {
         case .dailyMeal:
             homepageToDetail(with: viewModel.dailyMealList[indexPath.row])
             
+        case .ingredientList: break
+            
         case .categoryList:
             navigationController?.pushViewController(
                 MealListViewController(
@@ -334,5 +345,23 @@ extension HomepageViewController: HomepageViewModelDelegate {
             self.mealsCollectionView.reloadData()
             self.loadingView.isHidden = true
         }
+    }
+}
+
+// MARK: - IngredientDelegate
+
+extension HomepageViewController: IngredientProtocol {
+    func addButtonTapped() {
+        AlertManager.shared.presentAlert(
+            with: "ChefAI",
+            and: "Malzemelere eklendi.",
+            buttons: [
+                UIAlertAction(title: "Tamam", style: .default) { _ in
+                    self.viewModel.addIngredientsList(for: self.viewModel.ingredientList[self.indexPath.row].ingredientID)
+                    print(self.viewModel.ingredientList[self.indexPath.row].ingredientID)
+                }
+            ],
+            from: self
+        )
     }
 }

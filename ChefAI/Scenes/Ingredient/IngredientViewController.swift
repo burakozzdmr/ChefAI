@@ -19,17 +19,22 @@ class IngredientViewController: UIViewController {
         let label: UILabel = .init()
         label.text = "Ingredients"
         label.textColor = .white
+        label.font = .systemFont(ofSize: 32, weight: .heavy)
         return label
     }()
     
-    private lazy var ingredientTableView: UITableView = {
-        let tableView: UITableView = .init()
-        tableView.delegate = self
-        tableView.dataSource = self
-        tableView.rowHeight = 140
-        tableView.separatorStyle = .none
-        tableView.register(SelectedIngredientCell.self, forCellReuseIdentifier: SelectedIngredientCell.identifier)
-        return tableView
+    private lazy var ingredientCollectionView: UICollectionView = {
+        let flowLayout: UICollectionViewFlowLayout = .init()
+        flowLayout.scrollDirection = .vertical
+        flowLayout.minimumLineSpacing = 16
+        flowLayout.minimumInteritemSpacing = 16
+        flowLayout.itemSize = CGSize(width: (UIScreen.main.bounds.width - 32) / 2, height: 80)
+        
+        let collectionView: UICollectionView = .init(frame: .zero, collectionViewLayout: flowLayout)
+        collectionView.backgroundColor = .customBackgroundColor2
+        collectionView.dataSource = self
+        collectionView.register(SelectedIngredientCell.self, forCellWithReuseIdentifier: SelectedIngredientCell.identifier)
+        return collectionView
     }()
     
     private let viewModel: IngredientViewModel
@@ -62,12 +67,14 @@ private extension IngredientViewController {
     func configureView() {
         addViews()
         configureConstraints()
+        
+        view.backgroundColor = .customBackgroundColor2
     }
     
     func addViews() {
         view.addSubviews(
             ingredientLabel,
-            ingredientTableView
+            ingredientCollectionView
         )
     }
     
@@ -77,7 +84,7 @@ private extension IngredientViewController {
             $0.leading.equalToSuperview().offset(16)
         }
         
-        ingredientTableView.snp.makeConstraints {
+        ingredientCollectionView.snp.makeConstraints {
             $0.top.equalTo(ingredientLabel.snp.bottom).offset(8)
             $0.leading.trailing.bottom.equalToSuperview()
         }
@@ -86,41 +93,15 @@ private extension IngredientViewController {
 
 // MARK: - UITableViewDataSource
 
-extension IngredientViewController: UITableViewDataSource {
-    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+extension IngredientViewController: UICollectionViewDataSource {
+    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         return viewModel.ingredientList.count
     }
     
-    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: IngredientCell.identifier, for: indexPath) as! SelectedIngredientCell
+    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: SelectedIngredientCell.identifier, for: indexPath) as! SelectedIngredientCell
         cell.configure(with: viewModel.ingredientList[indexPath.row])
         return cell
-    }
-}
-
-// MARK: - UITableViewDelegate
-
-extension IngredientViewController: UITableViewDelegate {
-    func tableView(_ tableView: UITableView, trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
-        let deleteAction = UIContextualAction(style: .destructive, title: "") {
-            _,
-            _,
-            _ in
-            AlertManager.shared.presentAlert(
-                with: "UYARI",
-                and: "Seçilen malzemeyi silmek mi istiyorsun?",
-                buttons: [
-                    UIAlertAction(title: "Evet", style: .default, handler: { _ in
-                        self.viewModel.deleteIngredients(for: self.viewModel.ingredientList[indexPath.row].ingredientID)
-                    }),
-                    UIAlertAction(title: "Hayır", style: .destructive)
-                ],
-                from: self
-            )
-        }
-        deleteAction.image = .init(systemName: "trash.fill")
-        deleteAction.backgroundColor = .systemRed
-        return .init(actions: [deleteAction])
     }
 }
 
@@ -129,8 +110,8 @@ extension IngredientViewController: UITableViewDelegate {
 extension IngredientViewController: IngredientControllerOutputProtocol {
     func didUpdateData() {
         DispatchQueue.main.async {
-            UIView.transition(with: self.ingredientTableView, duration: 0.5, options: .transitionCrossDissolve) {
-                self.ingredientTableView.reloadData()
+            UIView.transition(with: self.ingredientCollectionView, duration: 0.3, options: .transitionCrossDissolve) {
+                self.ingredientCollectionView.reloadData()
             }
         }
     }

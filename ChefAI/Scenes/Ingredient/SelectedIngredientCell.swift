@@ -9,8 +9,8 @@ import UIKit
 import SnapKit
 import Kingfisher
 
-class SelectedIngredientCell: UITableViewCell {
-    static let identifier = "ingredientCell"
+class SelectedIngredientCell: UICollectionViewCell {
+    static let identifier = "selectedIngredientCell"
     
     private let ingredientImageView: UIImageView = {
         let imageView: UIImageView = .init()
@@ -36,8 +36,8 @@ class SelectedIngredientCell: UITableViewCell {
         return view
     }()
     
-    override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
-        super.init(style: style, reuseIdentifier: reuseIdentifier)
+    override init(frame: CGRect) {
+        super.init(frame: .zero)
         
         configureView()
     }

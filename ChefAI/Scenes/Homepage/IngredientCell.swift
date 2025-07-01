@@ -9,6 +9,10 @@ import UIKit
 import Kingfisher
 import SnapKit
 
+protocol IngredientProtocol: AnyObject {
+    func addButtonTapped()
+}
+
 class IngredientCell: UICollectionViewCell {
     static let identifier = "ingredientCell"
     
@@ -44,6 +48,21 @@ class IngredientCell: UICollectionViewCell {
         return view
     }()
     
+    private lazy var addButton: UIButton = {
+        let button: UIButton = .init()
+        let configuration = UIImage.SymbolConfiguration(pointSize: 24, weight: .heavy)
+        let image = UIImage(systemName: "plus", withConfiguration: configuration)
+        button.setImage(image, for: .normal)
+        button.tintColor = .white
+        button.backgroundColor = .customButton
+        button.clipsToBounds = true
+        button.layer.cornerRadius = 16
+        button.addTarget(self, action: #selector(addTapped), for: .touchUpInside)
+        return button
+    }()
+    
+    weak var ingredientDelegate: IngredientProtocol?
+    
     // MARK: - Inits
     
     override init(frame: CGRect) {
@@ -64,6 +83,10 @@ class IngredientCell: UICollectionViewCell {
         guard let imageURL = URL(string: "https://www.themealdb.com/images/ingredients/\(cellContent.ingredientName).png") else { return }
         ingredientImageView.kf.setImage(with: imageURL)
     }
+    
+    @objc private func addTapped() {
+        ingredientDelegate?.addButtonTapped()
+    }
 }
 
 // MARK: - Privates
@@ -73,6 +96,7 @@ private extension IngredientCell {
         contentView.addSubview(containerView)
         containerView.addSubviews(
             ingredientImageView,
+            addButton,
             bottomView,
             ingredientNameLabel
         )
@@ -85,6 +109,12 @@ private extension IngredientCell {
         
         ingredientImageView.snp.makeConstraints {
             $0.edges.equalToSuperview()
+        }
+        
+        addButton.snp.makeConstraints {
+            $0.top.equalToSuperview().offset(8)
+            $0.trailing.equalToSuperview()
+            $0.width.height.equalTo(32)
         }
         
         ingredientNameLabel.snp.makeConstraints {

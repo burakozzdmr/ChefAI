@@ -20,7 +20,7 @@ class FavouriteViewController: UIViewController {
         let label: UILabel = .init()
         label.text = "Favourites"
         label.textColor = .white
-        label.font = .systemFont(ofSize: 24, weight: .heavy)
+        label.font = .systemFont(ofSize: 32, weight: .heavy)
         return label
     }()
     
