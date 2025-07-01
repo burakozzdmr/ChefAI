@@ -23,6 +23,7 @@ class IngredientViewModel {
 
 extension IngredientViewModel: IngredientViewModelInputProtocol {
     func deleteIngredients(for ingredientID: String) {
-        
+        // TODO: - STORAGE MANAGER CALL FOR DELETE INGREDIENTS LIST WITH INGREDIENT ID
+        outputDelegate?.didUpdateData()
     }
 }
