@@ -16,11 +16,7 @@ class IngredientViewModel {
     weak var inputDelegate: IngredientViewModelInputProtocol?
     weak var outputDelegate: IngredientControllerOutputProtocol?
     
-    init() {
-        inputDelegate = self
-        
-        fetchIngredientList()
-    }
+    init() { inputDelegate = self }
 }
 
 extension IngredientViewModel: IngredientViewModelInputProtocol {
@@ -33,8 +29,6 @@ extension IngredientViewModel: IngredientViewModelInputProtocol {
     
     func deleteIngredients(for ingredientID: String) {
         StorageManager.shared.deleteIngredientsList(for: ingredientID)
-        DispatchQueue.main.async {
-            self.outputDelegate?.didUpdateData()
-        }
+        fetchIngredientList()
     }
 }

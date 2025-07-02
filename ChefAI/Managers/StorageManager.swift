@@ -143,7 +143,7 @@ class StorageManager {
             ingredientList.remove(at: index)
 
             if let data = try? JSONEncoder().encode(ingredientList) {
-                userDefaults.set(data, forKey: fetchMealsKey())
+                userDefaults.set(data, forKey: fetchIngredientsKey())
             }
         }
     }

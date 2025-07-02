@@ -9,7 +9,7 @@ import UIKit
 import SnapKit
 import Kingfisher
 
-class SelectedIngredientCell: UICollectionViewCell {
+class SelectedIngredientCell: UITableViewCell {
     static let identifier = "selectedIngredientCell"
     
     private let ingredientImageView: UIImageView = {
@@ -25,7 +25,7 @@ class SelectedIngredientCell: UICollectionViewCell {
         let label: UILabel = .init()
         label.text = ""
         label.textColor = .white
-        label.textAlignment = .left
+        label.textAlignment = .center
         label.numberOfLines = 0
         return label
     }()
@@ -36,8 +36,8 @@ class SelectedIngredientCell: UICollectionViewCell {
         return view
     }()
     
-    override init(frame: CGRect) {
-        super.init(frame: .zero)
+    override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
+        super.init(style: style, reuseIdentifier: reuseIdentifier)
         
         configureView()
     }
@@ -61,6 +61,8 @@ private extension SelectedIngredientCell {
     func configureView() {
         addViews()
         configureConstraints()
+        
+        backgroundColor = .lightGray.withAlphaComponent(0.5)
     }
     
     func addViews() {
@@ -74,16 +76,17 @@ private extension SelectedIngredientCell {
     
     func configureConstraints() {
         ingredientImageView.snp.makeConstraints {
-            $0.edges.equalToSuperview()
+            $0.edges.equalToSuperview().inset(16)
         }
         
         ingredientNameLabel.snp.makeConstraints {
             $0.centerY.equalToSuperview()
-            $0.leading.trailing.equalToSuperview().offset(16)
+            $0.leading.trailing.equalToSuperview().inset(32)
         }
         
         bottomView.snp.makeConstraints {
-            $0.leading.trailing.bottom.equalToSuperview()
+            $0.leading.trailing.equalToSuperview().inset(16)
+            $0.bottom.equalToSuperview().inset(16)
             $0.height.equalTo(48)
         }
     }
