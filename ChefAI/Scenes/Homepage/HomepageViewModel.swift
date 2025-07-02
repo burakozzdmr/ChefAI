@@ -31,6 +31,7 @@ class HomepageViewModel {
     
     var sectionList: [String] = [
         "Günün Yemeği",
+        "Malzemeler",
         "Kategoriler",
         "Popüler Yemekler",
         "Kahvaltı",
@@ -98,6 +99,10 @@ extension HomepageViewModel {
                 print("Ingredients error: \(error.errorMessage)")
             }
         }
+    }
+    
+    func addIngredientsList(for ingredientData: Ingredient) {
+        StorageManager.shared.addIngredientsList(with: ingredientData)
     }
     
     func fetchCategories() {

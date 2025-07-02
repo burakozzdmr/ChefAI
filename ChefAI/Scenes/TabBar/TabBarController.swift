@@ -24,13 +24,18 @@ private extension TabBarController {
     func configureTabBar() {
         let homepageVC = createNav(
             with: "Anasayfa",
-            and: .init(systemName: "house") ?? .init(),
+            and: .init(systemName: "house.fill") ?? .init(),
             for: HomepageViewController()
         )
         let mealsVC = createNav(
             with: "Ara",
             and: .init(systemName: "magnifyingglass") ?? .init(),
             for: TabSearchViewController()
+        )
+        let ingredientVC = createNav(
+            with: "Malzemeler",
+            and: .init(systemName: "cart.fill") ?? .init(),
+            for: IngredientViewController()
         )
         let favouriteVC = createNav(
             with: "Favoriler",
@@ -43,7 +48,7 @@ private extension TabBarController {
             for: ProfileViewController()
         )
         
-        self.setViewControllers([homepageVC, mealsVC, favouriteVC, profileVC], animated: false)
+        self.setViewControllers([homepageVC, mealsVC, ingredientVC, favouriteVC, profileVC], animated: false)
         
         self.tabBar.backgroundColor = .customBackgroundColor2
         self.tabBar.tintColor = .customButton
