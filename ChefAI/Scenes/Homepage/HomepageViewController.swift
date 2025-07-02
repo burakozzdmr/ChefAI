@@ -358,8 +358,7 @@ extension HomepageViewController: IngredientProtocol {
             and: "Malzemelere eklendi.",
             buttons: [
                 UIAlertAction(title: "Tamam", style: .default) { _ in
-                    let ingredient = self.viewModel.ingredientList[indexPath.row]
-                    self.viewModel.addIngredientsList(for: ingredient)
+                    self.viewModel.addIngredientsList(for: self.viewModel.ingredientList[indexPath.row])
                 }
             ],
             from: self

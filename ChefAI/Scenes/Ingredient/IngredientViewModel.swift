@@ -18,12 +18,23 @@ class IngredientViewModel {
     
     init() {
         inputDelegate = self
+        
+        fetchIngredientList()
     }
 }
 
 extension IngredientViewModel: IngredientViewModelInputProtocol {
+    func fetchIngredientList() {
+        ingredientList = StorageManager.shared.fetchIngredientsList()
+        DispatchQueue.main.async {
+            self.outputDelegate?.didUpdateData()
+        }
+    }
+    
     func deleteIngredients(for ingredientID: String) {
-        // TODO: - STORAGE MANAGER CALL FOR DELETE INGREDIENTS LIST WITH INGREDIENT ID
-        outputDelegate?.didUpdateData()
+        StorageManager.shared.deleteIngredientsList(for: ingredientID)
+        DispatchQueue.main.async {
+            self.outputDelegate?.didUpdateData()
+        }
     }
 }

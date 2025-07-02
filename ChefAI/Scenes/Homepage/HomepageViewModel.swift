@@ -102,7 +102,7 @@ extension HomepageViewModel {
     }
     
     func addIngredientsList(for ingredientData: Ingredient) {
-        
+        StorageManager.shared.addIngredientsList(with: ingredientData)
     }
     
     func fetchCategories() {
