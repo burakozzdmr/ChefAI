@@ -35,6 +35,14 @@ class StorageManager {
         }
     }
     
+    func removeAllChatMessages() {
+        var messages = fetchChatMessages()
+        messages.removeAll()
+        if let data = try? JSONEncoder().encode(messages) {
+            userDefaults.set(data, forKey: fetchChatListKey())
+        }
+    }
+    
     // MARK: - User Methods
     
     func loadImageFromDisk(userID: String) -> Data? {

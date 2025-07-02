@@ -52,4 +52,9 @@ class ChefViewModel {
         chatMessageList = StorageManager.shared.fetchChatMessages()
         delegate?.didUpdateData()
     }
+    
+    func resetChatMessages() {
+        StorageManager.shared.removeAllChatMessages()
+        fetchChatMessage()
+    }
 }
