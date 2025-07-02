@@ -19,6 +19,6 @@ class NetworkConstants {
     static let listPath = "/list.php"
     static let filterPath = "/filter.php"
     static let geminiPath = "gemini-2.0-flash-lite:generateContent"
-    static let mealApiKey = "YOUR_API_KEY"
-    static let geminiApiKey = "YOUR_API_KEY"
+    static let mealApiKey = "65232507"
+    static let geminiApiKey = "AIzaSyDYqHN1of7rWJjs8MMoF5v6fumWJk8olNE"
 }
