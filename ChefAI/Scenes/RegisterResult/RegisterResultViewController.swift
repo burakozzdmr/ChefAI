@@ -32,16 +32,13 @@ class RegisterResultViewController: UIViewController {
         return label
     }()
     
-    private lazy var backToLoginButton: UIButton = {
-        let button = UIButton()
-        button.setTitle("Back to Login", for: .normal)
-        button.titleLabel?.font = .systemFont(ofSize: 20, weight: .black)
-        button.tintColor = .white
-        button.backgroundColor = .customButton
-        button.clipsToBounds = true
-        button.layer.cornerRadius = 12
-        button.addTarget(self, action: #selector(backLoginTapped), for: .touchUpInside)
-        return button
+    private let loadingAnimationView: LottieAnimationView = {
+        let animationView = LottieAnimationView(name: "loadingAnimation")
+        animationView.animationSpeed = 1
+        animationView.contentMode = .scaleAspectFit
+        animationView.loopMode = .loop
+        animationView.play()
+        return animationView
     }()
     
     // MARK: - Life Cycles
@@ -62,9 +59,11 @@ class RegisterResultViewController: UIViewController {
 
 private extension RegisterResultViewController {
     func addViews() {
-        view.addSubview(successmarkImageView)
-        view.addSubview(thatsItLabel)
-        view.addSubview(backToLoginButton)
+        view.addSubviews(
+            successmarkImageView,
+            thatsItLabel,
+            loadingAnimationView
+        )
     }
     
     func configureConstraints() {
@@ -79,30 +78,24 @@ private extension RegisterResultViewController {
             $0.centerX.equalToSuperview()
         }
         
-        backToLoginButton.snp.makeConstraints {
-            $0.top.equalTo(thatsItLabel.snp.bottom).offset(96)
+        loadingAnimationView.snp.makeConstraints {
             $0.centerX.equalToSuperview()
-            $0.width.equalTo(320)
-            $0.height.equalTo(64)
+            $0.bottom.equalTo(view.safeAreaLayoutGuide).inset(96)
+            $0.width.height.equalTo(128)
         }
     }
     
     func configureUI() {
         addViews()
         configureConstraints()
+        registerResultToHomepage()
         
         view.backgroundColor = .customBackgroundColor2
     }
-}
-
-// MARK: - Objective-C Methods
-
-private extension RegisterResultViewController {
-    @objc func backLoginTapped() {
-        navigationController?.popToRootViewController(animated: true)
+    
+    func registerResultToHomepage() {
+        DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
+            self.navigationController?.pushViewController(TabBarController(), animated: true)
+        }
     }
-}
-
-#Preview {
-    RegisterResultViewController()
 }

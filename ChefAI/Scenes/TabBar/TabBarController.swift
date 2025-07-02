@@ -23,27 +23,27 @@ class TabBarController: UITabBarController {
 private extension TabBarController {
     func configureTabBar() {
         let homepageVC = createNav(
-            with: "Anasayfa",
+            with: "Home",
             and: .init(systemName: "house.fill") ?? .init(),
             for: HomepageViewController()
         )
         let mealsVC = createNav(
-            with: "Ara",
+            with: "Search",
             and: .init(systemName: "magnifyingglass") ?? .init(),
             for: TabSearchViewController()
         )
         let ingredientVC = createNav(
-            with: "Malzemeler",
+            with: "Ingredients",
             and: .init(systemName: "cart.fill") ?? .init(),
             for: IngredientViewController()
         )
         let favouriteVC = createNav(
-            with: "Favoriler",
+            with: "Favourites",
             and: .init(systemName: "heart.fill") ?? .init(),
             for: FavouriteViewController()
         )
         let profileVC = createNav(
-            with: "Profil",
+            with: "Profile",
             and: .init(systemName: "person.fill") ?? .init(),
             for: ProfileViewController()
         )

@@ -30,17 +30,17 @@ class HomepageViewModel {
     var dessertList: [Meal] = []
     
     var sectionList: [String] = [
-        "Günün Yemeği",
-        "Malzemeler",
-        "Kategoriler",
-        "Popüler Yemekler",
-        "Kahvaltı",
-        "Çorbalar",
-        "Et Yemekleri",
-        "Deniz Ürünleri",
-        "Vejeteryan",
-        "Makarnalar",
-        "Tatlılar"
+        "Meal of the Day",
+        "Ingredients",
+        "Categories",
+        "Popular Meals",
+        "Breakfast",
+        "Soups",
+        "Meat Dishes",
+        "Seafood",
+        "Vegetarian",
+        "Pastas",
+        "Desserts"
     ]
     
     lazy var categoryNameList: [String] = [
@@ -168,3 +168,4 @@ extension HomepageViewModel {
         }
     }
 }
+

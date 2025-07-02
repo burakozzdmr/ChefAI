@@ -292,9 +292,9 @@ private extension MealDetailViewController {
         if favouriteButton.isSelected {
             AlertManager.shared.presentAlert(
                 with: "ChefAI",
-                and: "Favorilere eklendi.",
+                and: "Added to favourites.",
                 buttons: [UIAlertAction(
-                    title: "Tamam",
+                    title: "OK",
                     style: .default,
                     handler: { _ in
                         self.viewModel.addFavouriteMeals(with: self.favouriteButton.isSelected)
@@ -343,3 +343,4 @@ extension MealDetailViewController: MealDetailControllerProtocol {
         detailVideoWebView.load(videoRequest)
     }
 }
+

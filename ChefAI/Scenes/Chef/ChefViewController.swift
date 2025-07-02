@@ -16,7 +16,7 @@ class ChefViewController: UIViewController {
     
     private lazy var resetChatButton: UIButton = {
         let button: UIButton = .init()
-        button.setTitle("Sohbeti Sıfırla", for: .normal)
+        button.setTitle("Reset Chat", for: .normal)
         button.tintColor = .white
         button.backgroundColor = .customButton
         button.clipsToBounds = true
@@ -222,13 +222,13 @@ private extension ChefViewController {
     
     func resetChatTapped() {
         AlertManager.shared.presentAlert(
-            with: "UYARI",
-            and: "Sohbeti sıfırlamak istediğinize emin misiniz ?\n Bu işlem geri alınamaz",
+            with: "WARNING",
+            and: "Are you sure you want to reset the chat?\n This action cannot be undone.",
             buttons: [
-                UIAlertAction(title: "Evet", style: .default) { _ in
+                UIAlertAction(title: "Yes", style: .default) { _ in
                     self.viewModel.resetChatMessages()
                 },
-                UIAlertAction(title: "Hayır", style: .destructive)
+                UIAlertAction(title: "No", style: .destructive)
             ],
             from: self
         )

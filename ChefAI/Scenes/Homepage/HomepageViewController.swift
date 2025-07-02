@@ -38,7 +38,7 @@ class HomepageViewController: UIViewController {
     
     private lazy var askToChefButton: UIButton = {
         let button = UIButton()
-        button.setTitle("Şefe Sor", for: .normal)
+        button.setTitle("Ask to Chef", for: .normal)
         button.titleLabel?.font = .systemFont(ofSize: 18, weight: .black)
         button.tintColor = .white
         button.backgroundColor = .customButton
@@ -51,7 +51,6 @@ class HomepageViewController: UIViewController {
     private let viewModel: HomepageViewModel
     private let loadingView: LoadingView = .init()
     private var indexPath: IndexPath = .init()
-    
     
     // MARK: - Life Cycles
     
@@ -355,9 +354,9 @@ extension HomepageViewController: IngredientProtocol {
     func addButtonTapped(at indexPath: IndexPath) {
         AlertManager.shared.presentAlert(
             with: "ChefAI",
-            and: "Malzemelere eklendi.",
+            and: "Added to ingredients.",
             buttons: [
-                UIAlertAction(title: "Tamam", style: .default) { _ in
+                UIAlertAction(title: "OK", style: .default) { _ in
                     self.viewModel.addIngredientsList(for: self.viewModel.ingredientList[indexPath.row])
                 }
             ],
@@ -365,3 +364,4 @@ extension HomepageViewController: IngredientProtocol {
         )
     }
 }
+

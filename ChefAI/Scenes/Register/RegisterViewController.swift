@@ -24,12 +24,12 @@ class RegisterViewController: UIViewController {
     
     private lazy var usernameTextField: BYUnderlineTextField = {
         let textField = BYUnderlineTextField(
-            placeholder: "Username",
-            alertMessage: "Invalid username",
+            placeholder: "Full Name",
+            alertMessage: "Invalid full name",
             underlineColor: .customButton,
             characters: [],
             textColor: .lightGray,
-            leftIcon: "person.fill"
+            leftIcon: "person.text.rectangle.fill"
         )
         textField.delegate = self
         return textField
@@ -51,6 +51,19 @@ class RegisterViewController: UIViewController {
     private lazy var passwordTextField: BYUnderlineSecurityTextField = {
         let textField = BYUnderlineSecurityTextField(
             placeholder: "Password",
+            alertMessage: "Invalid password",
+            underlineColor: .customButton,
+            minCharacterCount: 6,
+            textColor: .lightGray,
+            leftIcon: "key.fill"
+        )
+        textField.delegate = self
+        return textField
+    }()
+    
+    private lazy var confirmPasswordTextField: BYUnderlineSecurityTextField = {
+        let textField = BYUnderlineSecurityTextField(
+            placeholder: "Confirm Password",
             alertMessage: "Invalid password",
             underlineColor: .customButton,
             minCharacterCount: 6,
@@ -105,12 +118,15 @@ class RegisterViewController: UIViewController {
 
 private extension RegisterViewController {
     func addViews() {
-        view.addSubview(appLogoImageView)
-        view.addSubview(usernameTextField)
-        view.addSubview(emailTextField)
-        view.addSubview(passwordTextField)
-        view.addSubview(registerButton)
-        view.addSubview(loadingView)
+        view.addSubviews(
+            appLogoImageView,
+            usernameTextField,
+            emailTextField,
+            passwordTextField,
+            confirmPasswordTextField,
+            registerButton,
+            loadingView
+        )
     }
     
     func configureConstraints() {
@@ -127,19 +143,25 @@ private extension RegisterViewController {
         }
         
         emailTextField.snp.makeConstraints {
-            $0.top.equalTo(usernameTextField.snp.bottom).offset(32)
+            $0.top.equalTo(usernameTextField.snp.bottom).offset(16)
             $0.centerX.equalToSuperview()
             $0.width.equalTo(320)
         }
         
         passwordTextField.snp.makeConstraints {
-            $0.top.equalTo(emailTextField.snp.bottom).offset(32)
+            $0.top.equalTo(emailTextField.snp.bottom).offset(16)
+            $0.centerX.equalToSuperview()
+            $0.width.equalTo(320)
+        }
+        
+        confirmPasswordTextField.snp.makeConstraints {
+            $0.top.equalTo(passwordTextField.snp.bottom).offset(16)
             $0.centerX.equalToSuperview()
             $0.width.equalTo(320)
         }
         
         registerButton.snp.makeConstraints {
-            $0.bottom.equalTo(view.safeAreaLayoutGuide).inset(64)
+            $0.top.equalTo(confirmPasswordTextField.snp.bottom).offset(40)
             $0.centerX.equalToSuperview()
             $0.width.equalTo(320)
             $0.height.equalTo(64)
@@ -172,25 +194,30 @@ private extension RegisterViewController {
     @objc func registerTapped() {
         if usernameTextField.text == ""
             || emailTextField.text == ""
-            || passwordTextField.text == "" {
+            || passwordTextField.text == ""
+            || confirmPasswordTextField.text == "" {
             AlertManager.shared.presentAlert(
-                with: "HATA",
-                and: "Tüm alanları doldurun",
+                with: "ERROR",
+                and: "Please fill in all fields",
                 buttons: [
-                    UIAlertAction(title: "Tamam", style: .default)
+                    UIAlertAction(title: "OK", style: .default)
                 ],
                 from: self
             )
+        } else if passwordTextField.text != confirmPasswordTextField.text {
+            AlertManager.shared.presentAlert(with: "WARNING", and: "Passwords do not match!", buttons: [
+                UIAlertAction(title: "OK", style: .default)
+            ], from: self)
         } else {
             loadingView.isHidden = false
             viewModel.signUp(with: emailTextField.text ?? "", and: passwordTextField.text ?? "") { authError in
                 if authError != nil {
                     self.loadingView.isHidden = true
                     AlertManager.shared.presentAlert(
-                        with: "HATA",
-                        and: "Böyle bir kullanıcı zaten var",
+                        with: "ERROR",
+                        and: "A user with this credentials already exists",
                         buttons: [
-                            UIAlertAction(title: "Tamam", style: .default)
+                            UIAlertAction(title: "OK", style: .default)
                         ],
                         from: self
                     )
