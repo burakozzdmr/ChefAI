@@ -31,7 +31,7 @@ class ChatCell: UITableViewCell {
         let imageView = UIImageView()
         imageView.image = UIImage(systemName: "person.circle.fill")
         imageView.tintColor = .white
-        imageView.contentMode = .scaleAspectFit
+        imageView.contentMode = .scaleAspectFill
         imageView.clipsToBounds = true
         imageView.layer.cornerRadius = 16
         return imageView
@@ -42,7 +42,7 @@ class ChatCell: UITableViewCell {
         imageView.image = .splash
         imageView.tintColor = .white
         imageView.backgroundColor = .customButton
-        imageView.contentMode = .scaleAspectFit
+        imageView.contentMode = .scaleAspectFill
         imageView.clipsToBounds = true
         imageView.layer.cornerRadius = 16
         return imageView
@@ -128,11 +128,15 @@ private extension ChatCell {
         }
     }
     
-    private func configureUI() {
+    func configureUI() {
         addViews()
         configureConstraints()
         
         backgroundColor = .clear
         selectionStyle = .none
+        
+        let imageData = StorageManager.shared.loadImageFromDisk(userID: AuthService.fetchUserID())
+        let image = UIImage(data: imageData ?? .init())
+        userImageView.image = image
     }
 }
