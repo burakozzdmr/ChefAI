@@ -65,6 +65,7 @@ class ProfileViewModel {
     func addProfileImage(imageData: Data) {
         let userID = AuthService.fetchUserID()
         StorageManager.shared.saveImageToDisk(imageData: imageData, userID: userID)
+        NotificationCenter.default.post(name: ChatCell.profilePhotoDidChangeNotification, object: nil)
     }
     
     func fetchUsername() {

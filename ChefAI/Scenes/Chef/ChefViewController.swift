@@ -14,6 +14,17 @@ class ChefViewController: UIViewController {
 
     // MARK: - Properties
     
+    private lazy var resetChatButton: UIButton = {
+        let button: UIButton = .init()
+        button.setTitle("Sohbeti Sıfırla", for: .normal)
+        button.tintColor = .white
+        button.backgroundColor = .customButton
+        button.clipsToBounds = true
+        button.layer.cornerRadius = 16
+        button.addTarget(self, action: #selector(resetChatTapped), for: .touchUpInside)
+        return button
+    }()
+    
     private lazy var dismissButton: UIButton = {
         let button: UIButton = .init()
         let config = UIImage.SymbolConfiguration(pointSize: 24, weight: .heavy)
@@ -69,11 +80,13 @@ class ChefViewController: UIViewController {
     
     private let viewModel: ChefViewModel
     private var bottomStackViewBottomConstraint: Constraint?
+    private let loadingView: LoadingView = .init()
     
     // MARK: - Life Cycles
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
         configureUI()
         setupKeyboardObservers()
     }
@@ -103,14 +116,23 @@ private extension ChefViewController {
     func addViews() {
         view.addSubviews(
             bottomStackView,
+            resetChatButton,
             dismissButton,
-            chatTableView
+            chatTableView,
+            loadingView
         )
         bottomStackView.addArrangedSubview(promptTextField)
         bottomStackView.addArrangedSubview(sendButton)
     }
     
     func configureConstraints() {
+        resetChatButton.snp.makeConstraints {
+            $0.top.equalTo(view.safeAreaLayoutGuide).offset(16)
+            $0.leading.equalToSuperview().offset(32)
+            $0.width.equalTo(144)
+            $0.height.equalTo(40)
+        }
+        
         dismissButton.snp.makeConstraints {
             $0.top.equalTo(view.safeAreaLayoutGuide).offset(16)
             $0.trailing.equalToSuperview().offset(-16)
@@ -130,6 +152,10 @@ private extension ChefViewController {
         
         sendButton.snp.makeConstraints {
             $0.width.height.equalTo(48)
+        }
+        
+        loadingView.snp.makeConstraints {
+            $0.edges.equalToSuperview()
         }
     }
     
@@ -184,10 +210,28 @@ private extension ChefViewController {
     func sendTapped() {
         viewModel.sendMessage(promptText: promptTextField.text ?? "")
         promptTextField.text = ""
+        
+        DispatchQueue.main.async {
+            self.loadingView.isHidden = false
+        }
     }
     
     func dismissTapped() {
         dismiss(animated: true)
+    }
+    
+    func resetChatTapped() {
+        AlertManager.shared.presentAlert(
+            with: "UYARI",
+            and: "Sohbeti sıfırlamak istediğinize emin misiniz ?\n Bu işlem geri alınamaz",
+            buttons: [
+                UIAlertAction(title: "Evet", style: .default) { _ in
+                    self.viewModel.resetChatMessages()
+                },
+                UIAlertAction(title: "Hayır", style: .destructive)
+            ],
+            from: self
+        )
     }
     
     func dismissKeyboard() {
@@ -240,6 +284,7 @@ extension ChefViewController: ChefViewModelProtocol {
         DispatchQueue.main.async {
             UIView.transition(with: self.chatTableView, duration: 0.25, options: .transitionCrossDissolve) {
                 self.chatTableView.reloadData()
+                self.loadingView.isHidden = true
             }
         }
     }

@@ -67,5 +67,6 @@ private extension LoadingView {
         configureConstraints()
         
         self.backgroundColor = .black.withAlphaComponent(0.5)
+        isHidden = true
     }
 }

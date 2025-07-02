@@ -10,6 +10,8 @@ import SnapKit
 
 class ChatCell: UITableViewCell {
     static let identifier = "chatCell"
+    static let profilePhotoDidChangeNotification = Notification.Name("ProfilePhotoDidChange")
+    private var cachedProfileImage: UIImage?
     
     // MARK: - Properties
     
@@ -31,7 +33,7 @@ class ChatCell: UITableViewCell {
         let imageView = UIImageView()
         imageView.image = UIImage(systemName: "person.circle.fill")
         imageView.tintColor = .white
-        imageView.contentMode = .scaleAspectFit
+        imageView.contentMode = .scaleAspectFill
         imageView.clipsToBounds = true
         imageView.layer.cornerRadius = 16
         return imageView
@@ -39,24 +41,31 @@ class ChatCell: UITableViewCell {
     
     private let geminiImageView: UIImageView = {
         let imageView = UIImageView()
-        imageView.image = UIImage(systemName: "brain.head.profile")
+        imageView.image = .splash
         imageView.tintColor = .white
         imageView.backgroundColor = .customButton
-        imageView.contentMode = .scaleAspectFit
+        imageView.contentMode = .scaleAspectFill
         imageView.clipsToBounds = true
         imageView.layer.cornerRadius = 16
         return imageView
     }()
     
+    private var isHaveProfilePicture: Bool = false
+    
     // MARK: - Inits
     
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
+        NotificationCenter.default.addObserver(self, selector: #selector(Self.handleProfilePhotoDidChange), name: Self.profilePhotoDidChangeNotification, object: nil)
         configureUI()
     }
     
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
+    }
+    
+    deinit {
+        NotificationCenter.default.removeObserver(self)
     }
     
     // MARK: - Methods
@@ -88,6 +97,16 @@ class ChatCell: UITableViewCell {
                 $0.leading.equalTo(geminiImageView.snp.trailing).offset(8)
                 $0.width.lessThanOrEqualTo(contentView.snp.width).multipliedBy(0.75)
             }
+        }
+    }
+    
+    @objc private func handleProfilePhotoDidChange() {
+        self.cachedProfileImage = nil
+        // Yeni fotoğrafı hemen göstermek için isteğe bağlı:
+        if let imageData = StorageManager.shared.loadImageFromDisk(userID: AuthService.fetchUserID()),
+           let image = UIImage(data: imageData) {
+            self.cachedProfileImage = image
+            userImageView.image = image
         }
     }
 }
@@ -128,11 +147,21 @@ private extension ChatCell {
         }
     }
     
-    private func configureUI() {
+    func configureUI() {
         addViews()
         configureConstraints()
         
         backgroundColor = .clear
         selectionStyle = .none
+        
+        if let cached = cachedProfileImage {
+            userImageView.image = cached
+        } else {
+            if let imageData = StorageManager.shared.loadImageFromDisk(userID: AuthService.fetchUserID()),
+               let image = UIImage(data: imageData) {
+                cachedProfileImage = image
+                userImageView.image = image
+            }
+        }
     }
 }
