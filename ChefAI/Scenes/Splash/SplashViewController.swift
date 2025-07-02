@@ -8,6 +8,7 @@
 import UIKit
 import SnapKit
 import FirebaseAuth
+import Lottie
 
 // MARK: - SplashViewController
 
@@ -22,13 +23,13 @@ class SplashViewController: UIViewController {
         return imageView
     }()
     
-    private let loadingIndicatorView: UIActivityIndicatorView = {
-        let indicatorView = UIActivityIndicatorView()
-        indicatorView.style = .large
-        indicatorView.color = .customButton
-        indicatorView.hidesWhenStopped = true
-        indicatorView.startAnimating()
-        return indicatorView
+    private let loadingAnimationView: LottieAnimationView = {
+        let animationView = LottieAnimationView(name: "loadingAnimation")
+        animationView.animationSpeed = 1
+        animationView.contentMode = .scaleAspectFit
+        animationView.loopMode = .loop
+        animationView.play()
+        return animationView
     }()
     
     // MARK: - Life Cycles
@@ -45,7 +46,7 @@ class SplashViewController: UIViewController {
 private extension SplashViewController {
     func addViews() {
         view.addSubview(appLogoImageView)
-        view.addSubview(loadingIndicatorView)
+        view.addSubview(loadingAnimationView)
     }
     
     func configureConstraints() {
@@ -54,9 +55,10 @@ private extension SplashViewController {
             $0.width.height.equalTo(256)
         }
         
-        loadingIndicatorView.snp.makeConstraints {
-            $0.bottom.equalTo(view.safeAreaLayoutGuide).inset(96)
+        loadingAnimationView.snp.makeConstraints {
+            $0.bottom.equalTo(view.safeAreaLayoutGuide).inset(32)
             $0.centerX.equalToSuperview()
+            $0.width.height.equalTo(128)
         }
     }
     

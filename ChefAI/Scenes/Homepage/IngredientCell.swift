@@ -10,7 +10,7 @@ import Kingfisher
 import SnapKit
 
 protocol IngredientProtocol: AnyObject {
-    func addButtonTapped()
+    func addButtonTapped(at indexPath: IndexPath)
 }
 
 class IngredientCell: UICollectionViewCell {
@@ -62,6 +62,7 @@ class IngredientCell: UICollectionViewCell {
     }()
     
     weak var ingredientDelegate: IngredientProtocol?
+    var indexPath: IndexPath?
     
     // MARK: - Inits
     
@@ -85,7 +86,9 @@ class IngredientCell: UICollectionViewCell {
     }
     
     @objc private func addTapped() {
-        ingredientDelegate?.addButtonTapped()
+        if let safeIndexPath = indexPath {
+            self.ingredientDelegate?.addButtonTapped(at: safeIndexPath)
+        }
     }
 }
 

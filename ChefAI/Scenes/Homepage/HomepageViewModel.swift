@@ -101,7 +101,7 @@ extension HomepageViewModel {
         }
     }
     
-    func addIngredientsList(for ingredientID: String) {
+    func addIngredientsList(for ingredientData: Ingredient) {
         
     }
     

@@ -242,6 +242,7 @@ extension HomepageViewController: UICollectionViewDataSource {
             let cell = collectionView.dequeueReusableCell(withReuseIdentifier: IngredientCell.identifier, for: indexPath) as! IngredientCell
             cell.configure(with: viewModel.ingredientList[indexPath.row])
             cell.ingredientDelegate = self
+            cell.indexPath = indexPath
             return cell
             
         case .categoryList:
@@ -351,14 +352,14 @@ extension HomepageViewController: HomepageViewModelDelegate {
 // MARK: - IngredientDelegate
 
 extension HomepageViewController: IngredientProtocol {
-    func addButtonTapped() {
+    func addButtonTapped(at indexPath: IndexPath) {
         AlertManager.shared.presentAlert(
             with: "ChefAI",
             and: "Malzemelere eklendi.",
             buttons: [
                 UIAlertAction(title: "Tamam", style: .default) { _ in
-                    self.viewModel.addIngredientsList(for: self.viewModel.ingredientList[self.indexPath.row].ingredientID)
-                    print(self.viewModel.ingredientList[self.indexPath.row].ingredientID)
+                    let ingredient = self.viewModel.ingredientList[indexPath.row]
+                    self.viewModel.addIngredientsList(for: ingredient)
                 }
             ],
             from: self
