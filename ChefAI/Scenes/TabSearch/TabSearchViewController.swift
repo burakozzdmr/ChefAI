@@ -14,15 +14,15 @@ class TabSearchViewController: UIViewController {
     
     private let searchLabel: UILabel = {
         let label: UILabel = .init()
-        label.text = "Ara"
+        label.text = "Search"
         label.textColor = .white
-        label.font = .systemFont(ofSize: 24, weight: .black)
+        label.font = .systemFont(ofSize: 32, weight: .black)
         return label
     }()
     
     private let mostSearchMealsLabel: UILabel = {
         let label: UILabel = .init()
-        label.text = "En Çok Arananlar"
+        label.text = "Most Searched"
         label.textColor = .white
         label.font = .systemFont(ofSize: 24, weight: .black)
         return label
@@ -88,12 +88,12 @@ private extension TabSearchViewController {
     
     func configureConstraints() {
         searchLabel.snp.makeConstraints {
-            $0.top.equalToSuperview().offset(64)
+            $0.top.equalToSuperview().offset(80)
             $0.leading.equalToSuperview().offset(16)
         }
         
         searchView.snp.makeConstraints {
-            $0.top.equalTo(searchLabel.snp.bottom).offset(16)
+            $0.top.equalTo(view.safeAreaLayoutGuide)
             $0.leading.trailing.equalToSuperview().inset(16)
             $0.height.equalTo(48)
         }
@@ -164,3 +164,4 @@ extension TabSearchViewController: TabSearchViewModelProtocol {
         mostSearchCollectionView.reloadData()
     }
 }
+

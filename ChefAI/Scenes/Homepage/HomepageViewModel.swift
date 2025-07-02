@@ -30,16 +30,17 @@ class HomepageViewModel {
     var dessertList: [Meal] = []
     
     var sectionList: [String] = [
-        "Günün Yemeği",
-        "Kategoriler",
-        "Popüler Yemekler",
-        "Kahvaltı",
-        "Çorbalar",
-        "Et Yemekleri",
-        "Deniz Ürünleri",
-        "Vejeteryan",
-        "Makarnalar",
-        "Tatlılar"
+        "Meal of the Day",
+        "Ingredients",
+        "Categories",
+        "Popular Meals",
+        "Breakfast",
+        "Soups",
+        "Meat Dishes",
+        "Seafood",
+        "Vegetarian",
+        "Pastas",
+        "Desserts"
     ]
     
     lazy var categoryNameList: [String] = [
@@ -98,6 +99,10 @@ extension HomepageViewModel {
                 print("Ingredients error: \(error.errorMessage)")
             }
         }
+    }
+    
+    func addIngredientsList(for ingredientData: Ingredient) {
+        StorageManager.shared.addIngredientsList(with: ingredientData)
     }
     
     func fetchCategories() {
@@ -163,3 +168,4 @@ extension HomepageViewModel {
         }
     }
 }
+

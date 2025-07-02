@@ -14,7 +14,7 @@ class SearchBarView: UIView {
     
     private let searchLabel: UILabel = {
         let label: UILabel = .init()
-        label.text = "Ne aramak istiyorsun ?"
+        label.text = "What would you like to eat?"
         label.textColor = .darkGray
         label.font = .systemFont(ofSize: 19, weight: .bold)
         return label
@@ -73,3 +73,4 @@ private extension SearchBarView {
         clipsToBounds = true
     }
 }
+

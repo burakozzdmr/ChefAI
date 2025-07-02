@@ -38,7 +38,7 @@ class HomepageViewController: UIViewController {
     
     private lazy var askToChefButton: UIButton = {
         let button = UIButton()
-        button.setTitle("Şefe Sor", for: .normal)
+        button.setTitle("Ask to Chef", for: .normal)
         button.titleLabel?.font = .systemFont(ofSize: 18, weight: .black)
         button.tintColor = .white
         button.backgroundColor = .customButton
@@ -51,7 +51,6 @@ class HomepageViewController: UIViewController {
     private let viewModel: HomepageViewModel
     private let loadingView: LoadingView = .init()
     private var indexPath: IndexPath = .init()
-    
     
     // MARK: - Life Cycles
     
@@ -199,6 +198,9 @@ extension HomepageViewController: UICollectionViewDataSource {
         case .dailyMeal:
             return viewModel.dailyMealList.count
             
+        case .ingredientList:
+            return viewModel.ingredientList.count
+            
         case .categoryList:
             return viewModel.categoryList.count
             
@@ -234,6 +236,13 @@ extension HomepageViewController: UICollectionViewDataSource {
         switch contentType {
         case .dailyMeal:
             return dequeueAndConfigureMealCell(with: indexPath, for: viewModel.dailyMealList[indexPath.row])
+            
+        case .ingredientList:
+            let cell = collectionView.dequeueReusableCell(withReuseIdentifier: IngredientCell.identifier, for: indexPath) as! IngredientCell
+            cell.configure(with: viewModel.ingredientList[indexPath.row])
+            cell.ingredientDelegate = self
+            cell.indexPath = indexPath
+            return cell
             
         case .categoryList:
             let cell = collectionView.dequeueReusableCell(withReuseIdentifier: CategoryCell.identifier, for: indexPath) as! CategoryCell
@@ -291,6 +300,8 @@ extension HomepageViewController: UICollectionViewDelegate {
         case .dailyMeal:
             homepageToDetail(with: viewModel.dailyMealList[indexPath.row])
             
+        case .ingredientList: break
+            
         case .categoryList:
             navigationController?.pushViewController(
                 MealListViewController(
@@ -336,3 +347,21 @@ extension HomepageViewController: HomepageViewModelDelegate {
         }
     }
 }
+
+// MARK: - IngredientDelegate
+
+extension HomepageViewController: IngredientProtocol {
+    func addButtonTapped(at indexPath: IndexPath) {
+        AlertManager.shared.presentAlert(
+            with: "ChefAI",
+            and: "Added to ingredients.",
+            buttons: [
+                UIAlertAction(title: "OK", style: .default) { _ in
+                    self.viewModel.addIngredientsList(for: self.viewModel.ingredientList[indexPath.row])
+                }
+            ],
+            from: self
+        )
+    }
+}
+

@@ -17,7 +17,7 @@ class LoginViewController: UIViewController {
     
     private let appLogoImageView: UIImageView = {
         let imageView = UIImageView()
-        imageView.image = .appLogo
+        imageView.image = .splash
         imageView.contentMode = .scaleToFill
         return imageView
     }()

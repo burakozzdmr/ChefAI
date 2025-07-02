@@ -23,22 +23,32 @@ class TabBarController: UITabBarController {
 private extension TabBarController {
     func configureTabBar() {
         let homepageVC = createNav(
-            with: "Anasayfa",
-            and: .init(systemName: "house") ?? .init(),
+            with: "Home",
+            and: .init(systemName: "house.fill") ?? .init(),
             for: HomepageViewController()
         )
         let mealsVC = createNav(
-            with: "Ara",
+            with: "Search",
             and: .init(systemName: "magnifyingglass") ?? .init(),
             for: TabSearchViewController()
         )
+        let ingredientVC = createNav(
+            with: "Ingredients",
+            and: .init(systemName: "cart.fill") ?? .init(),
+            for: IngredientViewController()
+        )
+        let favouriteVC = createNav(
+            with: "Favourites",
+            and: .init(systemName: "heart.fill") ?? .init(),
+            for: FavouriteViewController()
+        )
         let profileVC = createNav(
-            with: "Profil",
+            with: "Profile",
             and: .init(systemName: "person.fill") ?? .init(),
             for: ProfileViewController()
         )
         
-        self.setViewControllers([homepageVC, mealsVC, profileVC], animated: false)
+        self.setViewControllers([homepageVC, mealsVC, ingredientVC, favouriteVC, profileVC], animated: false)
         
         self.tabBar.backgroundColor = .customBackgroundColor2
         self.tabBar.tintColor = .customButton

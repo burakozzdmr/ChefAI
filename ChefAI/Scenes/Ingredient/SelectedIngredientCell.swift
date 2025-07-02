@@ -2,19 +2,19 @@
 //  IngredientCell.swift
 //  ChefAI
 //
-//  Created by Burak Özdemir on 11.03.2025.
+//  Created by Burak Özdemir on 1.07.2025.
 //
 
 import UIKit
 import Kingfisher
 import SnapKit
 
-protocol IngredientProtocol: AnyObject {
-    func addButtonTapped(at indexPath: IndexPath)
+protocol IngredientCellProtocol: AnyObject {
+    func didMinusTapped(for indexPath: IndexPath)
 }
 
-class IngredientCell: UICollectionViewCell {
-    static let identifier = "ingredientCell"
+class SelectedIngredientCell: UICollectionViewCell {
+    static let identifier = "selectedIngredientCell"
     
     // MARK: - Properties
     
@@ -29,7 +29,7 @@ class IngredientCell: UICollectionViewCell {
     private let ingredientImageView: UIImageView = {
         let imageView = UIImageView()
         imageView.image = .init()
-        imageView.contentMode = .scaleAspectFill
+        imageView.contentMode = .scaleAspectFit
         return imageView
     }()
     
@@ -48,20 +48,20 @@ class IngredientCell: UICollectionViewCell {
         return view
     }()
     
-    private lazy var addButton: UIButton = {
+    private lazy var minusButton: UIButton = {
         let button: UIButton = .init()
         let configuration = UIImage.SymbolConfiguration(pointSize: 24, weight: .heavy)
-        let image = UIImage(systemName: "plus", withConfiguration: configuration)
+        let image = UIImage(systemName: "minus", withConfiguration: configuration)
         button.setImage(image, for: .normal)
         button.tintColor = .white
         button.backgroundColor = .customButton
         button.clipsToBounds = true
         button.layer.cornerRadius = 16
-        button.addTarget(self, action: #selector(addTapped), for: .touchUpInside)
+        button.addTarget(self, action: #selector(minusTapped), for: .touchUpInside)
         return button
     }()
     
-    weak var ingredientDelegate: IngredientProtocol?
+    weak var ingredientDelegate: IngredientCellProtocol?
     var indexPath: IndexPath?
     
     // MARK: - Inits
@@ -85,21 +85,21 @@ class IngredientCell: UICollectionViewCell {
         ingredientImageView.kf.setImage(with: imageURL)
     }
     
-    @objc private func addTapped() {
+    @objc private func minusTapped() {
         if let safeIndexPath = indexPath {
-            self.ingredientDelegate?.addButtonTapped(at: safeIndexPath)
+            self.ingredientDelegate?.didMinusTapped(for: indexPath ?? .init())
         }
     }
 }
 
 // MARK: - Privates
 
-private extension IngredientCell {
+private extension SelectedIngredientCell {
     func addViews() {
         contentView.addSubview(containerView)
         containerView.addSubviews(
             ingredientImageView,
-            addButton,
+            minusButton,
             bottomView,
             ingredientNameLabel
         )
@@ -114,7 +114,7 @@ private extension IngredientCell {
             $0.edges.equalToSuperview()
         }
         
-        addButton.snp.makeConstraints {
+        minusButton.snp.makeConstraints {
             $0.top.equalToSuperview().offset(8)
             $0.trailing.equalToSuperview()
             $0.width.height.equalTo(32)

@@ -2,6 +2,34 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
+	<key>UIAppFonts</key>
+	<array>
+		<string>Fredoka_Condensed-Bold.ttf</string>
+		<string>Fredoka_Condensed-Light.ttf</string>
+		<string>Fredoka_Condensed-Medium.ttf</string>
+		<string>Fredoka_Condensed-Regular.ttf</string>
+		<string>Fredoka_Condensed-SemiBold.ttf</string>
+		<string>Fredoka_Expanded-Bold.ttf</string>
+		<string>Fredoka_Expanded-Light.ttf</string>
+		<string>Fredoka_Expanded-Medium.ttf</string>
+		<string>Fredoka_Expanded-Regular.ttf</string>
+		<string>Fredoka_Expanded-SemiBold.ttf</string>
+		<string>Fredoka_SemiCondensed-Bold.ttf</string>
+		<string>Fredoka_SemiCondensed-Light.ttf</string>
+		<string>Fredoka_SemiCondensed-Medium.ttf</string>
+		<string>Fredoka_SemiCondensed-Regular.ttf</string>
+		<string>Fredoka_SemiCondensed-SemiBold.ttf</string>
+		<string>Fredoka_SemiExpanded-Bold.ttf</string>
+		<string>Fredoka_SemiExpanded-Light.ttf</string>
+		<string>Fredoka_SemiExpanded-Medium.ttf</string>
+		<string>Fredoka_SemiExpanded-Regular.ttf</string>
+		<string>Fredoka_SemiExpanded-SemiBold.ttf</string>
+		<string>Fredoka-Bold.ttf</string>
+		<string>Fredoka-Light.ttf</string>
+		<string>Fredoka-Medium.ttf</string>
+		<string>Fredoka-Regular.ttf</string>
+		<string>Fredoka-SemiBold.ttf</string>
+	</array>
 	<key>NSPhotoLibraryUsageDescription</key>
 	<string>We need access to your photo library to select a profile picture.</string>
 	<key>CFBundleIdentifier</key>
