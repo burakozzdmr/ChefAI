@@ -6,27 +6,39 @@
 //
 
 import UIKit
-import SnapKit
 import Kingfisher
+import SnapKit
 
-class SelectedIngredientCell: UITableViewCell {
+protocol IngredientCellProtocol: AnyObject {
+    func didMinusTapped(for indexPath: IndexPath)
+}
+
+class SelectedIngredientCell: UICollectionViewCell {
     static let identifier = "selectedIngredientCell"
     
+    // MARK: - Properties
+    
+    private let containerView: UIView = {
+        let view = UIView()
+        view.backgroundColor = .customOptions
+        view.clipsToBounds = true
+        view.layer.cornerRadius = 16
+        return view
+    }()
+    
     private let ingredientImageView: UIImageView = {
-        let imageView: UIImageView = .init()
+        let imageView = UIImageView()
         imageView.image = .init()
         imageView.contentMode = .scaleAspectFit
-        imageView.clipsToBounds = true
-        imageView.layer.cornerRadius = 32
         return imageView
     }()
     
     private let ingredientNameLabel: UILabel = {
-        let label: UILabel = .init()
+        let label = UILabel()
         label.text = ""
         label.textColor = .white
-        label.textAlignment = .center
-        label.numberOfLines = 0
+        label.font = .systemFont(ofSize: 18, weight: .black)
+        label.numberOfLines = 3
         return label
     }()
     
@@ -36,58 +48,91 @@ class SelectedIngredientCell: UITableViewCell {
         return view
     }()
     
-    override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
-        super.init(style: style, reuseIdentifier: reuseIdentifier)
+    private lazy var minusButton: UIButton = {
+        let button: UIButton = .init()
+        let configuration = UIImage.SymbolConfiguration(pointSize: 24, weight: .heavy)
+        let image = UIImage(systemName: "minus", withConfiguration: configuration)
+        button.setImage(image, for: .normal)
+        button.tintColor = .white
+        button.backgroundColor = .customButton
+        button.clipsToBounds = true
+        button.layer.cornerRadius = 16
+        button.addTarget(self, action: #selector(minusTapped), for: .touchUpInside)
+        return button
+    }()
+    
+    weak var ingredientDelegate: IngredientCellProtocol?
+    var indexPath: IndexPath?
+    
+    // MARK: - Inits
+    
+    override init(frame: CGRect) {
+        super.init(frame: frame)
         
-        configureView()
+        configureUI()
     }
     
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
     
-    // MARK: - Publics
+    // MARK: - Methods
     
-    func configure(with cell: Ingredient) {
-        ingredientNameLabel.text = cell.ingredientName
-        guard let imageURL = URL(string: "https://www.themealdb.com/images/ingredients/\(cell.ingredientName).png") else { return }
+    func configure(with cellContent: Ingredient) {
+        ingredientNameLabel.text = cellContent.ingredientName
+        
+        guard let imageURL = URL(string: "https://www.themealdb.com/images/ingredients/\(cellContent.ingredientName).png") else { return }
         ingredientImageView.kf.setImage(with: imageURL)
+    }
+    
+    @objc private func minusTapped() {
+        if let safeIndexPath = indexPath {
+            self.ingredientDelegate?.didMinusTapped(for: indexPath ?? .init())
+        }
     }
 }
 
 // MARK: - Privates
 
 private extension SelectedIngredientCell {
-    func configureView() {
-        addViews()
-        configureConstraints()
-        
-        backgroundColor = .lightGray.withAlphaComponent(0.5)
-    }
-    
     func addViews() {
-        contentView.addSubviews(
+        contentView.addSubview(containerView)
+        containerView.addSubviews(
             ingredientImageView,
-            ingredientNameLabel,
-            bottomView
+            minusButton,
+            bottomView,
+            ingredientNameLabel
         )
-        bottomView.addSubview(ingredientNameLabel)
     }
     
     func configureConstraints() {
+        containerView.snp.makeConstraints {
+            $0.edges.equalToSuperview()
+        }
+        
         ingredientImageView.snp.makeConstraints {
-            $0.edges.equalToSuperview().inset(16)
+            $0.edges.equalToSuperview()
+        }
+        
+        minusButton.snp.makeConstraints {
+            $0.top.equalToSuperview().offset(8)
+            $0.trailing.equalToSuperview()
+            $0.width.height.equalTo(32)
         }
         
         ingredientNameLabel.snp.makeConstraints {
-            $0.centerY.equalToSuperview()
-            $0.leading.trailing.equalToSuperview().inset(32)
+            $0.centerY.equalTo(bottomView)
+            $0.leading.trailing.equalToSuperview().inset(8)
         }
         
         bottomView.snp.makeConstraints {
-            $0.leading.trailing.equalToSuperview().inset(16)
-            $0.bottom.equalToSuperview().inset(16)
+            $0.leading.trailing.bottom.equalToSuperview()
             $0.height.equalTo(48)
         }
+    }
+    
+    func configureUI() {
+        addViews()
+        configureConstraints()
     }
 }
