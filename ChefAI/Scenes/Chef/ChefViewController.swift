@@ -69,6 +69,7 @@ class ChefViewController: UIViewController {
     
     private let viewModel: ChefViewModel
     private var bottomStackViewBottomConstraint: Constraint?
+    private let loadingView: LoadingView = .init()
     
     // MARK: - Life Cycles
     
@@ -104,7 +105,8 @@ private extension ChefViewController {
         view.addSubviews(
             bottomStackView,
             dismissButton,
-            chatTableView
+            chatTableView,
+            loadingView
         )
         bottomStackView.addArrangedSubview(promptTextField)
         bottomStackView.addArrangedSubview(sendButton)
@@ -130,6 +132,10 @@ private extension ChefViewController {
         
         sendButton.snp.makeConstraints {
             $0.width.height.equalTo(48)
+        }
+        
+        loadingView.snp.makeConstraints {
+            $0.edges.equalToSuperview()
         }
     }
     

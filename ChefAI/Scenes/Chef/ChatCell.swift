@@ -39,7 +39,7 @@ class ChatCell: UITableViewCell {
     
     private let geminiImageView: UIImageView = {
         let imageView = UIImageView()
-        imageView.image = UIImage(systemName: "brain.head.profile")
+        imageView.image = .splash
         imageView.tintColor = .white
         imageView.backgroundColor = .customButton
         imageView.contentMode = .scaleAspectFit
