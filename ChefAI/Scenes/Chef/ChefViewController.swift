@@ -190,6 +190,10 @@ private extension ChefViewController {
     func sendTapped() {
         viewModel.sendMessage(promptText: promptTextField.text ?? "")
         promptTextField.text = ""
+        
+        DispatchQueue.main.async {
+            self.loadingView.isHidden = false
+        }
     }
     
     func dismissTapped() {
@@ -246,6 +250,7 @@ extension ChefViewController: ChefViewModelProtocol {
         DispatchQueue.main.async {
             UIView.transition(with: self.chatTableView, duration: 0.25, options: .transitionCrossDissolve) {
                 self.chatTableView.reloadData()
+                self.loadingView.isHidden = true
             }
         }
     }
